@@ -10,7 +10,7 @@ relative_permalinks: true
 title:            BIS180L
 tagline:          'BIS180L Genome Biology Lab'
 description:      'A Lab Course at UC Davis to introduce Genetics and Genomics majors to Bioinformatics'
-url:              http://jnmaloof.github.io/BIS180L_web/
+# url:              http://jnmaloof.github.io/BIS180L_web/
 baseurl:          http://jnmaloof.github.io/BIS180L_web/
 
 author:
@@ -22,5 +22,5 @@ paginate:         5
 # Custom vars
 version:          2.1.0
 
-github:
-  repo:           https://github.com/jnmaloof/BIS180L_web
+#github:
+#  repo:           https://github.com/jnmaloof/BIS180L_web
