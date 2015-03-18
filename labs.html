@@ -3,10 +3,28 @@ layout: page
 title: Labs
 ---
 
-{% for post in site.posts reversed %}
-  {% if post.lab %}
-  <h2><a href={{ site.baseurl }}{{ post.url }}>{{ post.title }}</a></h2>
-  <p>{{ post.content }}</p>
-  {% endif %}
-{% endfor %}
+<div class="schedule">
+  <table>
 
+    <thead>
+      <tr>
+        <th class="date-col">Date</th>
+        <th class="topic-col">Topic</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for post in site.posts reversed %}
+        {% if post.lab %}
+
+          <tr>
+            <td class="date-cell">{{ post.date | date: '%m-%d-%Y' }}</td>
+            <td class="topic-cell"><a href={{ site.baseurl }}{{ post.url }}>{{ post.title }}</a></td>
+          </tr>
+
+        {% endif %}
+      {% endfor %}
+    </tbody>
+
+  </table>
+</div>
