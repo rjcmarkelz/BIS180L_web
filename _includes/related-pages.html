@@ -1,0 +1,48 @@
+{% comment %} Based on: http://zhangwenli.com/blog/2014/07/15/jekyll-related-posts-without-plugin/ {% endcomment %}
+
+{% assign similarity_score = 0 %}
+
+{% for post in site.related_posts reversed %}
+  {% assign page_match = false %}
+
+  {% for current_tag in page.tags %}
+    {% for tag in post.tags %}
+
+      {% if post != page and tag == current_tag %}
+
+        {% if similarity_score == 0 %}
+          <div class="related">
+            <h2>Related Pages</h2>
+            <ul class="related-posts">
+        {% endif %}
+
+        {% assign similarity_score = similarity_score | plus: 1 %}
+        {% assign page_match = true %}
+
+        <li>
+          <h3>
+            <a href="{{ site.baseurl }}{{ post.url }}">
+              {{ post.title }}
+              {% if post.series %}
+                (Series: {{ post.series }})
+              {% endif %}
+              <small>{{ post.date | date_to_string }}</small>
+            </a>
+          </h3>
+        </li>
+
+      {% endif %}
+
+    {% endfor %}
+
+    {% if page_match %}
+      {% break %}
+    {% endif %}
+
+  {% endfor %}
+{% endfor %}
+
+{% if similarity_score > 0 %}
+    </ul>
+  </div>
+{% endif %}
