@@ -1,0 +1,12 @@
+---
+layout: page
+title: Labs
+---
+
+{% for post in site.posts reversed %}
+  {% if post.lab %}
+  <h2><a href={{ site.baseurl }}{{ post.url }}>{{ post.title }}</a></h2>
+  <p>{{ post.content }}</p>
+  {% endif %}
+{% endfor %}
+
