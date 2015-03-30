@@ -8,10 +8,10 @@ relative_permalinks: true
 
 # Setup
 title:            BIS180L
-tagline:          'BIS180L Genome Biology Lab'
+tagline:          'Genome Biology Lab'
 description:      'A Lab Course at UC Davis to introduce Genetics and Genomics majors to Bioinformatics'
 # url:              http://jnmaloof.github.io/BIS180L_web/
-baseurl:          http://jnmaloof.github.io/BIS180L_web/
+baseurl:          /BIS180L_web
 
 author:
   name:           'Julin Maloof'
@@ -20,7 +20,7 @@ author:
 paginate:         5
 
 # Custom vars
-version:          2.1.0
+version:          0.1.0
 
 #github:
 #  repo:           https://github.com/jnmaloof/BIS180L_web
