@@ -13,15 +13,17 @@ __Discussion:__  F  1:10-2:00 PM  SciLab2020
 __Instructor:__  Julin Maloof <jnmaloof@ucdavis.edu>   
 __Teaching Assistant:__ Kristen Beck <kristenbeck527@gmail.com>
 
+__TA Office Hours__ F 12:10 - 1:00 PM SciLab2020
+
 ## Grading
 
-* Weekly Assignments: 45%
+* Written Assignments: 45%
 * Take Home Midterm: 25%
 * Take Home Final: 25%
 * Class Participation/presentation: 5%
 
-## Weekly Assignments
-There will be one assignment due for each week. Weekly assignments will generally be __due at 9:00AM on Monday__ for the previous week’s material. Weekly assignments will take one of two forms:
+## Written Assignments
+There will be written assignments due every week or two. Assignments will generally be __due at 9:00AM on Monday__ for the previous week’s material. Weekly assignments will take one of two forms:
 
 1. Problem sets. Problem sets will consist of questions that you answer as you work through the lab material. They may consist of combinations of short answers, code segments, figures, and other data analysis. You should be able to complete these during the scheduled lab periods.
 2. Lab reports. For lab reports you will write a short document describing your analysis. Lab reports are should consist of two to three pages of text (minimum font size: 12 points, minimum page margins 1”) and have up to four figures or tables (which do not count towards the page limit). Please see separate document on SmartSite for more information
