@@ -535,7 +535,7 @@ You can put processes into the **background**. This will mean the terminal no lo
 | tab     | tab-complete names
 | *       | wildcard - matches everything
 | &       | send command to background
-| \|      | pipe output from one command to another
+| &#124;  | pipe output from one command to another
 | >       | redirect output to file
 
 | Command   | Example       | Intent                        |
