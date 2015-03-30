@@ -14,10 +14,11 @@ __Instructor:__  Julin Maloof <jnmaloof@ucdavis.edu>
 __Teaching Assistant:__ Kristen Beck <kristenbeck527@gmail.com>
 
 ## Grading
-Weekly Assignments: 45%
-Take Home Midterm: 25%
-Takehome Final: 25%
-Class Participation/presentation: 5%
+
+* Weekly Assignments: 45%
+* Take Home Midterm: 25%
+* Take Home Final: 25%
+* Class Participation/presentation: 5%
 
 ## Weekly Assignments
 There will be one assignment due for each week. Weekly assignments will generally be __due at 9:00AM on Monday__ for the previous week’s material. Weekly assignments will take one of two forms:
