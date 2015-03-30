@@ -6,6 +6,31 @@ lab: true       <!-- To display post on Labs page -->
 tags:
 - Linux
 ---
+<!-- MarkdownTOC -->
+
+- [Just Enough Unix for Bioinformatics](#just-enough-unix-for-bioinformatics)
+	- [Author, Version, and Other Front-matter ##](#author-version-and-other-front-matter-)
+	- [Terminal, Command Line, and Shell ##](#terminal-command-line-and-shell-)
+		- [Terminal Basics ###](#terminal-basics-)
+		- [Manual Pages ###](#manual-pages-)
+		- [Injury Prevention ###](#injury-prevention-)
+			- [Exercise one](#exercise-one)
+		- [Variables ###](#variables-)
+	- [Files & Directories ##](#files--directories-)
+		- [Creating and Viewing Files ###](#creating-and-viewing-files-)
+		- [Editing Files ###](#editing-files-)
+		- [Navigating Directories ###](#navigating-directories-)
+		- [Moving and Renaming Files ###](#moving-and-renaming-files-)
+		- [Copying and Aliasing ###](#copying-and-aliasing-)
+		- [Deleting Files ###](#deleting-files-)
+		- [Working with Text Files ###](#working-with-text-files-)
+		- [Using File Permissions ###](#using-file-permissions-)
+	- [Processes ##](#processes-)
+		- [Viewing Processes ###](#viewing-processes-)
+		- [Managing Processes ###](#managing-processes-)
+	- [Unix Reference ##](#unix-reference-)
+
+<!-- /MarkdownTOC -->
 
 Just Enough Unix for Bioinformatics
 ===================================
