@@ -237,7 +237,7 @@ Now go back to the root directory and create a file in your home directory. Ther
 
 Now create a couple more files but using absolute and relative paths rather than short-cuts.
 
-	touch /home/bios180student/file3
+	touch /home/bis180lstudent/file3
 	cd ~/Documents
 	pwd
 	ls
