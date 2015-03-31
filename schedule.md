@@ -43,7 +43,7 @@ Schedule is subject to change (but not the exam dates)
 | Thur 1:10 - 5:00  |  28-May |  Metagenomics
 | Fri 1:10 - 2:00   |  29-May |  Discussion: Metagenomics
 |                   |         |  
-| Tue 1:10 - 5:00   |  2-Jun  |  TBD
-| Thur 1:10 - 5:00  |  4-Jun  |  TBD __Final Exam Handed out__
+| Tue 1:10 - 5:00   |  2-Jun  |  TBD __Final Exam Handed out__
+| Thur 1:10 - 5:00  |  4-Jun  |  Open office hours for final exam questions 
 |                   |         |
 | __Mon 9:00 AM__   |  8-Jun  | __Final Exam Due 9AM__
