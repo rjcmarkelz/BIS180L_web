@@ -26,7 +26,7 @@ Look inside the BIS180L2015 folder on your flash drive.  There will be several f
 * "BIS180L2015.vdi"--this is the virtual disk drive
 * "BIS180L2015.vbox"--this contains information about the virtual machine.
 
-Double click the "BIS180L_lubuntu64.vbox" file.  This should start the virtual machine.  You may need to press "start" in the virtualbox window.  It will take a about 1 minute to boot.  When the boot is complete you should see a window that looks like this:
+Double click the "BIS180L2015.vbox" file.  This should start the virtual machine.  You may need to press "start" in the virtualbox window.  It will take a about 1 minute to boot.  When the boot is complete you should see a window that looks like this:
 
 ![BIS180L linux desktop]({{ site.baseurl }}/images/BIS180L_screenshot.png)
 
