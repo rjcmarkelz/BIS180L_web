@@ -1,6 +1,6 @@
 ---
 layout: page
-title: slides
+title: Slides
 ---
 
 | Date       | Topic             | Links |             
