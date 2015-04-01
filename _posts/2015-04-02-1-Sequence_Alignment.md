@@ -2,7 +2,7 @@
 layout: post
 title: Sequence Alignment
 hidden: true    <!-- To prevent post from being displayed as regular blog post -->
-lab: true       <!-- To display post on l*abs page -->
+lab: true       <!-- To display post on Labs page -->
 tags:
 - Linux
 - sequence
