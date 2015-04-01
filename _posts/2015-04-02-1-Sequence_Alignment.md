@@ -74,9 +74,9 @@ notebook for this unit.
 	cd ~/Lab1
 	nano lab1_notebook.md
 
-The format of the file will be Markdown. If you aren't familiar with
-Markdown format, go check it out online. It's just standardized way of
-writing plain text files that is easily converted into other formats.
+Instead of editing in nano, you could also write your lab notebook while
+using Markdown preview in the program Remarkable which is already 
+installed on your Virtual Machine.
 
 Create a simple table with the following information for each species.
 
@@ -167,7 +167,7 @@ if they actually have the same number of letters. We'll use the
 	less ce1.comp
 	less ce1.shuffle.comp
 
-They files look pretty similar, but are they **exactly** the same? We can use
+The files look pretty similar, but are they **exactly** the same? We can use
 the Unix `diff` command for that.
 
 	diff ce1.comp ce1.shuffle.comp
@@ -228,27 +228,28 @@ Use `head` and `tail` to find the minimum and maximum values. Or you can
 use `less` and scroll the the output.
 
 To find the median score, sort the output as above, but pipe it to
-`head` to get the 500th value (with an odd number of values, you are
-supposed to average the two middle values, but you will see this doesn't
-matter).
+`head` to get the 500th and 501st value (with an even number of values, 
+you average the two middle values).
 
-	grep Score 1k.water | cut -d " " -f 3 | sort -n | head -500
+	grep Score 1k.water | cut -d " " -f 3 | sort -n | head -501 | tail -2
 
-You can even pipe to it to `tail`.
+These two values can be averaged for the median. You can even pipe to it
+to `tail` to complete the logical converse.
 
-	grep Score 1k.water | cut -d " " -f 3 | sort -n | head -500 | head -1
+	grep Score 1k.water | cut -d " " -f 3 | sort -n | tail -501 | head -2
 
 There is an odd Unix command called `uniq` that compares adjacent lines
-in a file and reports when they are not the same. It will count when
-they are not the same with the `-c` option. We can use that to make a
-histogram.
+in a file and reports when they are not the same. Since it is comparing
+adjacent lines, we will need to `sort` the scores again. To count when
+the lines are not the same, use `uniq` with the `-c` option. We can use 
+that to make a histogram.
 
 	grep Score 1k.water | cut -d " " -f 3 | sort -n | uniq -c
 
 Boom! This is the distribution of maximum scoring alignments expected at
-random between these two sequences. To compute the aveage, we can use
+random between these two sequences. To compute the average, we can use
 `awk` to sum up column 3 of the `1k.water` file and then divide by the
-number of recrods. `awk` is a powerful scripting language that we don't
+number of records. `awk` is a powerful scripting language that we don't
 have time to discuss.
 
 	grep Score 1k.water | awk '{sum+=$3} END {print sum/NR}'
@@ -283,11 +284,13 @@ Write those down in your notebook. Now let's get back to the experiment.
 You want to find the A. thaliana and D. melanogaster orthologs of
 B0213.10. Set up the experiment any way you like. You need to be able to
 answer the following questions. Note that some questions are very
-open-ended and may be very difficult to answer.
+open-ended and may be very difficult to answer. For these, do your best 
+and support your answer with scientific reasoning and/or appropriate 
+sources.
 
 * What is the best match in each genome?
 * What protein is this?
-* What are the alignment properties (% identity, etc)
+* What are the alignment properties (% identity, etc.)
 * What is the expected score of your alignment at random?
 * How different is your best score from random?
 * How statistically significant is this score?
