@@ -15,7 +15,7 @@ title: Labs
 
     <tbody>
       {% for post in site.posts reversed %}
-        {% if post.lab %}
+        {% if post.layout == "lab" %}
 
           <tr>
             <td class="date-cell">{{ post.date | date: '%m-%d-%Y' }}</td>
