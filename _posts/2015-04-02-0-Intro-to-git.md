@@ -60,6 +60,9 @@ Designate one of you to create a new repository.  This is Partner 1.
 	* Pull the changes back to your computer
 	* Run git log and save the output to a file.
 
+* Want a graphical view of what is going on?
+	* type `gitk` at the command line when you are in the directory of a git repository.
+
 ### Fork a project
 
 The above exercise illustrate one way to collaborate: each collaborator is added as a contributor to the repository.  A second (and perhaps more common) method is to __fork__ a repository.  When you fork a repository your are creating your own copy of the repository.  You then make changes to your fork.  If you think the original creator might want to incorporate your changes than you can create a __pull request__ to request that they pull your changes back into their repository.  This is safer for the original creator because it is easier for them to choose to include your changes if they don't like them.
