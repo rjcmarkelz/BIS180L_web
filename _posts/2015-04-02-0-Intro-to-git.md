@@ -38,7 +38,7 @@ First get a [GitHub](https://github.com/) account
 
 ### Make a repository and collaborate
 
-Work with a partner
+Work in a group of 2 or 3 people
 
 Designate one of you to create a new repository.  This is Partner 1.
 
@@ -49,7 +49,7 @@ Designate one of you to create a new repository.  This is Partner 1.
 	* Go to the github website for this repository.
 	* Add  Partner2 as a collaborator.
 
-* Partner 2:
+* Partner 2 (and 3):
 	* Clone the repository to your computer
 	* Add your information (what your plans are for the weekend?)
 	* Commit your change
