@@ -7,6 +7,7 @@ __Student ID:__
 *_Please answer the following questions which are each worth 1 point unless otherwise indicated. Be clear and concise with any written answers. Graphs should be properly constructed (axis labels, units, titles, etc.)_*
 
 __1.__ Fill in the following table.
+
 |     Characteristic  |   A. thaliana    |   C. elegans   |   D. melanogaster
 |:--------------------|:-----------------|:---------------|:-------------------
 | File size           |                  |                |                    
@@ -38,6 +39,7 @@ __10.__ Create 1000 shuffles of the Q-enriched sequence above and report the ave
 __11.__ Briefly discuss parts 9-11 with respect to how sequence composition affects score. (*2pts*)
 
 __12.__ Perform random alignments (as in question 3 above) with the following different alignment scoring schemes:
+
 |     Matrix    |   Gap Open    | Gap Extend |   Mean  | Mode    | Median
 |:--------------|:--------------|:-----------|:--------|:--------|:--------
 | EBLOSUM80     |       9       |     3      |         |         |              
