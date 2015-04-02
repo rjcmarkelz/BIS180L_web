@@ -18,7 +18,7 @@ __3.__ Fill in the following table.
 | Chromosomes (#)     |                  |                |
 | Genome size (bp)    |                  |                |
 | Protein-coding genes|                  |                |
-| Average protein (aa)|                  |                |￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+| Average protein (aa)|                  |                | 
 
 __4.__ How do you know that when you use `shuffleseq` the sequences have the same exact composition?
 
