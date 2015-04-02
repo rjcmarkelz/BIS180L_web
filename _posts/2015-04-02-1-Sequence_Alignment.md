@@ -14,8 +14,8 @@ There is good background information on sequence analysis [elsewhere on this sit
 If you look at the `/data` directory, you will see that there are 3
 sub-directories for 3 different genomes. Each of these files was
 downloaded directly from its source genome project (TAIR, WormBase,
-FlyBase). There are files for proteins and files for genomes (the A.
-thaliana files are in separate chromosomes while the worm and fly have
+FlyBase). There are files for proteins and files for genomes (the _A.
+thaliana_ files are in separate chromosomes while the worm and fly have
 all the sequences in a single file).
 
 Now lets organize the files a little to make our lives easier. Create a
@@ -92,7 +92,7 @@ for that. To find the various chromosomes, use `grep`. The size of the
 genome will be the number of {ACGT} letters. This is a little
 complicated because it's not the size of the file. The files also have
 newline characters and FASTA headers. You need to subtract these.
-Fortunately, you can all of this with the Unix skills you already have.
+Fortunately, you can do all of this with the Unix skills you already have.
 
 ## Part 3: Local Alignment ##
 
@@ -118,7 +118,7 @@ Unix community.
 
 	water -h
 
-There are not may options. We need to provide two sequence files,
+There are not many options. We need to provide two sequence files,
 penalties for gap opening and extension, and an output file. The scoring
 matrix appears to BLOSUM62 by default but others are available (see
 `/usr/share/EMBOSS/data` or `/usr/local/share/EMBOSS/data`). Let's try
