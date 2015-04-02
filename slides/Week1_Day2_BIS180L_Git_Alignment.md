@@ -59,9 +59,13 @@ incremental: true
 Seq Alignment
 =============
 
-A key tool in bioinformatics is being able to determine the similarity between DNA or protein sequences.
+A key tool in bioinformatics is sequence alignment.
 
-Part 2 of today's lab will have you explore some tools for doing this.
+Questions:  
+1. How similar are two sequences?  
+2. Given a protein of interest what other proteins are similar in another genome?
+
+Part 2 of today's lab will have you explore tools for doing alignments and homolgy searches.
 
 You can review principles of Sequence Analysis by looking at the Sequence Analysis Primer (linked to from the lab page).
 
@@ -75,5 +79,5 @@ What does the null distribution look like?
 
 Permutation: Create a randomized data set.
 
-How does the real data compare to randomized data
+How does the real data compare to randomized data?
 
