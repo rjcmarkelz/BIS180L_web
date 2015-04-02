@@ -67,7 +67,7 @@ Designate one of you to create a new repository.  This is Partner 1.
 
 The above exercise illustrate one way to collaborate: each collaborator is added as a contributor to the repository.  A second (and perhaps more common) method is to __fork__ a repository.  When you fork a repository your are creating your own copy of the repository.  You then make changes to your fork.  If you think the original creator might want to incorporate your changes than you can create a __pull request__ to request that they pull your changes back into their repository.  This is safer for the original creator because it is easier for them to choose to include your changes if they don't like them.
 
-Let try it.  I need to collect everyones GitHub usernames.  I have created a repository https://github.com/jnmaloof/gh-usernames for this purpose.
+Let try it.  I need to collect everyones GitHub usernames.  I have created a repository [https://github.com/jnmaloof/gh-usernames](https://github.com/jnmaloof/gh-usernames) for this purpose.
 
 * Go the home page for that respository in your web browser. 
 * Fork it using the button on the upper right hand side.
