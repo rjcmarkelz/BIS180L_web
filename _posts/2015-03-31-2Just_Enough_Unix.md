@@ -1,8 +1,7 @@
 ---
-layout: post
+layout: lab
 title: Just Enough Unix for Bioinformatics
 hidden: true    <!-- To prevent post from being displayed as regular blog post -->
-lab: true       <!-- To display post on Labs page -->
 tags:
 - Linux
 ---

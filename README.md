@@ -26,10 +26,9 @@ Place the .md file in the root directory for the site.  It will get added to the
 For a lab page use:
 
     ---
-    layout: post
+    layout: lab
     title: Instructions on installing and using the BIS180L virtual linux machine
     hidden: true    <!-- To prevent post from being displayed as regular blog post -->
-    lab: true       <!-- To display post on Labs page -->
     tags:
         - Linux
     ---
