@@ -55,17 +55,3 @@ Include:
 * a bulleted list of likes
 
 Save the file.  You will be asked to turn it in next class.
-
-
-
-
-
-
-
-
-
-
-
-
-
-

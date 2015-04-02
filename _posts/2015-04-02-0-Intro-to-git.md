@@ -67,7 +67,7 @@ Designate one of you to create a new repository.  This is Partner 1.
 
 The above exercise illustrate one way to collaborate: each collaborator is added as a contributor to the repository.  A second (and perhaps more common) method is to __fork__ a repository.  When you fork a repository your are creating your own copy of the repository.  You then make changes to your fork.  If you think the original creator might want to incorporate your changes than you can create a __pull request__ to request that they pull your changes back into their repository.  This is safer for the original creator because it is easier for them to choose to include your changes if they don't like them.
 
-Let try it.  I need to collect everyones GitHub usernames.  I have created a repository [https://github.com/jnmaloof/gh-usernames](https://github.com/jnmaloof/gh-usernames) for this purpose.
+Let try it.  I need to collect everyone's GitHub usernames.  To do this we will collaboratively edit a document through git and GitHub.  I have created a repository [https://github.com/jnmaloof/gh-usernames](https://github.com/jnmaloof/gh-usernames) for this purpose.
 
 * Go the home page for that respository in your web browser. 
 * Fork it using the button on the upper right hand side.
@@ -79,3 +79,31 @@ Let try it.  I need to collect everyones GitHub usernames.  I have created a rep
 	* hint: checkout the master branch, then user 'merge develop'
 * Push your change back up to you repository
 * Use the website to send a pull request 
+
+## More resources
+
+Still confused?  Or want to go further?  Here are some additional resources
+
+### Tutorial
+
+An alternative tutorial
+
+[GitHub for beginners Part 1](http://readwrite.com/2013/09/30/understanding-github-a-journey-for-beginners-part-1)
+[GitHub for beginners Part 2](http://readwrite.com/2013/10/02/github-for-beginners-part-2)
+
+### Videos
+
+The four part git basics series (the first two were shown in class)
+
+1, https://www.youtube.com/watch?v=8oRjP8yj2Wo
+2, https://www.youtube.com/watch?v=uhtzxPU7Bz0
+3. https://www.youtube.com/watch?v=wmnSyrRBKTw
+4, https://www.youtube.com/watch?v=7w5Z7LmyLgI
+
+A longer video (50 minutes)  https://www.youtube.com/watch?v=U8GBXvdmHT4
+
+[GitHub Video Channel](https://www.youtube.com/user/GitHubGuides/videos)
+
+### Online book
+
+The official online [git manual](http://git-scm.com/book/en/v2)
