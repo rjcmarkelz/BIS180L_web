@@ -63,5 +63,17 @@ A key tool in bioinformatics is being able to determine the similarity between D
 
 Part 2 of today's lab will have you explore some tools for doing this.
 
+You can review principles of Sequence Analysis by looking at the Sequence Analysis Primer (linked to from the lab page).
 
+Seq Alignment Signficance
+=========================
+incremental: true
+
+How do you determine significance?
+
+What does the null distribution look like?
+
+Permutation: Create a randomized data set.
+
+How does the real data compare to randomized data
 
