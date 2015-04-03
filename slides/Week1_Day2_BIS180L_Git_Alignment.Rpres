@@ -8,7 +8,7 @@ Today's Lab
 
 We will have two topics for today's lab
 
-- Version control and collaboration with Git and GitHun
+- Version control and collaboration with Git and GitHub
 - Sequence Alignment using EMBOSS tools.
 
 What is Git?
@@ -30,8 +30,8 @@ What is Git?
 Git Intro Videos
 ===================
 
-[Video1](https://www.youtube.com/watch?v=8oRjP8yj2Wo)
-[Viedo1](https://www.youtube.com/watch?v=uhtzxPU7Bz0)
+* [Video1](https://www.youtube.com/watch?v=8oRjP8yj2Wo)
+* [Video2](https://www.youtube.com/watch?v=uhtzxPU7Bz0)
 
 Git: Key concepts
 =================
