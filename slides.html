@@ -1,0 +1,40 @@
+---
+layout: page
+title: Slides
+---
+
+<table class="slides">
+
+  <thead>
+    <tr>
+      <th class="date-col">Date</th>
+      <th class="topic-col">Topic</th>
+      <th class="links-col">Links</th>
+    </tr>
+  </thead>
+
+  <tbody>
+      {% for post in site.posts %}
+
+        {% if post.slides %}
+          {% for slide in post.slides %}
+            {% if slide.date %}
+              <tr>
+                <td class="date-cell">{{ slide.date }}</td>
+                <td class="topic-cell">{{ slide.topic }}</td>
+                <td class="links-cell">
+                  {% if slide.html %}
+                    <a href="{{ site.baseurl }}/slides/{{ slide.html }}" target="_blank">html</a>
+                  {% endif %}
+                  {% if slide.pdf %}
+                    <a href="{{ site.baseurl }}/slides/{{ slide.pdf }}" target="_blank">pdf</a>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+  </tbody>
+
+</table>
