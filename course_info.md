@@ -33,3 +33,6 @@ Recent technological advances in the field of genomics over the last dozen years
 
 ## On Plagiarism
 You will often work with a lab partner as you do the lab exercises. However you must each write your own answers for worksheets and lab reports. In addition, while the web is a powerful resource for information it is plagiarism and a SJA violation to cut and paste information directly from web sources without indicating that you are quoting and providing a citation.
+
+## Course Materials Fee
+You will be charged a $15.00 Course Materials Fee when you register for this class.  This fee covers a 32GB USB 3.0 Flash Drive which comes pre-formatted with a linux virtual machine that will be used throughout the course.  You will get to keep the flash drive at the end of the course.
