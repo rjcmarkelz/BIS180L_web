@@ -57,7 +57,7 @@ Clone the repository--part I
 
 This only needs to be done once
 * go to GitHub.com and logon
-* If you haven't alread done so, accept the invitation to join the UCDBIS180L team
+* If you haven't already done so, accept the invitation to join the UCDBIS180L team
 * Click on the link "UCDBIS180L/BIS180L_Assignments_..." link on the right hand side
 
 ![assignments](git_clone_1.png)
@@ -133,6 +133,16 @@ Create an issue, 2
 ![](git_issues_2.png)
 * tell us that you are ready for your assignment to be graded
 ![](git_issues_3.png)
+
+Optional Lab Exercise
+====================
+type: section
+
+Automating commands in the bash shell script
+============================================
+See new lab exercise for today (in "labs" on website)
+
+This is optional but recommended.
 
 
 
