@@ -8,7 +8,7 @@ __Student ID:__
 
 __1.__ Paste in the output from `git log` performed at the end of the GitHub exercise.  Format this as a code block.
 
-__2.__ Paste in the output of `ls -lR Data` performed at the beginning of the Sequence_Alignment exercise.  Format this as a code block.
+__2.__ Paste in the part of the output of `ls -lR Data` performed at the beginning of the Sequence_Alignment exercise that shows the aliases (symbolic links).  Format this as a code block.  
 
 __3.__ Fill in the following table.
 
@@ -18,7 +18,7 @@ __3.__ Fill in the following table.
 | Chromosomes (#)     |                  |                |
 | Genome size (bp)    |                  |                |
 | Protein-coding genes|                  |                |
-| Average protein (aa)|                  |                |￼￼￼￼￼￼￼￼￼￼￼￼￼￼￼
+| Average protein (aa)|                  |                | 
 
 __4.__ How do you know that when you use `shuffleseq` the sequences have the same exact composition?
 

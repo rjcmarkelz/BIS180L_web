@@ -11,4 +11,5 @@ title: Readings and Resources
 [How to make and configure your own virtual machine]({{ site.baseurl }}/Creating_VBox_machine) 
 
 ## Day Two (April 02)
+[Git increases reproducibility and transparency](http://www.scfbm.org/content/8/1/7)
 [Sequence Analysis Primer](../docs/SequenceAnalysisPrimer.pdf)

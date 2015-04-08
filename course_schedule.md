@@ -11,7 +11,7 @@ Schedule is subject to change (but not the exam dates)
 | Thur 1:10 - 5:00  |  2-Apr  |  1. Git ; 2. Seq Alignment
 | Fri 1:10 - 2:00   |  3-Apr  |  Discussion: Seq Alignment
 |                   |         |  
-| Tue 1:10 - 5:00   |  7-Apr  |  BLAST
+| Tue 1:10 - 5:00   |  7-Apr  |  Seq Alignment continued; BLAST
 | Thur 1:10 - 5:00  |  9-Apr  |  Intro to R
 | Fri 1:10 - 2:00   |  10-Apr |  Discussion: BLAST
 |                   |         |  
