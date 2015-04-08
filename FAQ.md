@@ -3,6 +3,18 @@ layout: page
 title: FAQ
 ---
 
+### General:
+
+**Q** Which computer labs on campus have Virtual Box?
+>**A:** The following rooms have Virtual Box installed:  
+
+>* 2060 SciLab
+* 2101 SCC
+* 182 Shields  
+
+>The SciLab rooms have USB 3, but they also have classes. You can see when all those rooms are free [here](http://computerrooms.ucdavis.edu/rooms/available/) (click on "Next Day" to see the next 7 days).
+
+
 ### Week 1:
 
 **Q:** When is my next assignment due?
