@@ -81,7 +81,7 @@ Create a directory and move files
 * move the relevant file(s) to the directory.  (This will vary depending on where your files are)
 
 
-```r
+```
 cd BIS180L_Assignments_Stacey.Harmer
 mkdir Assignment_1 
 cd Assignment_1
@@ -92,7 +92,7 @@ Check status; Git to track the files
 ====================================
 
 
-```r
+```
 git status
 git add ./* #adds all files
 git commit -m "added files for assignment 1"
@@ -113,13 +113,13 @@ When you are ready to submit push your changes to GitHub
 First set your git configuration options (only needs to be done once per machine)  
 
 
-```r
+```
 git config --global push.default simple
 ```
 
 Then
 
-```r
+```
 git push
 ```
 
@@ -151,9 +151,3 @@ Automating commands in the bash shell script
 See new lab exercise for today (in "labs" on website)
 
 This is optional but recommended.
-
-
-
-
-
-
