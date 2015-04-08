@@ -108,6 +108,13 @@ Push to GitHub
 
 When you are ready to submit push your changes to GitHub
 
+First set your git configuration options (only needs to be done once per machine)  
+
+```{r, eval=FALSE}
+git config --global push.default simple
+```
+
+Then
 ```{r, eval=FALSE}
 git push
 ```
