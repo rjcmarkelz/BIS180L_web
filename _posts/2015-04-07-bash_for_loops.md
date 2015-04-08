@@ -1,13 +1,11 @@
 ---
 layout: lab
-title: OPTIONAL Bash for loops
+title: Bash for loops
 hidden: true    <!-- To prevent post from being displayed as regular blog post -->
 tags:
 - Linux
 - sequence
 ---
-
-This is an __Optional__ lab exercise in case you finish the sequence alignment lab early.
 
 ## Background
 

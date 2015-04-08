@@ -9,5 +9,6 @@ Right click on the link to download the markdown template.  Edit the markdown te
 
 | Date Assigned | Title              | Links                             | Date Due       |
 |---------------|--------------------|-----------------------------------|----------------|
-| Thur Apr 02   | Sequence Alignment | [SA_template](unit1-worksheet.md) | __Tue Apr 07 End of class__ |
+| Thur Apr 02   | Sequence Alignment | [SA_template](unit1-worksheet.md) | __Wed Apr 08 5pm__ |
+| Thur Apr 09   | BLAST              | [BLAST template](assignment2-worksheet.md) | __Mon Apr 13 9AM__ |
 
