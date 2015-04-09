@@ -13,3 +13,6 @@ title: Readings and Resources
 ## Day Two (April 02)
 [Git increases reproducibility and transparency](http://www.scfbm.org/content/8/1/7)
 [Sequence Analysis Primer](../docs/SequenceAnalysisPrimer.pdf)
+
+## April 09
+[Orthlogs and Paralogs](http://www.sciencedirect.com/science/article/pii/S0168952500020059)
