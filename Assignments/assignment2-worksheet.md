@@ -1,8 +1,10 @@
-# BLAST, orthologs, and paralogs
+# BLAST, orthologs, and paralogs (Week 2, 20 pts possible)
 
 __Name:__
 
 __Student ID:__
+
+*_Please answer the following questions which are each worth 2 points. Be clear and concise with any written answers. Late assignments will be penalized with a 2pt deduction without prior communication of extenuating circumstances._*
 
 __Q1__.  Paste in code and output for the `for loop`  __Exercise 1__ (pluralizing fruit names)
 
