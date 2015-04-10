@@ -16,4 +16,4 @@ title: Readings and Resources
 
 ## April 09
 [Orthlogs and Paralogs](http://www.sciencedirect.com/science/article/pii/S0168952500020059)
-[Kristen's cool reciprocal blast paper](http://pubs.acs.org/doi/abs/10.1021/pr501243m)
+[Kristen's cool paper](http://pubs.acs.org/doi/abs/10.1021/pr501243m)
