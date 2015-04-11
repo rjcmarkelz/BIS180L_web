@@ -11,29 +11,29 @@ Schedule is subject to change (but not the exam dates)
 | Thur 1:10 - 5:00  |  2-Apr  |  1. Git ; 2. Seq Alignment
 | Fri 1:10 - 2:00   |  3-Apr  |  Discussion: Seq Alignment
 |                   |         |  
-| Tue 1:10 - 5:00   |  7-Apr  |  Seq Alignment continued; BLAST
-| Thur 1:10 - 5:00  |  9-Apr  |  Intro to R
-| Fri 1:10 - 2:00   |  10-Apr |  Discussion: BLAST
+| Tue 1:10 - 5:00   |  7-Apr  |  Seq Alignment continued
+| Thur 1:10 - 5:00  |  9-Apr  |  BLAST
+| Fri 1:10 - 2:00   |  10-Apr |  BLAST
 |                   |         |  
-| Tue 1:10 - 5:00   |  14-Apr |  R: ggplot
-| Thur 1:10 - 5:00  |  16-Apr |  Illumina Sequence Data: QC and mapping
-| Fri 1:10 - 2:00   |  17-Apr |  Discussion: 
+| Tue 1:10 - 5:00   |  14-Apr |  Discussion: BLAST & Seq Alignment ; R: Intro
+| Thur 1:10 - 5:00  |  16-Apr |  R: ggplot
+| Fri 1:10 - 2:00   |  17-Apr |  More R 
 |                   |         |  
-| Tue 1:10 - 5:00   |  21-Apr |  Illumina: SNP calling; IGV
-| Thur 1:10 - 5:00  |  23-Apr |  R and SNP analysis
-| Fri 1:10 - 2:00   |  24-Apr |  Discussion
+| Tue 1:10 - 5:00   |  21-Apr |  R and SNP analysis
+| Thur 1:10 - 5:00  |  23-Apr |  R and GWAS
+| Fri 1:10 - 2:00   |  24-Apr |  Discussion: SNPs/ GWAS
 |                   |         |  
-| Tue 1:10 - 5:00   |  28-Apr |  Automating tasks in R
-| Thur 1:10 - 5:00  |  30-Apr |  R and GWAS
-| Fri 1:10 - 2:00   |  1-May  |  __Midterm Handed out__
+| Tue 1:10 - 5:00   |  28-Apr |  Shiny; Automating tasks in R
+| Thur 1:10 - 5:00  |  30-Apr |  Illumina Sequence Data: QC and mapping
+| Fri 1:10 - 2:00   |  1-May  |   __Midterm Handed out__
 |                   |         |  
-| __Tue 1:10 - 5:00__   |  __5-May__  |  RNAseq analysis __Midterm Due @ 1:10__
+| __Tue 1:10 - 5:00__   |  __5-May__  | Illumina: SNP calling; IGV  __Midterm Due @ 1:10__
 | Thur 1:10 - 5:00  |  7-May  |  RNAseq analysis
-| Fri 1:10 - 2:00   |  8-May  |  Discussion: RNAseq analysis
+| Fri 1:10 - 2:00   |  8-May  |  Discussion: Illumina Sequencing
 |                   |         |  
-| Tue 1:10 - 5:00   |  12-May |  Expresion clustering; Motif discovery
-| Thur 1:10 - 5:00  |  14-May |  ChipSeq analysis
-| Fri 1:10 - 2:00   |  15-May |  Discussion: ChipSeq analysis
+| Tue 1:10 - 5:00   |  12-May |  RNAseq analysis
+| Thur 1:10 - 5:00  |  14-May |  Expression clustering; Motif discovery
+| Fri 1:10 - 2:00   |  15-May |  Discussion: RNAseq
 |                   |         |  
 | Tue 1:10 - 5:00   |  19-May |  Genetic Networks
 | Thur 1:10 - 5:00  |  21-May |  Genetic Networks
