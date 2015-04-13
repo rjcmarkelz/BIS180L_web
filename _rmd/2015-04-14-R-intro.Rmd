@@ -17,6 +17,8 @@ We will be using a tutorial in R that relies on the Linux curl libraries.  Pleas
 
     sudo apt-get install curl libcurl4-openssl-dev
     
+Then type "Y" when prompted
+    
 (Not needed on Macintosh.  Unknown on PCs)
 
 ## Introduction to R
@@ -38,22 +40,27 @@ And start the swirl tutorial.
 
     swirl()
 
-When given the choice, choose "1: R Programming: The basics of programming in R".  Then "1: R Programming" You should complete all 6 tutorials within this course:
+When given the choice, choose "1: R Programming: The basics of programming in R".  Then "1: R Programming".  Leep a notebook record what you learn.  Complete the following 6 tutorials within this course:
 
 1. Basic Building Blocks
-2. Sequences of Numbers
-3. Vectors
-4. Missing Values
-5. Subsetting Vectors
-6. Matrices and Data Frames
+(You can Skip 2)
+3. Sequences of Numbers
+4. Vectors
+5. Missing Values
+6. Subsetting Vectors
+7. Matrices and Data Frames
+(You can skip 8-11 for now)
+12: Looking at Data 
+
+We will return to some of the other tutorials later.
 
 Complete the `swirl()` tutorials before continuing
 
 ## More about RStudio
 
-You will record your work today in an R-script file.  Create a new file by clicking on the icon with a "+" symbol, upper left, or going to the file menu, or typing ctrl-shift-N.  This will create a new panel, upper left, in your RStudio window.
+You will record your work today in an R-script file.  Create a new file by clicking on the icon with a "+" symbol, upper left, or going to the file menu, or typing Ctrl-shift-N.  This will create a new panel, upper left, in your R Studio window.
 
-There are total of four panes in the RStudio window.
+There are total of four panes in the R Studio window.
 
 * Upper left: a text editor.  You will write your scripts/commands here.
 * Lower left: the command line interface, or console.  While you can type commands here, I **strongly** encourage you instead to type them in the text editor mentioned above.  Output will appear here.
@@ -67,9 +74,10 @@ Before we continue, lets start our script file with some information about what 
 In this manual, code that you should type will shown in a grey block such as:
 
 ```{r ScriptHeader,tidy=FALSE}
-#R Script for BIS180L, Unit 2, Day 1.
+#R Script for BIS180L, Intro to R.
 #Julin Maloof
 #Started on April 17, 2014
+#Updated April 13, 2015 
 ```
 Lines that begin with a pound sign `#` are comment lines and are ignored by R.  Type the text above into the script window in the upper left pane (replacing "Julin Maloof" with your name, and adding any additional information that you think is useful.
 
@@ -140,20 +148,20 @@ m[5,5]
 ```
 **Exercise 6:** When extracting from a 2-dimensional object, which number specifies rows and which specifies columns?  What does `m[3,]` do?  How can you extract the 3rd, 4th and 5th columns of m together as one object?
 
-Type `cbind(m,101:105). 
+Type `cbind(m,101:105)`. 
 
 **Exercise 7:** What does the cbind command do?  Create a new object "n" where the first row is a new row of numbers (your choice) and the following rows are the followed by the m matrix. Extra credit: do the same but reverse the order of the rows from m.
 
 ## Analyzing the BLAST results from Unit 1
 
-Now that you have some R fundamentels lets deploy them on the blast results from Ian's Section
+Now that you have some R fundamentals lets deploy them on the blast results from Ian's Section
 
 ### Data import
-The easiest way to bring data into R is in a .csv(comma-separated values) or .tsv (tab-separated values) files.  Today we already have the file in the correct format.  In the furture if you need to import other data into R, both of these formats can be created in Excel (choose "Save As..." in Excel and select the correct format).  The relevant R import functions are `read.delim()` and `read.csv()`
+The easiest way to bring data into R is in a .csv(comma-separated values) or .tsv (tab-separated values) files.  Today we already have the file in the correct format.  In the future if you need to import other data into R, both of these formats can be created in Excel (choose "Save As..." in Excel and select the correct format).  The relevant R import functions are `read.delim()` and `read.csv()`
 
-Using the linux terminal, create a alias (symbolic link) to your fly vs. worm blast results from lab2.
+Using the Linux terminal, create a alias (symbolic link) to your fly vs. worm blast results from lab2.
 
-If you no longer have the file you can download it from SmartSite.
+If you no longer have the file you can download it from [the course website](http://jnmaloof.github.io/BIS180L_web/data/fly2worm.blastout).
 
 Back in R, import the file:
 ```{r import_blast, results='hide'}
@@ -168,7 +176,7 @@ head(fly.worm) #first six rows
 summary(fly.worm) #summarizes the first 20 columns
 ```
 
-It is a bit of a bummer that we do not have appropriate column names.  The columm name info can be found [here](http://blast.advbiocomp.com/doc/tabular.html).  We can assign column names as follows:
+It is a bit of a bummer that we do not have appropriate column names.  The column name info can be found [here](http://blast.advbiocomp.com/doc/tabular.html).  We can assign column names as follows:
 ```{r colnames, results='hide'}
 colnames(fly.worm) <- c("query_id",
                         "subject_id",
@@ -215,7 +223,7 @@ What is different about those hits with an e-value of 0 and  a percent identity 
 It sometimes is useful to create a random subset of a large data set like the fly.worm results.  Create a new dataframe `fly.worm.small` that has 10,000 rows taken at random from the larger data set.
 
 ## Intro to plotting
-One of the strengths of R is its graphics.  We are going to take a break from the bioninformatics datasets and work on a tutorial made by our TA Ciera.  This dataset uses the "stereotypes.xls" file available on SmartSite.  
+One of the strengths of R is its graphics.  We are going to take a break from the bioinformatics datasets and work on a tutorial made by last year's TA Ciera.  This dataset uses the "stereotypes.xls" file available on SmartSite.  
 
 Ciera describes the dataset as follows: 799 individuals were surveyed from ages 18 to 26 about their weekly their consumption habits. They were further categorized based on their clothing and music choices and put into four stereotypes: nerds, hipsters, metalheads, and hippies. Consumption of coffee (per cup), computer usage (hourly), showers, beers(per 12oz), and tacos. Oh yeah, this dataset is fake.
 
@@ -242,8 +250,5 @@ Use ggplot to explore the relationship between score ("S") and alignment length(
 
 **Excercise 13**
 While you might expect that BLAST results with long alignments would have high scores, this is not always the case.  Form a hypothesis as to what might influence the relationship between alignment length and score.  Use ggplot to make a new plot to explore this hypothesis.  Does the plot support your hypothesis or not?  State your hypothesis, provide the code for your plot, and state your conclusion.
-
-## Turning in your assignment.
-On Friday Ciera will teach us about R Markdown.  Once you have learned about R Markdown, use it to create a report that has your answsers to the above exercises.   
 
 
