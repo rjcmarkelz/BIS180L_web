@@ -58,6 +58,10 @@ Modify/create .vimrc file to set default colors
     cat >> .vimrc
         :color desert
 
+## latex
+Needed for knitting .Rmd to PDF
+
+    sudo apt-get install texlive-latex-base
 
 ## R
 Follow instruction on [CRAN](http://cran.us.r-project.org/)
