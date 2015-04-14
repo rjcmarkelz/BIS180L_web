@@ -58,9 +58,9 @@ Complete the `swirl()` tutorials before continuing
 
 ## More about RStudio
 
-You will record your work today in an R-script file.  Create a new file by clicking on the icon with a "+" symbol, upper left, or going to the file menu, or typing Ctrl-shift-N.  This will create a new panel, upper left, in your R Studio window.
+You will record your work today in an R-script file.  Create a new file by clicking on the icon with a "+" symbol, upper left, or going to the file menu, or typing Ctrl-shift-N.  This will create a new panel, upper left, in your RStudio window.
 
-There are total of four panes in the R Studio window.
+There are total of four panes in the RStudio window.
 
 * Upper left: a text editor.  You will write your scripts/commands here.
 * Lower left: the command line interface, or console.  While you can type commands here, I **strongly** encourage you instead to type them in the text editor mentioned above.  Output will appear here.
@@ -69,29 +69,72 @@ There are total of four panes in the R Studio window.
   * Help
   * Plots
   * Files in your directory
+  
+## R files types
 
-Before we continue, lets start our script file with some information about what it is.
+### R script files
+
+A typical R analysis or program would be written as an `R script` (file extension .R).  If you wanted to start a new R script files you can choose "File > New > R-Script" or click on the new document icon a the upper left of the window.  
+
+R-script files contain R commands and comments.
+
+Lets start a new R-script file. We will begin the script file with some information about what it is.
 In this manual, code that you should type will shown in a grey block such as:
 
 ```{r ScriptHeader,tidy=FALSE}
-#R Script for BIS180L, Intro to R.
-#Julin Maloof
-#Started on April 17, 2014
-#Updated April 13, 2015 
+#Simple R Script for BIS180L
+#Author: Julin Maloof
+#Original Date: April 17, 2014
+#Updated: April 13, 2015 
 ```
-Lines that begin with a pound sign `#` are comment lines and are ignored by R.  Type the text above into the script window in the upper left pane (replacing "Julin Maloof" with your name, and adding any additional information that you think is useful.
+Lines that begin with a pound sign `#` are comment lines and are ignored by R.  Type the text above into the script window in the upper left pane (replacing "Julin Maloof" with your name, changing the date info, and adding any additional information that you think is useful).
 
-Save your new script file by choosing "Save" from the "File" pull-down menu or clicking on the disk icon.  Save the file in a new directory for today's work.
-
-Now lets enter some simple R code:
+Now lets enter some simple R code into your script:
 ```{r hello_world, results='hide'}
 print("Hello World!")
 ```
-Type the text above into the script (upper-left) window.  Then with the cursor still on that line, hold down the control key (CMD key on Mac) and press the enter or return key.  This causes R Studio to copy the text from your script file, paste it into the console and "execute" the code.
+Type the text above into the script (upper-left) window.  Then with the cursor still on that line, hold down the control key (CMD key on Mac) and press the enter or return key.  This causes RStudio to copy the text from your script file, paste it into the console and "execute" the code.
 
-Now that you are done with the `swirl` tutorial you should **always** type your commands in the upper left window to create a script and also to keep a record of what you have done.
+If you wanted to save your script file then you could press `Ctrl-S` or choose "File > Save"
 
-When I want to show you output from a command, it will be shown in a white box like this:
+### R Markdown files
+
+As an alternative you can use an R-flavored version of Markdown, [RMarkdown](http://rmarkdown.rstudio.com/), with the file extenstion ".Rmd".  Rmarkdown comes pre-installed in RStudio.  R markdown is particularly nice for authoring reports, either for your scienfitic colleagues, or in this case, for _turning in your BIS180L homework_.  We will use RMarkdown for turning in assignments for this class.
+
+Lets try it.
+
+Start a new RMarkdown document.  Choose "File > New File > RMarkdown" or click on the new file icon and choose RMarkdown.  From the pop-up menu you can enter a title (Maybe "Intro to R") and your name as author name.  Leave the type as "document" and the output as "html".  (If you want the ability to create PDFs from Rmarkdown then in the terminal type `sudo apt-get install texlive-latex-extra texlive-fonts-recommended`.  Be prepared to wait for a bit)
+
+A new document will open with some template information in it.
+
+The cool thing about R Markdown is that it embedded R code chunks are R runs when the document is being formatted (actually called being knitted).  The resulting R output is incorporated into the output.  **This is an ideal way to create reproducible reports and analyses**
+
+Try knitting the default document: click on the "Knit HTML" button near the top of your document.
+
+You can now remove everything below the lower "---" (line 6) in the R markdown document and enter your own content.
+
+Lets re-create the "Hello World program above."
+
+\## A silly R program
+This is the first program that Professor Maloof asked us to write in R
+\```{r hello_world2} 
+print("Hello World") 
+\```
+
+You can still execute R-code lines one at a time with `Ctrl-Enter` to check your code.  But when you are ready to format it you can click "Knit HTML"
+
+Lets review what we know about R Markdown.
+
+* R Markdown is very similar to markdown
+* To denote R code, start the code block with ```{r sometitle} and then end it with ```
+* Anything outside of the code block is formatted using normal Markdown rules.
+
+A handy [cheatsheet](http://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf) and [reference guide](http://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf) are available and go into many more options than I have covered here.  You can also get a quick refresher by quicking on the "?" bext to the "Knit HTML" button.
+
+Now that you are done with the `swirl` tutorial you should **always** type your commands in the upper left window to create a script or R Markdown file to keep a record of what you have done.
+
+## Functions: quick intro
+When I want to show you a command and its output, it will be shown in a white box like this:
 ```{r hello_world2, echo=FALSE}
 print("Hello World")
 ```
@@ -150,7 +193,7 @@ m[5,5]
 
 Type `cbind(m,101:105)`. 
 
-**Exercise 7:** What does the cbind command do?  Create a new object "n" where the first row is a new row of numbers (your choice) and the following rows are the followed by the m matrix. Extra credit: do the same but reverse the order of the rows from m.
+**Exercise 7:** What does the cbind command do?  How about rbind?  Create a new object "n" where the first row is a new row of numbers (your choice) and the following rows are the followed by the m matrix. Extra credit: do the same but reverse the order of the rows from m.
 
 ## Analyzing the BLAST results from Unit 1
 
@@ -170,7 +213,7 @@ fly.worm <- read.delim("../data/fly2worm.blastout",header=F)
 #the header=F argument tells R that the first row contains data, not column names
 #takes a while to read in this large data set.
 ```
-Look in the right hand pane and you can see a brief description of the data.  There are 204350 rows and 22 columns.  It is important that you look at files after they have been read in with the `head()` and `summary()` functions.
+Look in the right hand pane and you can see a brief description of the data.  There are 204531 rows and 22 columns.  It is important that you look at files after they have been read in with the `head()` and `summary()` functions.
 ```{r summary, eval=FALSE}
 head(fly.worm) #first six rows 
 summary(fly.worm) #summarizes the first 20 columns
@@ -213,7 +256,7 @@ Using what you learned from `swirl()` answer the following questions.  Show your
 **Exercise 8**:
 * How many hits have an e-value of 0?  
 * How many have hits have a percent identity > 50?
-* Recalculate the above values but in percentage rather than absolute values. (hint you can use the `dim()` function to find the number of rows and columns of a data frame.)
+* Recalculate the above values but in percentage rather than absolute values.
 * How many hits have an e-value of 0 and have a percent identity less than 50?
 
 **Excercise 9**:
@@ -250,5 +293,5 @@ Use ggplot to explore the relationship between score ("S") and alignment length(
 
 **Excercise 13**
 While you might expect that BLAST results with long alignments would have high scores, this is not always the case.  Form a hypothesis as to what might influence the relationship between alignment length and score.  Use ggplot to make a new plot to explore this hypothesis.  Does the plot support your hypothesis or not?  State your hypothesis, provide the code for your plot, and state your conclusion.
-
+  
 
