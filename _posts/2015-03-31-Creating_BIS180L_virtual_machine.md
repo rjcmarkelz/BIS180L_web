@@ -61,7 +61,7 @@ Modify/create .vimrc file to set default colors
 ## latex
 Needed for knitting .Rmd to PDF
 
-    sudo apt-get install texlive-latex-base
+    sudo apt-get install texlive-latex-extra texlive-fonts-recommended
 
 ## R
 Follow instruction on [CRAN](http://cran.us.r-project.org/)
