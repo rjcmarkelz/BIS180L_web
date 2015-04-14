@@ -37,7 +37,7 @@ Save it in the `_posts` folder with a name that follows a format of `yyyy-mm-dd-
 
 ### Lab Rmarkdown page
 
-For a lab _*R* markdown_ page things are a bit more complicated.  Use the same front matter as for a regular lab markdown page, but save it in the `_rmd` folder.  Then run jekyll_knit_BIS180L.R (found in `_rmd` directory), changing the paths as appropriate.  This will automatically create the `.md` file and place it in the posts directory with appropriate links to image files.  Non-R files that you want to include should be placed in the `images` directory.  R images generated during knitting will be automatically places in the `figure` directory and inlcuded.  __Important__: name you code chunks, especially those that generate figures!
+For a lab _*R* markdown_ page things are a bit more complicated.  Use the same front matter as for a regular lab markdown page, but save it in the `_rmd` folder.  Then run jekyll_knit_BIS180L.R (found in `_rmd` directory), changing the paths as appropriate.  This will automatically create the `.md` file and place it in the posts directory with appropriate links to image files.  Non-R files that you want to include should be placed in the `images` directory.  R images generated during knitting will be automatically places in the `figure` directory and inlcuded.  __Important__: name your code chunks, especially those that generate figures!
 
 ### Post
 
