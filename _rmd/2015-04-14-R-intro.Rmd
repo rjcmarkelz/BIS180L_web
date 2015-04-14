@@ -5,7 +5,7 @@ tags: R
 hidden: yes
 ---
 
-```{r prelminaries}
+```{r prelminaries, echo=FALSE}
 KEY <- FALSE # change to true to generate a key (not complete yet)
 ```
 
@@ -28,9 +28,9 @@ Then type "Y" when prompted
 
 ## Install latex
 
-We want the ability to create PDFreports from within RStudio.  This requires the installation of `latex`.  In your Linux terminal type""
+We want the ability to create PDFreports from within RStudio.  This requires the installation of `latex`.  In your Linux terminal type:
 
-  sudo apt-get install texlive-latex-extra texlive-fonts-recommended  
+    sudo apt-get install texlive-latex-extra texlive-fonts-recommended  
   
 Then type "Y" when prompted
 
