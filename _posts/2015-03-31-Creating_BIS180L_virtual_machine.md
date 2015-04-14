@@ -63,6 +63,11 @@ Needed for knitting .Rmd to PDF
 
     sudo apt-get install texlive-latex-extra texlive-fonts-recommended
 
+## curl
+This is needed for some R package installation
+
+    sudo apt-get install curl libcurl4-openssl-dev
+
 ## R
 Follow instruction on [CRAN](http://cran.us.r-project.org/)
 First add the source URL to the apt sources list
@@ -80,7 +85,7 @@ then
 
 	sudo R
 	#within R:
-	install.packages(c("ggplot2","genetics","LDheatmap","hwde","GenABEL","seqinr","qtl"))
+	install.packages(c("swirl","ggplot2","genetics","LDheatmap","hwde","GenABEL","seqinr","qtl"))
 	
 	
 bioconductor (while still in R)
