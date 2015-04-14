@@ -5,6 +5,11 @@ tags: R
 hidden: yes
 ---
 
+```{r prelminaries}
+KEY <- FALSE # change to true to generate a key (not complete yet)
+```
+
+
 Many of the following labs will be performed using [R](http://www.r-project.org/).  R is an open-source, multi-platform statistical programming langauge.  Many (bio)statisticians develop their algorithims in R and therefore it contains many of the latest techniques.  A related project, [Bioconductor](http://www.bioconductor.org/) extends R for bioinformatics analsyis.  While a command-line interface may seem old-fashioned it allow much greater flexibilty than is typically available through graphical user interfaces.
 
 There are a number of different interfaces available for R.  We will use [RStudio](http://www.rstudio.com/ide/) to interface with R running on your linux instance.  R and RStudio are also available for Mac and PC computers.
@@ -13,7 +18,7 @@ If you want to use R, Bioconductor, and Rstudio on your own computer you can do 
 
 ## Install curl
 
-We will be using a tutorial in R that relies on the Linux curl libraries.  Please open the terminal and type:
+We will be using a tutorial in R that relies on the Linux curl libraries.  Please open a Linux terminal and type:
 
     sudo apt-get install curl libcurl4-openssl-dev
     
@@ -21,11 +26,24 @@ Then type "Y" when prompted
     
 (Not needed on Macintosh.  Unknown on PCs)
 
+## Install latex
+
+We want the ability to create PDFreports from within RStudio.  This requires the installation of `latex`.  In your Linux terminal type""
+
+  sudo apt-get install texlive-latex-extra texlive-fonts-recommended  
+  
+Then type "Y" when prompted
+
+(Not needed on Macintosh.  Unknwon on PCs)
+  
+This will take a while (5-10 minutes) to complete.  You can continue with the swirl tutorial below while latex is installing.
+
 ## Introduction to R
 Click on the Rstudio Icon ![Rstudio icon](images/Rstudio_logo.png) at the bottom of your screen.
 You will see a 3 or 4-paned window appear.  
 
 The lower left panel is the R console, where you can directly type commands into R.  More about the other panes later.
+
 ### The swirl tutorial
 
 We will start with an interactive tutorial called [swirl](http://swirlstats.com/).  The first step is to install swirl.  This only needs to be done once per computer.
@@ -114,7 +132,7 @@ As an alternative file type you can use an R-flavored version of Markdown, [RMar
 
 Lets try it.
 
-Start a new RMarkdown document.  Choose "File > New File > RMarkdown" or click on the new file icon and choose RMarkdown.  From the pop-up menu you can enter a title (Maybe "Intro to R") and your name as author name.  Leave the type as "document" and the output as "html".  (_Optional_: If you want the ability to create PDFs from Rmarkdown then in the terminal type `sudo apt-get install texlive-latex-extra texlive-fonts-recommended`.  Be prepared to wait for a bit while the programs install)
+Start a new RMarkdown document.  Choose "File > New File > RMarkdown" or click on the new file icon and choose RMarkdown.  From the pop-up menu you can enter a title (Maybe "Intro to R") and your name as author name.  Leave the type as "document" and the output as "html".
 
 A new document will open with some template information in it.
 
@@ -134,18 +152,23 @@ print("Hello World")
 
 You can still execute R-code lines one at a time with `Ctrl-Enter` to check your code.  But when you are ready to format it you can click "Knit HTML"
 
+If you want to produce a PDF instead, click the down arrow next to "Knit HTML" and choose "Knit PDF"instead.  __For R assignments please turn in your work as a .Rmd AND a .html AND a .pdf file__.  Try making a PDF now.
+
+You can automatically create a new code chunk in Rstudio by typing "Ctrl-Alt-I" or choosing "New Chunk" from the "Chunks" menu (upper right hand side of the text-editor window)
+
 Lets review what we know about R Markdown.
 
 * R Markdown is very similar to markdown
-* To denote R code, start the code block with ```{r sometitle} and then end it with ```
+* To denote R code, start the code block with ```{r SomeTitle} and then end it with ```
 * Anything outside of the code block is formatted using normal Markdown rules.
+* R studio has a built in rendering engine that will produce html or PDF files.
 
 A handy [cheatsheet](http://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf) and [reference guide](http://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf) are available and go into many more options than I have covered here.  You can also get a quick refresher by quicking on the "?" bext to the "Knit HTML" button.
 
 Now that you are done with the `swirl` tutorial you should **always** type your commands in the upper left window to create a script or R Markdown file to keep a record of what you have done.
 
 ## Functions: quick intro
-When I want to show you a command and its output, it will be shown in a white box like this:
+When I want to show you a command and its output, the command will be shown in grey and the output in a white box like this:
 ```{r hello_world2, echo=FALSE}
 print("Hello World")
 ```
@@ -157,7 +180,7 @@ What just happened?  In R you use *functions* to carry out tasks.  In the above 
 
 The exercises below will give you additional practice with the building blocks that you learned in `swirl()`
 
-Save your code and answers in your script file.
+Save your code and answers in your Rmd file.  Save, commit, and push your file changes to the github repository after you complete each exercise.
 
 Another function in R is `sum()`, which sums it arguments.
 
@@ -190,7 +213,6 @@ In the `swirl()` tutorial you learned how to use the brackets [] to extract elem
 
 **Exercise 4:** What is the sum of the 5th through 10th element of object b?  Provide your code and the sum. 
 
-
 **Exercise 5:** What is the sum of the 3rd, 8th, and 10th element of b?  For both of these exercises should only need to have "b" in your code once.
 
 ### 2 Dimensional Objects
@@ -211,9 +233,7 @@ Type `cbind(m,101:105)`.
 Now that you have some R fundamentals lets deploy them on the blast results from Ian's Section
 
 ### Data import
-The easiest way to bring data into R is in a .csv(comma-separated values) or .tsv (tab-separated values) files.  Today we already have the file in the correct format.  In the future if you need to import other data into R, both of these formats can be created in Excel (choose "Save As..." in Excel and select the correct format).  The relevant R import functions are `read.delim()` and `read.csv()`
-
-Using the Linux terminal, create a alias (symbolic link) to your fly vs. worm blast results from lab2.
+The easiest way to bring data into R is in a .csv (comma-separated values) or .tsv/.txt (tab-separated or space-separated values) files.  Today we already have the file in the correct format.  In the future if you need to import other data into R, both of these formats can be created in Excel (choose "Save As..." in Excel and select the correct format).  The relevant R import functions are `read.delim()` and `read.csv()`
 
 If you no longer have the file you can download it from [the course website](http://jnmaloof.github.io/BIS180L_web/data/fly2worm.blastout).
 
@@ -267,21 +287,35 @@ Using what you learned from `swirl()` answer the following questions.  Show your
 **Exercise 8**:
 * How many hits have an e-value of 0?  
 * How many have hits have a percent identity > 50?
-* Recalculate the above values but in percentage rather than absolute values.
+* Recalculate the above values but in percentage of hits rather than absolute values.
 * How many hits have an e-value of 0 and have a percent identity less than 50?
+* What is the minimum percent identity of the hits with an E-value equal to 0?
+
+```{r Ex8 Answers, echo=KEY, eval=KEY}
+sum(fly.worm$E_value==0) #892
+sum(fly.worm$percent_ident>50) #17561
+sum(fly.worm$E_value==0)/nrow(fly.worm)*100 # .43%
+sum(fly.worm$percent_ident>50)/nrow(fly.worm)*100 #8.6%
+sum(fly.worm$E_value==0 & fly.worm$percent_ident<50) #337
+min(fly.worm$percent_ident[fly.worm$E_value==0]) 34.19
+
+```
+
 
 **Excercise 9**:
-What is different about those hits with an e-value of 0 and  a percent identity less than 50, as compared to those that have an e-value of 0 but a percent identity greater than or equal to 50?
+* Are you surprised that sequences with relatively low percent identity can still have an E-value of 0?
+* State a hypothesis about what alignment properties might produce a zero E-value even when the percent identity is less than 50%.
+* Test your hypothesis  
 
 **Excercise 10**:
 It sometimes is useful to create a random subset of a large data set like the fly.worm results.  Create a new dataframe `fly.worm.small` that has 10,000 rows taken at random from the larger data set.
 
 ## Intro to plotting
-One of the strengths of R is its graphics.  We are going to take a break from the bioinformatics datasets and work on a tutorial made by last year's TA Ciera.  This dataset uses the "stereotypes.xls" file available on SmartSite.  
+One of the strengths of R is its graphics.  We are going to take a break from the bioinformatics datasets and work on a tutorial made by last year's TA Ciera.  This dataset uses the [stereotypes.csv file](http://cierareports.org/downloads/r_tutorial/stereotypes.csv) which you can download by clicking on link. 
 
-Ciera describes the dataset as follows: 799 individuals were surveyed from ages 18 to 26 about their weekly their consumption habits. They were further categorized based on their clothing and music choices and put into four stereotypes: nerds, hipsters, metalheads, and hippies. Consumption of coffee (per cup), computer usage (hourly), showers, beers(per 12oz), and tacos. Oh yeah, this dataset is fake.
+Ciera describes the dataset as follows: "799 individuals were surveyed from ages 18 to 26 about their weekly their consumption habits. They were further categorized based on their clothing and music choices and put into four stereotypes: nerds, hipsters, metalheads, and hippies. Consumption of coffee (per cup), computer usage (hourly), showers, beers(per 12oz), and tacos. Oh yeah, this dataset is fake."
 
-Before beginning, import the "stereotypes.xls" into an R object called "stereotypes" 
+Before beginning, import the "stereotypes.csv" into an R object called "stereotypes" 
 
 **Exercise 11**:
 Use the `summary()` and `head()` functions to examine the stereotypes object.
@@ -292,9 +326,9 @@ In `swirl` you learned how to subset objects using square brackets [].  An alter
 ### Plotting tutorial
 Now that you know about `subsetting`, it is time to follow the plotting tutorial.
 
-Please follow the visualization part of [Ciera's tutorial](http://cierareports.org/blog/2013/10/18/rCourse2013/index.html#section2).  You can stop when you get to "Basic Statistics".  Record the answers to your "activity breaks" in your R script.
+Please follow the visualization part of [Ciera's tutorial](http://cierareports.org/blog/2013/10/18/rCourse2013/index.html#section2).  You can stop when you get to "Basic Statistics".  Record the answers to the "activity break sections" in your R markdown file.
 
-Remember to save your R script.
+Remember to save and commit your Rmarkdown file.
 
 ### Visualization of the BLAST data set
 Now lets apply what we have learned to the BLAST data set.
@@ -304,5 +338,14 @@ Use ggplot to explore the relationship between score ("S") and alignment length(
 
 **Excercise 13**
 While you might expect that BLAST results with long alignments would have high scores, this is not always the case.  Form a hypothesis as to what might influence the relationship between alignment length and score.  Use ggplot to make a new plot to explore this hypothesis.  Does the plot support your hypothesis or not?  State your hypothesis, provide the code for your plot, and state your conclusion.
+
+** Turning in the assignment**
+
+* Knit your .Rmd file to produce a .html AND a .pdf file
+* add your .Rmd, .html, and .pdf files to the repository and commit the changes.
+* push the changes
+* create a new issue indicating that the assignment has been turned in.
+
+
   
 
