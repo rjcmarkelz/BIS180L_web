@@ -21,9 +21,9 @@ For a regular page use the following front matter:
 
 Place the .md file in the root directory for the site.  It will get added to the sidebar links.
 
-### Lab
+### Lab markdown page
 
-For a lab page use:
+For a lab _markdown_ page use:
 
     ---
     layout: lab
@@ -33,7 +33,11 @@ For a lab page use:
         - Linux
     ---
 
-Save it in the '_posts' folder with a name that follows a format of `yyyy-mm-dd-title.md'.  This will automatically get added to the list of lab pages
+Save it in the `_posts` folder with a name that follows a format of `yyyy-mm-dd-title.md'.  This will automatically get added to the list of lab pages
+
+### Lab Rmarkdown page
+
+For a lab _*R* markdown_ page things are a bit more complicated.  Use the same front matter as for a regular lab markdown page, but save it in the `_rmd` folder.  Then run jekyll_knit_BIS180L.R (found in `_rmd` directory), changing the paths as appropriate.  This will automatically create the `.md` file and place it in the posts directory with appropriate links to image files.  Non-R files that you want to include should be placed in the `images` directory.  R images generated during knitting will be automatically places in the `figure` directory and inlcuded.  __Important__: name your code chunks, especially those that generate figures!
 
 ### Post
 

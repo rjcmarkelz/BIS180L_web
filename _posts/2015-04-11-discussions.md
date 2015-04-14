@@ -20,12 +20,12 @@ This will be a significant component of the "presentation/participation" part of
 
 ## Schedule
 
-| Date   | Day | Topic               | Student 1     | Student 2      | Student 3    | Student 4     |
-|--------|-----|---------------------|---------------|----------------|--------------|---------------|
-| 14-Apr | Tue | BLAST and Alignment | Evan Adams    | Patrick Mahle  |              |               |
-| 17-Apr | Fri | R                   | Nabeel Sami   | Daniel Ahrens  | Eric Wetzel  | Heesun Cha    |
-| 24-Apr | Fri | GWAS                | Samuel Deck   | Scot Nicol     | Tyler Kent   |               |
-| 8-May  | Fri | Illumina            | Gurkern Sufi  | Matt Denney    | Andy Peng    | Pallavi Setty |
-| 15-May | Fri | RNAseq              | Derek Lin     | Edward Sung    | Kristina Bow |               |
-| 22-May | Fri | Networks            | Khoa Nguygen  | Anjali Kadaka  | Jenny Cade   |               |
-| 29-May | Fri | Metagenomics        | Marina Becker | Leslie Herrera | Kevin Hu     |               |
+| Date   | Day | Topic               | Student 1     | Student 2      | Student 3    | Student 4      | Student 5   |
+|--------|-----|---------------------|---------------|----------------|--------------|----------------|-------------|
+| 14-Apr | Tue | BLAST and Alignment | Evan Adams    | Patrick Mahle  |              |                |             |
+| 17-Apr | Fri | R                   | Nabeel Sami   | Daniel Ahrens  | Eric Wetzel  | Heesun Cha     |             |
+| 24-Apr | Fri | GWAS                | Samuel Deck   | Scot Nicol     | Tyler Kent   | Chad Ho        | Bobby Rider |
+| 8-May  | Fri | Illumina            | Gurkern Sufi  | Matt Denney    | Andy Peng    | Pallavi Setty  |             |
+| 15-May | Fri | RNAseq              | Derek Lin     | Edward Sung    | Kristina Bow | Calvin Mackey  | Ben Roa     |
+| 22-May | Fri | Networks            | Khoa Nguygen  | Anjali Kadaka  | Jenny Cade   |                |             |
+| 29-May | Fri | Metagenomics        | Marina Becker | Leslie Herrera | Kevin Hu     | Derek Conkle-G.|             |
