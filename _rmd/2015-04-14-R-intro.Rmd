@@ -58,7 +58,7 @@ Complete the `swirl()` tutorials before continuing
 
 ## More about RStudio
 
-You will record your work today in an R-script file.  Create a new file by clicking on the icon with a "+" symbol, upper left, or going to the file menu, or typing Ctrl-shift-N.  This will create a new panel, upper left, in your RStudio window.
+R commands are written in R-script (.R) or R-markdown (.Rmd) files.  More on those differences below. To start a new R script files you can choose "File > New > R-Script", or click on the new document icon a the upper left of the window, or type Ctrl-shift-N.  This will create a new panel, upper left, in your RStudio window.
 
 There are total of four panes in the RStudio window.
 
@@ -70,16 +70,27 @@ There are total of four panes in the RStudio window.
   * Plots
   * Files in your directory
   
+## Set the working directory
+
+We need to tell R what directory we want to work in.  
+* Click on the 3 dots "..." a the top, right-hand side of the file pane.  This will open up a system file browser.
+* Navigate to your BIS180L_Assignments repository folder.  
+* Click on "Create new Folder"
+* Create a new folder "Assignment 3"
+* Click on open to open the "Assignment 3" folder.
+* Back in Rstudio, click on the gear icon and "More" button at the top of the file tab.
+* Choose "Set As Working Directory".  Now any files that you save or read will by default be in this directory (for this RStudio session)
+  
 ## R files types
 
-### R script files
+### R script files  
 
-A typical R analysis or program would be written as an `R script` (file extension .R).  If you wanted to start a new R script files you can choose "File > New > R-Script" or click on the new document icon a the upper left of the window.  
+A typical R analysis or program would be written as an `R script` (file extension .R).  You have just started a blank R-script file above.
 
 R-script files contain R commands and comments.
 
-Lets start a new R-script file. We will begin the script file with some information about what it is.
-In this manual, code that you should type will shown in a grey block such as:
+Begin your script file with some information about what it is.
+In this manual, code that you should type will generally be shown in a grey block such as:
 
 ```{r ScriptHeader,tidy=FALSE}
 #Simple R Script for BIS180L
@@ -89,7 +100,7 @@ In this manual, code that you should type will shown in a grey block such as:
 ```
 Lines that begin with a pound sign `#` are comment lines and are ignored by R.  Type the text above into the script window in the upper left pane (replacing "Julin Maloof" with your name, changing the date info, and adding any additional information that you think is useful).
 
-Now lets enter some simple R code into your script:
+Now enter some simple R code into your script:
 ```{r hello_world, results='hide'}
 print("Hello World!")
 ```
@@ -99,15 +110,15 @@ If you wanted to save your script file then you could press `Ctrl-S` or choose "
 
 ### R Markdown files
 
-As an alternative you can use an R-flavored version of Markdown, [RMarkdown](http://rmarkdown.rstudio.com/), with the file extenstion ".Rmd".  Rmarkdown comes pre-installed in RStudio.  R markdown is particularly nice for authoring reports, either for your scienfitic colleagues, or in this case, for _turning in your BIS180L homework_.  We will use RMarkdown for turning in assignments for this class.
+As an alternative file type you can use an R-flavored version of Markdown, [RMarkdown](http://rmarkdown.rstudio.com/), with the file extenstion ".Rmd".  Rmarkdown comes pre-installed in RStudio.  R markdown is particularly nice for authoring reports, either for your scienfitic colleagues, or in this case, for _turning in your BIS180L homework_.  We will use RMarkdown for turning in assignments for this class.
 
 Lets try it.
 
-Start a new RMarkdown document.  Choose "File > New File > RMarkdown" or click on the new file icon and choose RMarkdown.  From the pop-up menu you can enter a title (Maybe "Intro to R") and your name as author name.  Leave the type as "document" and the output as "html".  (If you want the ability to create PDFs from Rmarkdown then in the terminal type `sudo apt-get install texlive-latex-extra texlive-fonts-recommended`.  Be prepared to wait for a bit)
+Start a new RMarkdown document.  Choose "File > New File > RMarkdown" or click on the new file icon and choose RMarkdown.  From the pop-up menu you can enter a title (Maybe "Intro to R") and your name as author name.  Leave the type as "document" and the output as "html".  (_Optional_: If you want the ability to create PDFs from Rmarkdown then in the terminal type `sudo apt-get install texlive-latex-extra texlive-fonts-recommended`.  Be prepared to wait for a bit while the programs install)
 
 A new document will open with some template information in it.
 
-The cool thing about R Markdown is that it embedded R code chunks are R runs when the document is being formatted (actually called being knitted).  The resulting R output is incorporated into the output.  **This is an ideal way to create reproducible reports and analyses**
+The cool thing about RMarkdown is that it embedded R code chunks are R runs when the document is being formatted (actually called being knitted).  The resulting R output is incorporated into the output.  **This is an ideal way to create reproducible reports and analyses**
 
 Try knitting the default document: click on the "Knit HTML" button near the top of your document.
 
