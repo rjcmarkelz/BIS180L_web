@@ -142,16 +142,18 @@ Try knitting the default document: click on the "Knit HTML" button near the top 
 
 You can now remove everything below the lower "---" (line 6) in the R markdown document and enter your own content.
 
-Lets re-create the "Hello World program above."
+Lets re-create the "Hello World" program above. I can't get the formatting correct for the text below, so enter it into your .Rmd file even though it isn't code formatted.
+
+__.Rmd code starts below this line__
 
 \## A silly R program
 This is the first program that Professor Maloof asked us to write in R
 
-```{r hello_world_md, echo=FALSE,comment=FALSE} 
-cat("```{r hello_world2}")
-cat("Hello World") 
-cat("```")
-```
+\`\`\`{r hello_world2}
+print("Hello World")
+\`\`\`
+
+__.Rmd code stops above this line__
 
 You can still execute R-code lines one at a time with `Ctrl-Enter` to check your code.  But when you are ready to format it you can click "Knit HTML"
 
@@ -172,7 +174,7 @@ Now that you are done with the `swirl` tutorial you should **always** type your 
 
 ## Functions: quick intro
 When I want to show you a command and its output, the command will be shown in grey and the output in a white box like this:
-```{r hello_world2, echo=FALSE}
+```{r hello_world1, echo=FALSE}
 print("Hello World")
 ```
 (but most often I will not show you the output)
