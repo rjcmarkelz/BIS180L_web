@@ -147,11 +147,11 @@ Lets re-create the "Hello World program above."
 \## A silly R program
 This is the first program that Professor Maloof asked us to write in R
 
-\```{r hello_world2} 
-
-print("Hello World") 
-
-\```
+```{r hello_world_md, echo=FALSE,comment=FALSE} 
+cat("```{r hello_world2}")
+cat("Hello World") 
+cat("```")
+```
 
 You can still execute R-code lines one at a time with `Ctrl-Enter` to check your code.  But when you are ready to format it you can click "Knit HTML"
 
@@ -162,7 +162,7 @@ You can automatically create a new code chunk in Rstudio by typing "Ctrl-Alt-I" 
 Lets review what we know about R Markdown.
 
 * R Markdown is very similar to markdown
-* To denote R code, start the code block with ```{r SomeTitle} and then end it with ```
+* To denote R code, start the code block with \`\`\`{r SomeTitle} and then end it with \`\`\`
 * Anything outside of the code block is formatted using normal Markdown rules.
 * R studio has a built in rendering engine that will produce html or PDF files.
 
