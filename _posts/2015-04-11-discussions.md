@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Discussions and Discussion Leaders
+title: Discussions
 ---
 
 In lieu of formal student presentations I have decided that the most helpful thing is to have weekly __discussion leaders__.  The idea is to discuss aspects of the lab assignment that were interesting, confusing, or hard.  The discussion leaders will facilitate the discussion but the class should participate in the discussion.  The discussion will take place before the due date so that you can updated your assignments with insights gained from the discussion.
