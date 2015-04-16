@@ -1,7 +1,9 @@
 ---
 layout: lab
 title: Introduction to git
-hidden: true    <!-- To prevent post from being displayed as regular blog post -->
+hidden: true   
+tags:
+- Git
 ---
 
 ## Git: reproducibility and collaboration
