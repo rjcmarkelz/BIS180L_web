@@ -2,7 +2,7 @@
 title: "Introduction to R"
 layout: lab
 tags: R
-hidden: yes
+hidden: true
 ---
 
 ```{r prelminaries, echo=FALSE}
