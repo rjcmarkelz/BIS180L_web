@@ -7,11 +7,16 @@ tags:
 hidden: true
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache=TRUE)
+```
+
 ## Getting Started
-* Create a new directory for today's lab "SNP_GWAS_Assignment".
-* Download the file [RiceSNPData.zip]({{site.baseurl}}/data/RiceSNPData.zip), and place the files in the folder that you just created.
+* I have created a directory in your `BIS180L_Assignments` repository called `Assignment_4` and have placed an `Assignment_4.Rmd` template there.  
+* Pull your repository to obtain these changes.
+* Download the file [RiceSNPData.zip]({{site.baseurl}}/data/RiceSNPData.zip), unzip it, and place the files into the `Assigment_4` directory.
 * Start RStudio.  
-* Set the working directory to the directory that you created for today's lab.  You can set the working directory by any of the following 3 methods:
+* Set the working directory to the `Assignment_4` directory.  You can set the working directory by any of the following 3 methods:
     * Using the `setwd()` command 
     * Choosing "Set working directory" from the "Session" pull-down menu
     * Click on the "Files" tab in the lower right-hand pane, navigate to the folder, then choose "Set working directory" from the "More" menu in the lower right hand pane.
@@ -20,7 +25,7 @@ hidden: true
 We will start by learning a few new functions.
 
 ### Merging data
-Often we will have data in two or more spreadsheets that pertain to the same subjects.  They data may not be in the same order, and not all of the subjects may be represented in all spreadsheets. We can use the `merge()` function to help bring them together.  Lets start with some made-up data for practice.  __Adjust the paths below as needed for your setup__
+Often we will have data in two or more spreadsheets that pertain to the same subjects.  They data may not be in the same order, and not all of the subjects may be represented in all spreadsheets. We can use the `merge()` function to help bring them together.  Lets start with some made-up data for practice.  __Adjust the paths below as needed for your setup (probably by removing `../data/` from each path)__
 ```{r merge1}
 fruit.size <- read.csv("../data/fruit_size.csv")
 fruit.color <- read.csv("../data/fruit_color.csv")
@@ -33,11 +38,13 @@ fruit.color.shape <- merge(fruit.color,fruit.shape,by="fruit")
 fruit.color.shape
 ```
 
-**EXERCISE 1:** What does "by" do? In the command above (hint: look at the help page for `merge()`)
+**EXERCISE 1:** 
 
-**EXERCISE 2:** Why are there only seven rows in the merged data set even though fruit.shape had nine?  Read the help page for `merge()` to figure out how to keep all of the data in the original fruit.shape data sheet.
+**a.** What does "by" do? In the command above (hint: look at the help page for `merge()`)
 
-**EXERCISE 3:** merge fruit.size with fruit.color.shape, keeping all of the rows from each original sheet.  Place the merged dataframe in `fruit.all`.  Note that the column that you want to merge on for fruit size has a different name.  Read help on `merge()` to figure out how to deal with this.
+**b.** Why are there only seven rows in the merged data set even though fruit.shape had nine?  Read the help page for `merge()` to figure out how to keep all of the data in the original fruit.shape data sheet.
+
+**c.** Merge fruit.size with fruit.color.shape, keeping all of the rows from each original sheet.  Place the merged dataframe in `fruit.all`.  Note that the column that you want to merge on for fruit size has a different name.  Read help on `merge()` to figure out how to deal with this.  Provide the code that you used as your answer to this exercise.
 
 ```{r reshape_prep,echo=FALSE,results='hide'}
 fruit.color.shape <- merge(fruit.color,fruit.shape,by="fruit",all=T)
@@ -190,7 +197,7 @@ The file "RiceDiversity.44K.MSU6.Phenotypes.csv" contains information about the 
 
 **EXERCISE 8:** Use the `read.csv()` `head()` and `summary()` functions that you learned earlier to import and look at this file.  Import the file into an object called "data.pheno".  In this case you do no need to limit yourself to the first 20 columns, so do not include [,1:20] in your arguments for head and summary.
 ```{r read_pheno, echo=FALSE, results='hide', eval=FALSE}
-data.pheno <- read.csv("RiceDiversity.44K.MSU6.Phenotypes.csv",row.names=1)
+data.pheno <- read.csv("../data/RiceDiversity.44K.MSU6.Phenotypes.csv",row.names=1)
 head(data.pheno)
 summary(data.pheno)
 ```
@@ -230,7 +237,7 @@ From the MDS plot it looks like there is structure in our population.  But how d
 First we have to convert our genotypes to the form that PSMix expects.  PSMix wants a separate row for each allele (two rows for each variety).  A couple of the commands below are a bit complex.  I will explain them in lab after this has been run.
 
 ```{r convert_PSMix, results='hide',eval=FALSE}
-#Convert to character matrix.  The apply function applies a function (in this case as.character) either to every column or every row in the data.
+#Convert to character matrix.  The apply function applies a function (in this case as.character()) either to every column or every row in the data.
 data.geno.2500.c <- apply(data.geno.2500,2,as.character)
 
 #Create a new Matrix to hold reformatted data
@@ -254,21 +261,24 @@ load("ps4.2500.RData")
 #if you prefer, uncomment the lines below to run on your own.
 #run on K=4 popultions and 2500 markers; may take 15-30 minutes
 #system.time(ps4 <- PSMix(K=4,data.geno.2500.ps,eps=1e-05,verbose=T))
-#save(ps4,file="ps4.2500.RData")
+#save(ps4,file="../data/ps4.2500.RData")
 
 #2500 markers K = 5 > 1 hour run time
 #system.time(ps5 <- PSMix(K=5,data.geno.2500.ps,eps=1e-05,verbose=T))
-#save(ps5,file="ps5.2500.RData")
+#save(ps5,file="../data/ps5.2500.RData")
 ```
 
-Now examine the output
+Now examine the output.
 ```{r PSMix_out,results='hide',eval=FALSE}
 names(ps4) #shows us elements within ps4
-#AmPr is the proportion of the genome that came from each ancestral population
 head(ps4$AmPr) 
 round(head(ps4$AmPr),3) #round to 3 decimal places to make it easier to see
-#Genomes with substantial contributions from two ancestral genomes are said to be admixed
-#AmID assigns each individual to one of the ancestral populations
+```
+In the AmPr table, each row is an individual and each column represents one of the hypothesized populations.  
+Genomes with substantial contributions from two ancestral genomes are said to be admixed
+
+The second component, AmID, shows an assigment of each individual to a single ancestral population.  Of course this can be somewhat problematic for heaviliy admixed individuals.
+```{r PSMix_out2,results='hide',eval=FALSE}
 head(ps4$AmId)
 ```
 
@@ -289,9 +299,7 @@ colnames(ps4.df) <- c(paste("pop",1:(ncol(ps4.df)-1),sep=""),"popID")
 head(ps4.df) #look at the new data frame
 ```
 
-For plotting it will be helpful to order the samples based on population identity and composition.  First we calculate the largest proportion of the genome from a single ancestral population for each individual.  This is done using `apply()`, which *applies* a function across every row or column of a data frame.  
-
-The first argument to apply specifies the matrix or data frame to work on; the second is the dimension to apply (1 = rows, 2 = columns); the third is the function to apply.  So below, we find the maximum contribution that any single ancestral genome is predicted to have been made for each rice variety.  The larger this number, the less admixture.
+For plotting it will be helpful to order the samples based on population identity and composition.  First we calculate the largest proportion of the genome from a single ancestral population for each individual.  This is done using `apply()`, which *applies* a function across every row or column of a data frame.  You were introduced to this function earlier in the lab.
 
 ```{r ps_reformat2,results='hide',eval=FALSE}
 maxGenome <- apply(ps4$AmPr,1,max) 
