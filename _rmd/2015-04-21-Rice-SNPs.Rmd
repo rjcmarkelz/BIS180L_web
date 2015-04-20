@@ -12,7 +12,7 @@ knitr::opts_chunk$set(cache=TRUE)
 ```
 
 ## Getting Started
-* I have created a directory in your `BIS180L_Assignments` repository called `Assignment_4` and have placed an `Assignment_4.Rmd` template there.  
+* I have created a directory in your `BIS180L_Assignments` repository called `Assignment_4` and have placed an `Assignment_4_worksheet.Rmd` template there.  
 * Pull your repository to obtain these changes.
 * Download the file [RiceSNPData.zip]({{site.baseurl}}/data/RiceSNPData.zip), unzip it, and place the files into the `Assigment_4` directory.
 * Start RStudio.  
@@ -20,6 +20,13 @@ knitr::opts_chunk$set(cache=TRUE)
     * Using the `setwd()` command 
     * Choosing "Set working directory" from the "Session" pull-down menu
     * Click on the "Files" tab in the lower right-hand pane, navigate to the folder, then choose "Set working directory" from the "More" menu in the lower right hand pane.
+* Open the `Assignment_4_worksheet.Rmd` file and use that for your answers 
+    
+## In this lab we split questions into two types
+
+1. __Practice__.  These are important for you to do to get experience with new functions and concepts but will not be graded.  You can include them in your .Rmd if you want to.
+
+2. __Exercise__.  These answers to these questions will be turned in for homework and will be graded.
     
 ## some new functions
 We will start by learning a few new functions.
@@ -38,7 +45,7 @@ fruit.color.shape <- merge(fruit.color,fruit.shape,by="fruit")
 fruit.color.shape
 ```
 
-**EXERCISE 1:** 
+**PRACTICE 1:** 
 
 **a.** What does "by" do? In the command above (hint: look at the help page for `merge()`)
 
@@ -68,12 +75,12 @@ order(fruit.shape$fruit)
 #thus we can use the [] brackets to re-order things correctly.  this allows us to reorder a whole data.frame
 
 ```
-**EXERCISE 4:** reorder fruit.all so that the whole data.frame is sorted by fruit shape.  Your output should look like:
+**PRACTICE 2:** reorder fruit.all so that the whole data.frame is sorted by fruit shape.  Include the code.  Your output should look like:
 ```{r echo=FALSE}
 fruit.all[order(fruit.all$shape),]
 ```
 
-**EXERCISE 5:** reorder fruit.all so that the whole data.frame is sorted by fruit size, then by fruit shape. (hint: look at help for order)  Your output should look like:
+**PRACTICE 3:** reorder fruit.all so that the whole data.frame is sorted by fruit size, then by fruit shape. Include the code.  (hint: look at help for order)  Your output should look like:
 ```{r echo=FALSE}
 fruit.all[order(fruit.all$size,fruit.all$shape),]
 ```
@@ -108,11 +115,11 @@ m
 apply(m,1,min) # find the minimum value of each row
 ```
 
-**EXERCISE 6:** find the mean of each column of m
+**PRACTICE 4:** find the mean of each column of m
 
 ## Lets get started with the real data
 ### Data Import
-You learned how to import data last week using `read.csv()`.  Today we will provide two additional arguments to that function:
+You learned how to import data last week using `read.csv()`.  Note that read.csv can read in a .gzipped file directly.  Today we will provide two additional arguments to read.csv function:
 ```{r import_geno, results='hide', eval=TRUE}
 data.geno <- read.csv("../data/Rice_44K_genotypes.csv.gz",
                       row.names=1, #this tells R to use the first column as row names
@@ -121,7 +128,7 @@ data.geno <- read.csv("../data/Rice_44K_genotypes.csv.gz",
 #Takes a minute or two to load
 ```
 
-Use `dim()` to determine the numbers of rows and columns.  (You can also look at the info in the right-hand pane).  There are 413 rows and 36,901 columns.  Generally I recommend looking at files after they have been read in with the `head()` and `summary()` functions but here we must limit ourselve to looking at a subset of what we read in.
+Use `dim()` to determine the numbers of rows and columns.  (You can also look at the info in the right-hand pane).  There are 413 rows and 36,901 columns.  Generally I recommend looking at files after they have been read in with the `head()` and `summary()` functions but here we must limit ourselves to looking at a subset of what we read in.
 ```{r summary, eval=FALSE}
 head(data.geno[,1:20]) #first six rows of first 20 columns
 summary(data.geno[,1:20]) #summarizes the first 20 columns
@@ -131,7 +138,7 @@ In this file each row represents a different rice variety and each column a diff
 ### An MDS Plot.  
 Multi-Dimensional Scaling (MDS) plots can be used to display the genetic diversity in a 2D space.  The full 36,901 SNPs take too long to run for this class so we will subset the data.  
 
-Using the techniques that you learned last week, create a data subset that contains a random sample of 2500 SNPs from the full dataset.  Place the smaller data set in an object called `data.geno.2500`
+Using the techniques that you learned last week, create a data subset that contains a random sample of 2500 SNPs from the full data set.  Place the smaller data set in an object called `data.geno.2500`
 
 Check the dimensions of your subset.  If you don't get the output below, you did something wrong:
 
@@ -164,7 +171,7 @@ library(ggplot2) #helpful plotting routines
 qplot(x=V1,y=V2,data=geno.mds,geom="point")
 ```
 
-**EXERCISE 7:** Is there any evidence for populations structure (different sub populations)?  If so, how many sub populations do you think the MDS plot reveals?  What do you make of the individuals that are between the major groups?  You may want to include this figure and a discussion of it in your lab report.
+**EXERCISE 1:** Is there any evidence for populations structure (different sub populations)?  If so, how many sub populations do you think the MDS plot reveals?  What do you make of the individuals that are between the major groups?
 
 ```{r PCA_Alternative, eval=FALSE,echo=FALSE}
 ##Alternative method for PCA
@@ -195,19 +202,20 @@ qplot(x=PC1,y=PC3,color=Region,data=pheno.PC) + scale_color_brewer(type="div")
 
 The file "RiceDiversity.44K.MSU6.Phenotypes.csv" contains information about the country of origin and phenotypes of most of these varieties.  
 
-**EXERCISE 8:** Use the `read.csv()` `head()` and `summary()` functions that you learned earlier to import and look at this file.  Import the file into an object called "data.pheno".  In this case you do no need to limit yourself to the first 20 columns, so do not include [,1:20] in your arguments for head and summary.
+**EXERCISE 2:** 
+* Use the `read.csv()` `head()` and `summary()` functions that you learned earlier to import and look at this file.  Import the file into an object called "data.pheno".
+* Use merge() to merge the MDS scaled genotype data with the phenotype data.  Here the column that we are merging on is the "row.name" column.  So you can use `by="row.names"` or `by=1` in your call to merge.  Use summary and head to look at the new object and make sure that it is as you expect.
+* Include your code in the .Rmd
+
 ```{r read_pheno, echo=FALSE, results='hide', eval=FALSE}
 data.pheno <- read.csv("../data/RiceDiversity.44K.MSU6.Phenotypes.csv",row.names=1)
 head(data.pheno)
 summary(data.pheno)
 ```
 
-**EXERCISE 9:** Use merge() to merge the MDS scaled genotype data with the phenotype data.  Here the column that we are merging on is the "row.name" column.  So you can use `by="row.names"` or `by=1` in your call to merge.  Use summary and head to look at the new object and make sure that it is as you expect.
-
 ```{r merge, results='hide', eval=FALSE, echo=FALSE}
 data.pheno.mds <- merge(geno.mds,data.pheno,by="row.names",all=T)
 ```
-
 
 ```{r check_merge, results='hide',echo=FALSE, eval=FALSE}
 summary(data.pheno.mds)
@@ -215,13 +223,13 @@ head(data.pheno.mds)
 ```
 We can now color points on our plot by characteristics in this data set.  
 
-**EXERCISE 10:** Prepare three different plots to explore if subgroups vary by 1) Amylose content; 2) Pericarp color; 3) Region.  Do any of these seem to be associated with the different popilation groups? You may want to include a discussion of this in your lab report
+**EXERCISE 3:** Prepare three different plots to explore if subgroups vary by 1) Amylose content; 2) Pericarp color; 3) Region.  Do any of these seem to be associated with the different population groups? Briefly discuss.
 
 *Hint 1* use `color=` argument to qplot or ggplot to color the point by the different traits
 
 *Hint 2* use `size=I(3)` as an argument to increase the point size (you can play with different values)
 
-*Hint 3* when plotting the Region data, the colors will be easier to interpret if you include the folowing at the end of the line with your qplot command: ` + scale_color_brewer(type="div")` This specifies that a diverging set of colors is used.  (Try plotting with and without this).
+*Hint 3* when plotting the Region data, the colors will be easier to interpret if you include the following at the end of the line with your qplot command: ` + scale_color_brewer(type="div")` This specifies that a diverging set of colors is used.  (Try plotting with and without this).
 
 
 ```{r MDS_color, results='hide', eval=FALSE,echo=FALSE}
@@ -249,7 +257,8 @@ for (i in 1:nrow(data.geno.2500.c)) {
   data.geno.2500.ps[(i-1)*2+2,] <- substr(data.geno.2500.c[i,],2,2)
   }
 ```
-Now we can run PSMix.  PSMix will determine the proportion of each individual's genome that came from one of K ancesteral populations.  This can take a long time to run, so you can just import the results of my previous run of the analysis if you prefer
+Now we can run PSMix.  PSMix will determine the proportion of each individual's genome that came from one of K ancestral populations.  This can take a long time to run, so you can just import the results of my previous run of the analysis if you prefer.  This files should be in the zip that you downloaded.
+
 
 ```{r PSMix5,results='hide',eval=FALSE}
 install.packages("PSMix") #only needs to be done once per machine
@@ -277,7 +286,7 @@ round(head(ps4$AmPr),3) #round to 3 decimal places to make it easier to see
 In the AmPr table, each row is an individual and each column represents one of the hypothesized populations.  
 Genomes with substantial contributions from two ancestral genomes are said to be admixed
 
-The second component, AmID, shows an assigment of each individual to a single ancestral population.  Of course this can be somewhat problematic for heaviliy admixed individuals.
+The second component, AmID, shows an assignment of each individual to a single ancestral population.  Of course this can be somewhat problematic for heavily admixed individuals.
 ```{r PSMix_out2,results='hide',eval=FALSE}
 head(ps4$AmId)
 ```
@@ -338,7 +347,7 @@ geno.mds <- cbind(geno.mds,ps4$AmPr)
 head(geno.mds)
 ```
 
-**EXERCISE 11:** Replot the MDS data, but include the population assignment in an informative way.  How do the populations assignments relate to the MDS plot?
+**EXERCISE 4:** Re plot the MDS data, but include the population assignment in an informative way.  How do the populations assignments relate to the MDS plot?
 
 ```{r eval=FALSE,echo=FALSE}
 qplot(x=V1,y=V2,color=popID,data=geno.mds,geom="point",size=I(3)) + scale_color_brewer(type="div")
