@@ -20,3 +20,4 @@ title: Readings and Resources
 
 ## April 21
 [Rice Diversity](../docs/Kovach2007_Trends Genet.pdf)
+
