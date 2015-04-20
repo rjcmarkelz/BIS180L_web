@@ -1,0 +1,32 @@
+---
+title: "Assignment 4"
+output: html_document
+---
+
+Student Name:
+Student ID:
+
+## Assignment 4: Rice SNPs and GWAS
+
+**EXERCISE 1:** Is there any evidence for populations structure (different sub populations)?  If so, how many sub populations do you think the MDS plot reveals?  What do you make of the individuals that are between the major groups?
+
+
+
+**EXERCISE 2:** 
+* Use the `read.csv()` `head()` and `summary()` functions that you learned earlier to import and look at this file.  Import the file into an object called "data.pheno".
+* Use merge() to merge the MDS scaled genotype data with the phenotype data.  Here the column that we are merging on is the "row.name" column.  So you can use `by="row.names"` or `by=1` in your call to merge.  Use summary and head to look at the new object and make sure that it is as you expect.
+* Include your code in the .Rmd
+
+
+
+**EXERCISE 3:** Prepare three different plots to explore if subgroups vary by 1) Amylose content; 2) Pericarp color; 3) Region.  Do any of these seem to be associated with the different population groups? Briefly discuss.
+
+*Hint 1* use `color=` argument to qplot or ggplot to color the point by the different traits
+
+*Hint 2* use `size=I(3)` as an argument to increase the point size (you can play with different values)
+
+*Hint 3* when plotting the Region data, the colors will be easier to interpret if you include the following at the end of the line with your qplot command: ` + scale_color_brewer(type="div")` This specifies that a diverging set of colors is used.  (Try plotting with and without this).
+
+
+
+**EXERCISE 4:** Re plot the MDS data, but include the population assignment in an informative way.  How do the populations assignments relate to the MDS plot?
