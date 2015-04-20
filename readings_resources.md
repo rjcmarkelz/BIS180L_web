@@ -15,5 +15,8 @@ title: Readings and Resources
 [Sequence Analysis Primer](../docs/SequenceAnalysisPrimer.pdf)
 
 ## April 09
-[Orthlogs and Paralogs](http://www.sciencedirect.com/science/article/pii/S0168952500020059)
+[Orthlogs and Paralogs](http://www.sciencedirect.com/science/article/pii/S0168952500020059)  
 [Kristen's cool paper](http://pubs.acs.org/doi/abs/10.1021/pr501243m)
+
+## April 21
+[Rice Diversity](../docs/Kovach2007_Trends Genet.pdf)

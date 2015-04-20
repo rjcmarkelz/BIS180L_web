@@ -261,7 +261,8 @@ Now we can run PSMix.  PSMix will determine the proportion of each individual's 
 
 
 ```{r PSMix5,results='hide',eval=FALSE}
-install.packages("PSMix") #only needs to be done once per machine
+install.packages("devtools") #devtools allows installation of packages directly from github; only needs to be done once
+devtools::install_github(repo = "cran/PSMix") #only needs to be done once 
 library(PSMix)
 
 #load in my pre-run data
