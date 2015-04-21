@@ -1,0 +1,50 @@
+---
+title: "Assignment 4"
+output: html_document
+---
+
+Student Name:
+Student ID:
+
+## Assignment 4: Rice SNPs and GWAS
+
+This should be a knittable .Rmd file.  Include this file, a .pdf and a .html when you turn in the assignment.
+
+**EXERCISE 1:** Is there any evidence for populations structure (different sub populations)?  If so, how many sub populations do you think the MDS plot reveals?  What do you make of the individuals that are between the major groups?
+
+
+**EXERCISE 2:** 
+
+* Use the `read.csv()` `head()` and `summary()` functions that you learned earlier to import and look at this file.  Import the file into an object called "data.pheno".
+* Use merge() to merge the MDS scaled genotype data with the phenotype data.  Here the column that we are merging on is the "row.name" column.  So you can use `by="row.names"` or `by=1` in your call to merge.  Use summary and head to look at the new object and make sure that it is as you expect.
+* Include your code in the .Rmd
+
+
+**EXERCISE 3:** Prepare three different plots to explore if subgroups vary by 1) Amylose content; 2) Pericarp color; 3) Region.  Do any of these seem to be associated with the different population groups? Briefly discuss.
+
+*Hint 1* use `color=` argument to qplot or ggplot to color the point by the different traits  
+*Hint 2* use `size=I(3)` as an argument to increase the point size (you can play with different values)  
+*Hint 3* when plotting the Region data, the colors will be easier to interpret if you include the following at the end of the line with your qplot command: ` + scale_color_brewer(type="div")` This specifies that a diverging set of colors is used.  (Try plotting with and without this).
+
+**EXERCISE 4:** Re plot the MDS data, but include the population assignment in an informative way.  How do the populations assignments relate to the MDS plot?
+
+**Exercise 5:** 
+
+* Plot your chosen trait data
+  * as a **single histogram** for all of the data
+  * as **separate histograms** for each of the 4 population assignments made by PSMix
+  * as a **boxplot** separated by population. 
+* Based on these histograms do you think that your trait varies by population? 
+* **BONUS** Try using the "violin" geom.  What is this showing?
+  
+Hint: you will need to use a different binwidth (or don't specify it at all and let R choose the default).  Hint: the relevant column names for population are "popID".  
+
+**Exercise 6:** 
+
+* Obtain the mean of your trait for each of the 4 PSMix populations.
+* Perform an ANOVA for your trait to test if it varies significantly by population.  Show your code, the ANOVA output, and provide an interpretation.
+* Discuss: Do your results present a problem for GWAS?
+
+**Exercise 7:** Describe and discuss the differences in the analysis with and without population structure correction.  Which do you think is the better one to follow-up on, and why?
+
+**Exercise 8:** Look for genes close to your SNP at the [rice genome browser](http://rice.plantbiology.msu.edu/cgi-bin/gbrowse/rice/).  Pick a signficant SNP from your analysus and enter its chromosome and position in the search box.  The browser wants you to enter a start and stop position, so for example, you should enter "Chr3:30449857..30449857" and then choose "show 20kb" from the pulldown menu on the left hand side.  Report the SNP you chose and the three closest genes.  These are candidate genes for determining the phenotype of your trait of interest in the rice population.  Briefly discuss these genes as possible candidates for the GWAS peak.
