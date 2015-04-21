@@ -354,4 +354,9 @@ head(geno.mds)
 qplot(x=V1,y=V2,color=popID,data=geno.mds,geom="point",size=I(3)) + scale_color_brewer(type="div")
 ```
 
+We will use some of the objects that you have created today in Thursday's lab, so lets save them in an .Rdata file for easy loading on Thursday
+
+```{r eval=FALSE}
+save(data.pheno,geno.mds,file="data_from_SNP_lab.Rdata")
+```
 
