@@ -7,18 +7,19 @@ tags:
 hidden: true
 ---
 
+Today we will analzye variation in the phenotypic data.  We specifically want to know if various phenotypes vary by region or population, and whether we can identify SNPs that are associated with variation in a trait of interest.
+
 ### Goals
 
 1. Examine and summarize the root Aluminum tolerance data
 2. Perform a GWAS for Aluminum tolerance
 3. Find candidate genes underlying a GWAS peak.
 
-
 ## Plotting the Amylose data
 
-We need to get the populations assignments from PSmix in the same data.frame as the MDS genotype assignments and the phenotypic data.  You may need to remake some of the object below by re-running your code from Tuesday's lab.
+We need to get the population assignments from PSmix in the same data frame as the MDS genotype assignments and the phenotypic data.  You may need to remake some of the objects below by re-running your code from Tuesday's lab.
 ```{r ,echo=F,results='hide'}
-load("data_from_day_2.RData")
+load("../data/data_from_SNP_lab.RData")
 ```
 
 
@@ -31,9 +32,9 @@ data.pheno.mds <- merge(geno.mds,data.pheno,by="row.names",all=T) #even if you a
 ```
 
 
-
 We can tell qplot to produce a histogram as follows:
 ```{r Amylose_hist,results='hide',eval=FALSE}
+library(ggplot2)
 qplot(x=Amylose.content,data=data.pheno.mds,geom="histogram")
 ```
 We can also easily produce separate histograms for each level of a factor.
