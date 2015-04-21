@@ -17,12 +17,16 @@ Today we will analzye variation in the phenotypic data.  We specifically want to
 
 ## Plotting the Amylose data
 
-We need to get the population assignments from PSmix in the same data frame as the MDS genotype assignments and the phenotypic data.  You may need to remake some of the objects below by re-running your code from Tuesday's lab.
+We need to get the population assignments from PSmix in the same data frame as the MDS genotype assignments and the phenotypic data.  You should have save this at the end of Tuesday's lab
 ```{r ,echo=F,results='hide'}
 load("../data/data_from_SNP_lab.RData")
 ```
 
+```{r ,eval = FALSE}
+load("data_from_SNP_lab.RData")
+```
 
+check it
 ```{r }
 head(geno.mds)
 
@@ -32,11 +36,13 @@ data.pheno.mds <- merge(geno.mds,data.pheno,by="row.names",all=T) #even if you a
 ```
 
 
-We can tell qplot to produce a histogram as follows:
+Lets examine the distribution of Amylose values.  We can tell qplot to produce a histogram as follows:
 ```{r Amylose_hist,results='hide',eval=FALSE}
 library(ggplot2)
 qplot(x=Amylose.content,data=data.pheno.mds,geom="histogram")
 ```
+
+It might be intersting to ask if the distributions look similar for different regions.
 We can also easily produce separate histograms for each level of a factor.
 Because this is getting to be a more complex plot we will use ggplot to build up the plot.  First we create a plot object, called pl, using the ggplot() function.  Then we add additional information to the plot.  the mapping=aes() argument tells R about the "aesthetics" of the plot, in other words which variable should be mapped to which aspect of the plot.
 ```{r Amylose_hist2,results='hide',eval=FALSE}
@@ -46,6 +52,8 @@ pl <- pl + facet_wrap(facets= ~ Region, ncol=3) # a separate plot ("facet") for 
 pl <- pl + ggtitle("Amylose Content") #add a title
 pl #display the plot
 ```
+We are a little sparse on data for this to be a great way to visualize the results.
+
 An alternative and useful way to display the data is to use a [boxplot](http://en.wikipedia.org/wiki/Box_plot). The horizontal line is the median and the box is the inter-quartile range (25th to 75th percentile).  See the link for more details.
 ```{r boxplot, eval=FALSE}
 qplot(x=Region,y=Amylose.content,geom="boxplot",data=data.pheno.mds)
@@ -65,7 +73,9 @@ If you choose Alu.Tol, The "Alu.Tol" column indicates the ratio of root growth  
 * Based on these histograms do you think that your trait varies by population? 
 * **BONUS** Try using the "violin" geom.  What is this showing?
   
-Hint: you will need to use a different binwidth (or don't specify it at all and let R choose the default).  Hint: the relevant column names for population are "popID".  
+*Hint:* you will need to use a different binwidth than I used with Amylose (or don't specify it at all and let R choose the default).
+
+*Hint:* the relevant column names for population are "popID".  
 ```{r Alu.hist,echo=FALSE,results='hide',eval=FALSE}
 qplot(x=Alu.Tol,data=data.pheno.mds,geom="histogram")
 pl <- ggplot(data=data.pheno.mds,aes(x=Alu.Tol)) #create the basic plot object
@@ -76,15 +86,17 @@ pl #display the plot
 qplot(x=popID,y=Alu.Tol,data=data.pheno.mds,geom="boxplot")
 qplot(x=popID,y=Alu.Tol,data=data.pheno.mds,geom="violin")
 ```
+
 These plots may make you want to calculate the mean for your trait. We can use the `mean()` function to obtain the mean of a column:
 ```{r mean,results='hide',eval=FALSE}
 mean(data.pheno.mds$Amylose.content,na.rm=T) #the na.rm argument tells R to ignore missing data coded by "NA"
 ```
+
 More interestingly we can use `tapply()` to apply a function to each subset of the data.  
 ```{r tapply,eval=FALSE}
 tapply(X=data.pheno.mds$Amylose.content,INDEX=data.pheno.mds$Region,FUN=min,na.rm=T)
 ```
-The first argument is the data we want to summarize, the second argument is how the data should be split, the third argument is the function we want to apply (min in this case) and the fourth argument are additional arguments to be passed to the function listed in the argument.
+The first argument to `tapply()` is the data we want to summarize, the second argument is how the data should be split, the third argument is the function we want to apply (`min` in this case) and the fourth argument are additional arguments to be passed to the function listed in the argument.
 
 For Amylose, there appear to be differences in the means between population groups.  We can ask if this is significant by performing an ANOVA.
 ```{r ANOVA,results='hide',eval=FALSE}
@@ -96,7 +108,7 @@ The very low p-value for Region indicates that amylose content varies significan
 **Exercise 6:** 
 * Obtain the mean of your trait for each of the 4 PSMix populations.
 * Perform an ANOVA for your trait to test if it varies significantly by population.  Show your code, the ANOVA output, and provide an interpretation.
-* Discuss: Do your results present a problem for GWAS?
+* Discuss: Do your results suggest a problem for GWAS?
 ```{r Ex6a,echo=FALSE,eval=FALSE}
 tapply(X=data.pheno.mds$Alu.Tol,INDEX=data.pheno.mds$popID,FUN=min,na.rm=T)
 ```
@@ -150,7 +162,9 @@ snpinfo3 <- snpinfo[snpinfo$chr==3,]
 #convert SNPinfo to a format that SNPassoc can use
 snps3 <- setupSNP(data.geno.pheno3,48:ncol(data.geno.pheno3),sort=T,info=snpinfo3,sep="")
 ```
-For the actual GWAS we will compare a model with and without correction for population structure.  The correction method that we use, including ancestral genome proportions as co-variates, is pretty rudimentary and in reality it would be better to use a more sophisticated model of genetic relatedness.  We use a co-dominant model of allelic affects (allowing each allele to act additively).
+For the actual GWAS we will compare a model with and without correction for population structure.  The correction method that we use, including ancestral genome proportions as co-variates, is a good first step.  However it is often better to include a Kinship matrix of genetic relatedness.  Since this tutorial was created an R package with state-of-the-art methods has been released.  The package is GAPIT [website](http://www.maizegenetics.net/#!gapit/cmkv) and [paper](http://bioinformatics.oxfordjournals.org/content/28/18/2397.long).  If you are going to do a serious GWAS you should probably checkout GAPIT.
+
+We use a co-dominant model of allelic affects (allowing each allele to act additively).  You can experiment with other models if you would like.
 
 Substitute your chosen trait for "Alu.Tol" below if you are not working on Aluminum Tolerance.
 
