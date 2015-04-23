@@ -139,7 +139,7 @@ snpinfo <- read.csv("snpInfo.csv",row.names=1)
 head(snpinfo) #note one column for chromosome and one for position (in base pairs)
 
 # you will need the data.geno file from the previous lab.  If you don't have it in your workspace, reload it
-data.geno <- read.csv("Rice_44K_genotypes.csv", row.names=1, na.strings=c("NA","00")) 
+data.geno <- read.csv("Rice_44K_genotypes.csv.gz", row.names=1, na.strings=c("NA","00")) 
 
 #next merge the genotype information with the phenotype and population info:
 head(data.pheno.mds) #note: need to get rownames assigned correctly again (they were lost after the merge)
