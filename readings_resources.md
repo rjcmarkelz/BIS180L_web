@@ -21,3 +21,9 @@ title: Readings and Resources
 ## April 21
 [Rice Diversity](../docs/Kovach2007_Trends Genet.pdf)
 
+## April 23
+[Wikipedia GWAS](http://en.wikipedia.org/wiki/Genome-wide_association_study)  
+[GWAS Q & A](../docs/Brookfield2010_BMC_Biol.pdf)  
+[Rice GWAS](../docs/Zhao2011_Nat Commun.pdf)
+
+

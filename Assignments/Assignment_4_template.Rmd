@@ -10,7 +10,7 @@ Student ID:
 
 This should be a knittable .Rmd file.  Include this file, a .pdf and a .html when you turn in the assignment.
 
-**EXERCISE 1:** Is there any evidence for populations structure (different sub populations)?  If so, how many sub populations do you think the MDS plot reveals?  What do you make of the individuals that are between the major groups?
+**EXERCISE 1:** Is there any evidence for populations structure (different sub populations)?  If so, how many sub populations do you think the MDS plot reveals?  What do you make of the individuals that are between the major groups? (Include your plot and code)
 
 
 **EXERCISE 2:** 
@@ -47,4 +47,4 @@ Hint: you will need to use a different binwidth (or don't specify it at all and 
 
 **Exercise 7:** Describe and discuss the differences in the analysis with and without population structure correction.  Which do you think is the better one to follow-up on, and why?
 
-**Exercise 8:** Look for genes close to your SNP at the [rice genome browser](http://rice.plantbiology.msu.edu/cgi-bin/gbrowse/rice/).  Pick a signficant SNP from your analysus and enter its chromosome and position in the search box.  The browser wants you to enter a start and stop position, so for example, you should enter "Chr3:30449857..30449857" and then choose "show 20kb" from the pulldown menu on the left hand side.  Report the SNP you chose and the three closest genes.  These are candidate genes for determining the phenotype of your trait of interest in the rice population.  Briefly discuss these genes as possible candidates for the GWAS peak.
+**Exercise 8:** Look for genes close to your SNP at the [rice genome browser](http://rice.plantbiology.msu.edu/cgi-bin/gbrowse/rice/).  Pick a signficant SNP from your analysus and enter its chromosome and position in the search box.  The browser wants you to enter a start and stop position, so for example, you should enter "Chr3:30449857..30449857" and then choose "show 20kb" from the pulldown menu on the left hand side.  Report the SNP you chose and the three closest genes.  These are candidate genes for determining the phenotype of your trait of interest in the rice population.  Briefly discuss these genes as possible candidates for the GWAS peak.  (Include a screenshot of the genome browser)
