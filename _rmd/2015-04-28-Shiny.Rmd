@@ -1,0 +1,18 @@
+---
+title: "Make a web app with Shiny"
+layout: lab
+tags:
+- R
+hidden: true
+output: html_document
+---
+
+Today we will learn how to make and deploy interactive web applications with [Shiny](http://shiny.rstudio.com/).  Shiny allows you to display your R analysis on the web to anyone.  For example, here is an application that I wrote to visualize a [Markov Chain simulation of genetic drift](http://symposium.plb.ucdavis.edu:3838/MarkovDrift/).  A student from last years BIS180L is now working in my lab and is working up a [visualizer for QTL data and gene expression](http://symposium.plb.ucdavis.edu:3838/QTL-Visualization/).  The Shiny website has plenty of [additional examples](http://shiny.rstudio.com/gallery/).
+
+The [tutorial at Rstudio](http://shiny.rstudio.com/tutorial/) is good but pretty involved.  I have tried to distill some of the prinicples below; if you like it and want more then feel free to do the [tutorial](http://shiny.rstudio.com/tutorial/) as well.
+
+
+
+## Going further
+
+You can also include Shiny apps [directly in your Rmarkdown files](http://rmarkdown.rstudio.com/authoring_shiny.html) to be rendered into html.  In some ways the syntax is even easier.  You can also include interactive graphs in slide presentations this way.
