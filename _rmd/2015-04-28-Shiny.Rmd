@@ -11,8 +11,30 @@ Today we will learn how to make and deploy interactive web applications with [Sh
 
 The [tutorial at Rstudio](http://shiny.rstudio.com/tutorial/) is good but pretty involved.  I have tried to distill some of the prinicples below; if you like it and want more then feel free to do the [tutorial](http://shiny.rstudio.com/tutorial/) as well.
 
+## Teams
+
+Today we will work in teams of three.  Each team will produce and deploy a Shiny app that will be collectively graded.
+
+| Student 1              | Student 2              | Student 3     |
+|------------------------|------------------------|---------------|
+| Tyler Kent             | Gurkern Sufi           | Chadwick Ho   |
+| Samuel Deck            | Ed Sung                | Nabeel Sami   |
+| Derek Conkle-Gutierrez | Maria I Chacon Sanchez | Kevin Hu      |
+| Anna Alekina           | Kristina Bow           | Robert Rider  |
+| Lewis Roa              | Jenny Cade             | Daniel Ahrens |
+| Matthew Denny          | Derek Lin              | Marina Becker |
+| Eric Wetzel            | Evan Adams             | Calvin Mackey |
+| Scot Nicol             | Patrick Mahle          | Anjali        |
+| Heesun Cha             | Khoa Nguyen            | Andy Peng     |
+| Leslie Herrera         | Pallavi Setty          |               |
+
+
+
+## Components of a Shiny App
+
+
 
 
 ## Going further
 
-You can also include Shiny apps [directly in your Rmarkdown files](http://rmarkdown.rstudio.com/authoring_shiny.html) to be rendered into html.  In some ways the syntax is even easier.  You can also include interactive graphs in slide presentations this way.
+You can also include Shiny apps [directly in your Rmarkdown files](http://rmarkdown.rstudio.com/authoring_shiny.html) to be rendered into html.  In some ways the syntax is even easier because you only need a single file.  You can also include interactive graphs in slide presentations this way.
