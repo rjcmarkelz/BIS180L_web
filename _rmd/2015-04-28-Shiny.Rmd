@@ -29,11 +29,15 @@ Today we will work in teams of three.  Each team will produce and deploy a Shiny
 | Leslie Herrera         | Pallavi Setty          |               |
 
 
-
 ## Components of a Shiny App
+A ShinyApp consists of two R scripts:
 
+## Scoring (our of 20 points)
 
-
+14 points for (reasonable) code, even if it doesn't run.  
++ 2 points for functional web app.  
++ 2 points for using two or more input types.  
++ 2 points for good annotation on the web page (a new user would understand what the app is about).  
 
 ## Going further
 
