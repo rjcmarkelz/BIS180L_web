@@ -15,24 +15,78 @@ The [tutorial at Rstudio](http://shiny.rstudio.com/tutorial/) is good but pretty
 
 Today we will work in teams of three.  Each team will produce and deploy a Shiny app that will be collectively graded.
 
-| Student 1              | Student 2              | Student 3     |
-|------------------------|------------------------|---------------|
-| Tyler Kent             | Gurkern Sufi           | Chadwick Ho   |
-| Samuel Deck            | Ed Sung                | Nabeel Sami   |
-| Derek Conkle-Gutierrez | Maria I Chacon Sanchez | Kevin Hu      |
-| Anna Alekina           | Kristina Bow           | Robert Rider  |
-| Lewis Roa              | Jenny Cade             | Daniel Ahrens |
-| Matthew Denny          | Derek Lin              | Marina Becker |
-| Eric Wetzel            | Evan Adams             | Calvin Mackey |
-| Scot Nicol             | Patrick Mahle          | Anjali        |
-| Heesun Cha             | Khoa Nguyen            | Andy Peng     |
-| Leslie Herrera         | Pallavi Setty          |               |
+| Student 1              | Student 2              | Student 3      | Repository                 |
+|------------------------|------------------------|----------------|----------------------------|
+| Tyler Kent             | Gurkern Sufi           | Chadwick Ho    | Shiny_Tyler.Sufi.Chad      |
+| Samuel Deck            | Ed Sung                | Nabeel Sami    | Shiny_Sam.Ed.Nabeel        |
+| Derek Conkle-Gutierrez | Maria I Chacon Sanchez | Kevin Hu       | Shiny_Derek.Maria.Kevin    |
+| Anna Alekina           | Kristina Bow           | Robert Rider   | Shiny_Anna.Kristina.Bobby  |
+| Lewis Roa              | Jenny Cade             | Daniel Ahrens  | Shiny_Lewis.Jenny.Daniel   |
+| Matthew Denny          | Derek Lin              | Marina Becker  | Shiny_Matthew.Derek.Marina |
+| Eric Wetzel            | Evan Adams             | Calvin Mackey  | Shiny_Eric.Evan.Calvin     |
+| Scot Nicol             | Patrick Mahle          | Anjali Kadakia | Shiny_Scot.Patrick.Anjali  |
+| Heesun Cha             | Khoa Nguyen            | Andy Peng      | Shiny_Sunny.Khoa.Andy      |
+| Leslie Herrera         | Pallavi Setty          |                | Shiny_Leslie.Pallavi       |
+
+
+## Preliminaries
+
+Make sure that you have the latest version of Shiny and Shinyapps
+
+```{r prelim, eval=FALSE}
+install.packages(shiny)
+devtools::install_github('rstudio/shinyapps') #this is only needed for deployment on the shinyapp web server.
+```
 
 
 ## Components of a Shiny App
+
 A ShinyApp consists of two R scripts:
 
-## Scoring (our of 20 points)
+* __ui.R__ This script controls the user interface (i.e. the design of the webpage, the input and the output).
+* __server.R__ This script does the work of performing any analysis, creating graphs, and creating tables
+
+These two scripts must be saved together in a single directory.  Each app much be saved in a different directory.
+
+## ui.R
+
+Here is a sample ui.R script.  This script makes use of R's build in data set on iris.  For more information on this data set you can type `?iris` in R.
+
+``` {r, eval=FALSE}
+library(shiny)
+
+# Define UI for application that draws a histogram
+shinyUI(fluidPage( #create the overall page
+
+  # Application title
+  titlePanel("Iris Data"),
+
+  # Sidebar with a radio box to input which trait will be plotted
+  sidebarLayout(
+    sidebarPanel(
+      radioButtons("trait", #the input variable that the value will go into
+                  "Choose a trait to display:",
+                  c("Sepal.Length",
+                    "Sepal.Width",
+                    "Petal.Length",
+                    "Petal.Width")
+    ),
+
+    # Show a plot of the generated distribution
+    mainPanel(
+      plotOutput("boxPlot")
+    )
+  )
+))
+```
+
+To see all the types of input and output that can be included, see the [Shiny reference](http://shiny.rstudio.com/reference/shiny/latest/)
+
+
+
+
+
+## Scoring (out of 20 points)
 
 14 points for (reasonable) code, even if it doesn't run.  
 + 2 points for functional web app.  
