@@ -34,7 +34,7 @@ Today we will work in teams of three.  Each team will produce and deploy a Shiny
 Make sure that you have the latest version of Shiny and Shinyapps
 
 ```{r prelim, eval=FALSE}
-install.packages(shiny)
+install.packages(shiny) #Needed for making ShinyApps
 devtools::install_github('rstudio/shinyapps') #this is only needed for deployment on the shinyapp web server.
 ```
 
@@ -60,6 +60,11 @@ shinyUI(fluidPage( #create the overall page
 
   # Application title
   titlePanel("Iris Data"),
+  
+  # Some helpful information
+  helpText("This application creates a boxplot to show difference between",
+           "iris species.  Please use the radio box below to choose a trait",
+           "for plotting")
 
   # Sidebar with a radio box to input which trait will be plotted
   sidebarLayout(
@@ -80,11 +85,52 @@ shinyUI(fluidPage( #create the overall page
 ))
 ```
 
-To see all the types of input and output that can be included, see the [Shiny reference](http://shiny.rstudio.com/reference/shiny/latest/)
+There are several components in the above script (and note that they are nested)
 
+* _shinyUI_ This is the overall function that creates that user interface
+  * _fluidPage_ This creates the layout for our webpage.  The webpage has three components:
+  * _titlePanel_ Should be obvious
+  * _sidebarLayout_ Creates a sidebar layout withing fluidpage
+    * _sidebarPanel_ specifies a panel that will be in our sidebar.  We could have more than one.
+      * _radioButtons_ speicifies that we want radio buttons in this sidebar panel
+  * _mainPanel_ specifices that we want a main panel as well
+    * _plotOutput_ what we want on the main panel.  We could have more than one of these.
 
+To see all the types of input and output that can be included, see the [Shiny reference](http://shiny.rstudio.com/reference/shiny/latest/).  Of particular interest:
+* _tabPanel_ if we want multiple tabs on the page
+* _checkboxInput_
+* _sliderInput_
+* _tableOutput_
+* _textOutput_
 
+## server.R
+Below is an example of a server script to acompany the ui script above
 
+```{r server, eval=FALSE}
+library(shiny)
+library(ggplot2)
+
+# Define server logic required to draw a boxplot
+shinyServer(function(input, output) {
+
+  # Expression that generates a boxplot. The expression is
+  # wrapped in a call to renderPlot to indicate that:
+  #
+  #  1) It is "reactive" and therefore should re-execute automatically
+  #     when inputs change
+  #  2) Its output type is a plot
+
+  output$boxPlot <- renderPlot({
+    # set up the plot
+    pl <- ggplot(data = iris,
+                 aes(x=Species,y=get(input$trait),fill=Species)
+                 )
+
+    # draw the boxplot for the specified trait
+    pl + geom_boxplot()
+  })
+})
+```
 
 ## Scoring (out of 20 points)
 
@@ -92,6 +138,8 @@ To see all the types of input and output that can be included, see the [Shiny re
 + 2 points for functional web app.  
 + 2 points for using two or more input types.  
 + 2 points for good annotation on the web page (a new user would understand what the app is about).  
+- 2 points (on a student-by-student basis) for each student that did not make at least 2 commits to the team repository.
+
 
 ## Going further
 
