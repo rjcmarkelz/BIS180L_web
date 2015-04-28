@@ -153,6 +153,12 @@ The key elements of the above script:
 ## trying it
 
 To try the app on your computer, save the above scripts in ui.R and server.R, respectively, in a directory for this app.
+Then from the R console:
+
+```{r runapp}
+library(shiny)
+runApp('PATH_TO_APP_DIRECTORY')    
+```
 
 ## deployment
 
@@ -160,36 +166,65 @@ Now that we have our awesome application how do we share it?
 
 Multiple options:
 
-1. If you are sharing it with someone that uses R and has the shiny library installed, then you can just send it to 
+1. If you are sharing it with someone that uses R and has the shiny library installed, then you can just send it to them, they can download it, and run it as above.
+2. If you have it on github and the person you want to share it with has R they can use:
+```{r rungitapp}
+library(shiny)
+runGitHub(repo = "HamiltonDemos",username = "jnmaloof", subdir = "BinomialDrift")
+```
+3. You can use Rstudio's __free__ [shiny server](http://www.shinyapps.io/)
+Once you have signed up for an account and authenticated it a simple as:
+```{r deploy_rstudio}
+library(shinyapps)
+shinyapps::deployApp('path/to/your/app')
+```
+You can see my version [here](https://jnmaloof.shinyapps.io/irisApp/)
+4. If you are advanced you can [run your own server](http://www.rstudio.com/products/shiny/shiny-server/) (I actually set up a server my lab--it isn't that hard)
 
 ## Practice 1
 
-Change the scripts above so that a violin plot is used.
+Change the scripts above so that a violin plot is produced instead of a boxplot.
 
 ## Practice 2
 
-Change the scripts above so that all of the traits are plotted but only for a single species
+Change the scripts above so that all of the traits are plotted as a boxplot but only for a single species.  (The x-axis should be trait; the user selects species).
 
 ## Assignment
 
-Your team should create and deploy a Shiny App that plots some aspect of the data from the BLAST or RICE labs.  The app should allow user input that modifies the plot in a useful way.
+Your team should work together to create and deploy a Shiny App that plots some aspect of the data from the BLAST or RICE labs.  The app should allow user input that modifies the plot in a useful way.
 
 Some ideas:
 
 ### BLAST
-* Scatter plot of 
+
+* Interactive plot to explore different hypotheses for Exercise 13 from the [R Intro lab]({{site.url}}/{% post_url 2015-04-14-R-intro %}).
+  * The user could select which trait might affect the sequence length vs score relationship.  The plot could be a scatter plot of score vs sequence length colored by the value of the user-selected variable.  If you want to get fancy add a [slider-bar](http://shiny.rstudio.com/gallery/sliders.html) that allows the user to set the limits of the data ploted.    
+  * Or the plot could be a boxplot of score faceted by high and low sequence length and high and low values of the user-selected variable (you could split these by median length).  Again you could add a [slider-bar](http://shiny.rstudio.com/gallery/sliders.html) that allows the user to set the split point for the graph facets.
+  
+### RICE data
+
+__You might want to limit the user input to 5 or 10 traits in the examples below, just to save your self some typing and to keep the radio button list not too long__
+* Interactive plot showing histograms or violin plots or boxplots of user-selected phenotypic data split by ancestral population assignment or region.  You could also allow the user to choose whether it was a histogram or a violin plot, etc.
+* scatter plot of any two traits (user chosen), colored by the values of a third (user choosen).
+* If you want to get fancy in either of the above then you could use the [selectize](http://shiny.rstudio.com/gallery/selectize-examples.html) tool to allow the user to select from all of the possible phenotypes.
 
 ### Scoring (out of 20 points)
 
-14 points for (reasonable) code, even if it doesn't run.  
+14 points for (reasonable) code, pushed to github.
 + 2 points for functional web app deployed on shinyapps.io .  
 + 2 points for using two or more input types.  
 + 2 points for good annotation on the web page (a new user would understand what the app is about).  
-- 2 points (on a student-by-student basis) for each student that did not make at least 2 commits to the team repository.
+- 2 points (on a student-by-student basis) for each student that does not make at least 2 commits to the team repository.
 
+### Getting started with the assignment
 
-
-
+* I have created a repository for each team.  See table above.
+* Each user should clone it __to a directory outside of the "BIS180L_assignments"__ directory.  Sorry about that but we do not want nested respoitories.
+* Discuss your goals and what you want your final product to look like.
+* Start simple.
+* Remember that you can use git commit and push and pull to share your file changes.  I recommend that you do not have two people work on the same section of the same file at once; it makes it hard to do automatic push/pulls.
+* Once you get it running, deploy it on shiny.io
+* Send Kristen and me an email with a link to the deployed application and indicate who the team members are.
 
 ## Going further
 
