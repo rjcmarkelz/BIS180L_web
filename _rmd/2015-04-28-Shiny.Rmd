@@ -238,7 +238,7 @@ git clone git@github.com:UCDBIS180L/Shiny_Julin.Kristen.git #replace with your r
 * Start simple.
 * Remember that you can use git commit and push and pull to share your file changes among the team.  I recommend that you do not have two people work on the same section of the same file at once; it makes it hard to do automatic merge when you pull.
 * Once you get it running, sign up for an account and deploy it on shiny.io.  See option 3 under deployment, above.
-* Send Kristen and me an email with a link to the deployed application and indicate who the team members are.
+* In the `gh-usernames` repository that we set up in week 1, there is a file titled `shiny_links.md`. Have one of your team members edit the file to add the link to your deployed application.
 
 ## Going further
 To get further inspiration, checkout out the [Shiny Gallery](http://shiny.rstudio.com/gallery/)
