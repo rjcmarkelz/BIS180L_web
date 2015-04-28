@@ -9,7 +9,7 @@ output: html_document
 
 Today we will learn how to make and deploy interactive web applications with [Shiny](http://shiny.rstudio.com/).  Shiny allows you to display your R analysis on the web to anyone.  For example, here is an application that I wrote to visualize a [Markov Chain simulation of genetic drift](http://symposium.plb.ucdavis.edu:3838/MarkovDrift/).  A student from last years BIS180L is now working in my lab and is working up a [visualizer for QTL data and gene expression](http://symposium.plb.ucdavis.edu:3838/QTL-Visualization/).  The Shiny website has plenty of [additional examples](http://shiny.rstudio.com/gallery/).
 
-The [tutorial at Rstudio](http://shiny.rstudio.com/tutorial/) is good but pretty involved.  I have tried to distill some of the prinicples below; if you like it and want more then feel free to do the [tutorial](http://shiny.rstudio.com/tutorial/) as well.
+The [tutorial at Rstudio](http://shiny.rstudio.com/tutorial/) is good but pretty involved.  I have tried to distill some of the principles below; if you like it and want more then feel free to do the [tutorial](http://shiny.rstudio.com/tutorial/) as well.
 
 ## Teams
 
@@ -20,7 +20,7 @@ Today we will work in teams of three.  Each team will produce and deploy a Shiny
 | Tyler Kent             | Gurkern Sufi           | Chadwick Ho    | Shiny_Tyler.Sufi.Chad      |
 | Samuel Deck            | Ed Sung                | Nabeel Sami    | Shiny_Sam.Ed.Nabeel        |
 | Derek Conkle-Gutierrez | Maria I Chacon Sanchez | Kevin Hu       | Shiny_Derek.Maria.Kevin    |
-| Anna Alekina           | Kristina Bow           | Robert Rider   | Shiny_Anna.Kristina.Bobby  |
+| Anna Aleykina          | Kristina Bow           | Robert Rider   | Shiny_Anna.Kristina.Bobby  |
 | Lewis Roa              | Jenny Cade             | Daniel Ahrens  | Shiny_Lewis.Jenny.Daniel   |
 | Matthew Denny          | Derek Lin              | Marina Becker  | Shiny_Matthew.Derek.Marina |
 | Eric Wetzel            | Evan Adams             | Calvin Mackey  | Shiny_Eric.Evan.Calvin     |
@@ -95,7 +95,7 @@ There are several components in the above script (and note that they are nested)
   * _sidebarLayout_ Creates a sidebar layout within fluidpage
     * _sidebarPanel_ specifies the sidebar panel.  
       * _radioButtons_ specifies that we want radio buttons in this sidebar panel.  We could have additional input functions here.
-    * _mainPanel_ specifices that we want a main panel as well
+    * _mainPanel_ specifics that we want a main panel as well
     * _plotOutput_ what we want on the main panel.  We could have more than one of these, or could have tables, etc.
 
 To see all the types of input and output that can be included, see the [Shiny reference](http://shiny.rstudio.com/reference/shiny/latest/).  Of particular interest:
@@ -106,7 +106,7 @@ To see all the types of input and output that can be included, see the [Shiny re
 * _textOutput_
 
 ## server.R
-Below is an example of a server script to acompany the ui script above
+Below is an example of a server script to accompany the ui script above
 
 ```{r server, eval=FALSE}
 library(shiny)
@@ -143,11 +143,11 @@ shinyServer(function(input, output) {
 The key elements of the above script:
 
 * _shinyServer_ this creates the server application.
-  * _renderPlot_ this tells R that the enlcosed code will generate a plot that is to be put on the webpage.  Note that there are similar functions for outputting tables and text.
+  * _renderPlot_ this tells R that the enclosed code will generate a plot that is to be put on the webpage.  Note that there are similar functions for outputting tables and text.
 * information is passed between the ui.R and server.R scripts via the `input` and `output` variables.
   * In the ui.R script we specified that the `radioButton()` information should be placed in "trait". server.R accesses that through `input$trait`
   * Similarly in the server.R script we specify that the rendered plot goes into output$boxPlot.  This in ui.R we can access the plot as "boxPlot"
-* Pay attention to the modifications in how variable are given in the `aes_string()` arguement to `ggplot`.  This is different then what you have seen before with `aes` but enables direct access to `input$trait` from ggplot possible.
+* Pay attention to the modifications in how variable are given in the `aes_string()` argument to `ggplot`.  This is different then what you have seen before with `aes` but enables direct access to `input$trait` from ggplot possible.
 * __Important__ any one-time data loading or manipulation (i.e. reading in a file) should be done BEFORE, not within, any `renderNNN` statements.  You can put it just below the `library` statements, before the `shinyServer`
 
 ## trying it
@@ -167,7 +167,7 @@ Now that we have our awesome application how do we share it?
 Multiple options:
 
 1. If you are sharing it with someone that uses R and has the shiny library installed, then you can just send it to them, they can download it, and run it as above.
-2. If you have it on github and the person you want to share it with has R they can use:
+2. If you have it on GitHub and the person you want to share it with has R they can use:
 ```{r rungitapp,eval=FALSE}
 library(shiny)
 runGitHub(repo = "HamiltonDemos",username = "jnmaloof", subdir = "BinomialDrift")
@@ -205,12 +205,12 @@ Some ideas:
 
 __You might want to limit the user input to 5 or 10 traits in the examples below, just to save your self some typing and to keep the radio button list not too long__
 * Interactive plot showing histograms or violin plots or boxplots of user-selected phenotypic data split by ancestral population assignment or region.  You could also allow the user to choose whether it was a histogram or a violin plot, etc.
-* scatter plot of any two traits (user chosen), colored by the values of a third (user choosen).
+* scatter plot of any two traits (user chosen), colored by the values of a third (user chosen).
 * If you want to get fancy in either of the above then you could use the [selectize](http://shiny.rstudio.com/gallery/selectize-examples.html) tool to allow the user to select from all of the possible phenotypes.
 
 ### Scoring (out of 20 points)
 
-14 points for (reasonable) code, pushed to github.
+14 points for (reasonable) code, pushed to GitHub.
 + 2 points for functional web app deployed on shinyapps.io .  
 + 2 points for using two or more input types.  
 + 2 points for good annotation on the web page (a new user would understand what the app is about).  
@@ -219,7 +219,7 @@ __You might want to limit the user input to 5 or 10 traits in the examples below
 ### Getting started with the assignment
 
 * I have created a repository for each team.  See table above.
-* Each user should clone it __to a directory outside of the "BIS180L_assignments"__ directory.  Sorry about that but we do not want nested respoitories.
+* Each user should clone it __to a directory outside of the "BIS180L_assignments"__ directory.  Sorry about that but we do not want nested repositories.
 * Discuss your goals and what you want your final product to look like.
 * Start simple.
 * Remember that you can use git commit and push and pull to share your file changes.  I recommend that you do not have two people work on the same section of the same file at once; it makes it hard to do automatic push/pulls.
