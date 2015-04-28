@@ -207,7 +207,7 @@ I have listed some ideas below, __but feel free to choose something else__
   
 ### RICE data ideas
 
-__You might want to limit the user input to 5 or 10 traits in the examples below, just to save your self some typing and to keep the radio button list not too long__
+__You might want to limit the user input to 5 or 10 traits in the examples below, just to save yourself some typing and to keep the radio button list not too long__
 
 * Interactive plot showing histograms or violin plots or boxplots of user-selected phenotypic data split by ancestral population assignment or region.  You could also allow the user to choose whether it was a histogram or a violin plot, etc.
 * scatter plot of any two traits (user chosen), colored by the values of a third (user chosen).
@@ -215,12 +215,11 @@ __You might want to limit the user input to 5 or 10 traits in the examples below
 
 ### Scoring (out of 20 points)
 
-14 points for (reasonable) code, pushed to GitHub.
+16 points for a functional, interactive web app deployed on shinyapps.io and pushed to GitHub.  
 
-\+ 2 points for functional web app deployed on shinyapps.io .  
 \+ 2 points for using two or more input types.  
 \+ 2 points for good annotation on the web page (a new user would understand what the app is about).  
-\- 2 points (on a student-by-student basis) for each student that does not make at least 2 commits to the team repository.
+\- 2 points for each student that does not make at least 2 commits to the team repository.
 
 ### Getting started with the assignment
 
