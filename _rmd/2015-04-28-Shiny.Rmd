@@ -155,7 +155,7 @@ The key elements of the above script:
 To try the app on your computer, save the above scripts in ui.R and server.R, respectively, in a directory for this app.
 Then from the R console:
 
-```{r runapp}
+```{r runapp, eval=FALSE}
 library(shiny)
 runApp('PATH_TO_APP_DIRECTORY')    
 ```
