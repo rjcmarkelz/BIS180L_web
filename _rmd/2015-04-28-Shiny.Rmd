@@ -25,10 +25,10 @@ Today we will work in teams of three.  Each team will produce and deploy a Shiny
 | Derek Conkle-Gutierrez | Maria I Chacon Sanchez | Kevin Hu       | Shiny_Derek.Maria.Kevin    |
 | Anna Aleykina          | Kristina Bow           | Robert Rider   | Shiny_Anna.Kristina.Bobby  |
 | Lewis Roa              | Jenny Cade             | Daniel Ahrens  | Shiny_Lewis.Jenny.Daniel   |
-| Matthew Denny          | Derek Lin              | Marina Becker  | Shiny_Matthew.Derek.Marina |
+| Matt Denny             | Derek Lin              | Marina Becker  | Shiny_Matthew.Derek.Marina |
 | Eric Wetzel            | Evan Adams             | Calvin Mackey  | Shiny_Eric.Evan.Calvin     |
 | Scot Nicol             | Patrick Mahle          | Anjali Kadakia | Shiny_Scot.Patrick.Anjali  |
-| Heesun Cha             | Khoa Nguyen            | Andy Peng      | Shiny_Sunny.Khoa.Andy      |
+| Sunny Cha              | Khoa Nguyen            | Andy Peng      | Shiny_Sunny.Khoa.Andy      |
 | Leslie Herrera         | Pallavi Setty          |                | Shiny_Leslie.Pallavi       |
 
 
