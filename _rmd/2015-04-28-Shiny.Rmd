@@ -82,8 +82,7 @@ shinyUI(fluidPage( #create the overall page
       )),
       
       # Show a plot of the generated distribution
-      mainPanel(
-        plotOutput("boxPlot")
+      mainPanel(plotOutput("boxPlot")
       )
     )
   ))
@@ -217,10 +216,11 @@ __You might want to limit the user input to 5 or 10 traits in the examples below
 ### Scoring (out of 20 points)
 
 14 points for (reasonable) code, pushed to GitHub.
-+ 2 points for functional web app deployed on shinyapps.io .  
-+ 2 points for using two or more input types.  
-+ 2 points for good annotation on the web page (a new user would understand what the app is about).  
-- 2 points (on a student-by-student basis) for each student that does not make at least 2 commits to the team repository.
+
+\+ 2 points for functional web app deployed on shinyapps.io .  
+\+ 2 points for using two or more input types.  
+\+ 2 points for good annotation on the web page (a new user would understand what the app is about).  
+\- 2 points (on a student-by-student basis) for each student that does not make at least 2 commits to the team repository.
 
 ### Getting started with the assignment
 
