@@ -13,18 +13,6 @@ incremental: true
 * A student from last years BIS180L is now working in my lab and is working up a [visualizer for QTL data and gene expression](http://symposium.plb.ucdavis.edu:3838/QTL-Visualization/).  
 * The Shiny website has plenty of [additional examples](http://shiny.rstudio.com/gallery/).
 
-Preliminaries
-=============
-
-Make sure that you have the latest version of Shiny and Shinyapps
-
-```{r prelim, eval=FALSE}
-#These two lines only need to be exectued once per computer
-install.packages(shiny) #Needed for making ShinyApps
-devtools::install_github('rstudio/shinyapps') #this is only needed for deployment on the shinyapp web server.
-```
-
-
 Components of a Shiny App
 ==========================
 
@@ -187,6 +175,7 @@ Scoring (out of 20 points)
 ==========================
 
 14 points for (reasonable) code, pushed to GitHub.
+
 \+ 2 points for functional web app deployed on shinyapps.io .  
 \+ 2 points for using two or more input types.  
 \+ 2 points for good annotation on the web page (a new user would understand what the app is about).  
