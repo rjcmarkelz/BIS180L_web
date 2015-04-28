@@ -14,10 +14,8 @@
 }
 
 pre {
+  font-size: 14px;
   overflow-x: auto;
   white-space: pre;
   word-wrap: normal;
-}
-pre code *{
-	font-size: 14px;
 }
