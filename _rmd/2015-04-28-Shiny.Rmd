@@ -224,8 +224,17 @@ __You might want to limit the user input to 5 or 10 traits in the examples below
 
 ### Getting started with the assignment
 
-* I have created a repository for each team.  See table above.
-* Each user should clone their team's repository __to a directory outside of the "BIS180L_assignments"__ directory.  Sorry about that but we do not want nested repositories.
+* I have created a repository for each team.  See table above or go to GitHub and find it there.
+* Each user should clone their team's repository __to a directory outside of the "BIS180L_assignments"__ directory.  Sorry about that but we do not want nested repositories.  
+
+```{}
+cd ~
+# optional use mkdir to make a new directory and change into it
+#mkdir shinyapps
+#cd shinyapps
+git clone git@github.com:UCDBIS180L/Shiny_Julin.Kristen.git #replace with your repos.
+```
+
 * Discuss your goals and what you want your final product to look like with your team members.
 * Start simple.
 * Remember that you can use git commit and push and pull to share your file changes among the team.  I recommend that you do not have two people work on the same section of the same file at once; it makes it hard to do automatic merge when you pull.
