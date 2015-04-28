@@ -23,7 +23,7 @@ Schedule is subject to change (but not the exam dates)
 | Thur 1:10 - 5:00  |  23-Apr |  R and GWAS
 | Fri 1:10 - 2:00   |  24-Apr |  Discussion: SNPs/ GWAS
 |                   |         |  
-| Tue 1:10 - 5:00   |  28-Apr |  Shiny; Automating tasks in R
+| Tue 1:10 - 5:00   |  28-Apr |  Shiny
 | Thur 1:10 - 5:00  |  30-Apr |  Illumina Sequence Data: QC and mapping
 | Fri 1:10 - 2:00   |  1-May  |   __Midterm Handed out__
 |                   |         |  
@@ -43,7 +43,7 @@ Schedule is subject to change (but not the exam dates)
 | Thur 1:10 - 5:00  |  28-May |  Metagenomics
 | Fri 1:10 - 2:00   |  29-May |  Discussion: Metagenomics
 |                   |         |  
-| Tue 1:10 - 5:00   |  2-Jun  |  TBD __Final Exam Handed out__
+| Tue 1:10 - 5:00   |  2-Jun  |  Automating tasks in R __Final Exam Handed out__
 | Thur 1:10 - 5:00  |  4-Jun  |  Open office hours for final exam questions 
 |                   |         |
 | __Mon 9:00 AM__   |  8-Jun  | __Final Exam Due 9AM__

@@ -1,0 +1,246 @@
+---
+title: "Make a web app with Shiny"
+layout: lab
+tags:
+- R
+hidden: true
+output: html_document
+---
+
+Today we will learn how to make and deploy interactive web applications with [Shiny](http://shiny.rstudio.com/).  Shiny allows you to display your R analysis on the web to anyone.  For example:  
+* I used Shiny to write an app to visualize a [Markov Chain simulation of genetic drift](http://symposium.plb.ucdavis.edu:3838/MarkovDrift/).  
+* A student from last years BIS180L is now working in my lab and is working up a [visualizer for QTL data and gene expression](http://symposium.plb.ucdavis.edu:3838/QTL-Visualization/).  
+* The Shiny website has plenty of [additional examples](http://shiny.rstudio.com/gallery/).
+
+The [tutorial at Rstudio](http://shiny.rstudio.com/tutorial/) is good but pretty involved.  I have tried to distill some of the principles below; if you like it and want more then I highly recommend the [tutorial](http://shiny.rstudio.com/tutorial/).
+
+## Teams
+
+Today we will work in teams of three.  Each team will produce and deploy a Shiny app that will be collectively graded.
+
+| Student 1              | Student 2              | Student 3      | Repository                 |
+|------------------------|------------------------|----------------|----------------------------|
+| Tyler Kent             | Gurkern Sufi           | Chadwick Ho    | Shiny_Tyler.Sufi.Chad      |
+| Samuel Deck            | Ed Sung                | Nabeel Sami    | Shiny_Sam.Ed.Nabeel        |
+| Derek Conkle-Gutierrez | Maria I Chacon Sanchez | Kevin Hu       | Shiny_Derek.Maria.Kevin    |
+| Anna Aleykina          | Kristina Bow           | Robert Rider   | Shiny_Anna.Kristina.Bobby  |
+| Lewis Roa              | Jenny Cade             | Daniel Ahrens  | Shiny_Lewis.Jenny.Daniel   |
+| Matt Denny             | Derek Lin              | Marina Becker  | Shiny_Matthew.Derek.Marina |
+| Eric Wetzel            | Evan Adams             | Calvin Mackey  | Shiny_Eric.Evan.Calvin     |
+| Scot Nicol             | Patrick Mahle          | Anjali Kadakia | Shiny_Scot.Patrick.Anjali  |
+| Sunny Cha              | Khoa Nguyen            | Andy Peng      | Shiny_Sunny.Khoa.Andy      |
+| Leslie Herrera         | Pallavi Setty          |                | Shiny_Leslie.Pallavi       |
+
+
+## Preliminaries
+
+Make sure that you have the latest version of Shiny and Shinyapps
+
+```{r prelim, eval=FALSE}
+#These two lines only need to be exectued once per computer
+install.packages(shiny) #Needed for making ShinyApps
+devtools::install_github('rstudio/shinyapps') #this is only needed for deployment on the shinyapp web server.
+```
+
+
+## Components of a Shiny App
+
+A ShinyApp consists of two R scripts:
+
+* __ui.R__ This script controls the user interface (i.e. the design of the webpage, the input and the output).
+* __server.R__ This script does the work of performing any analysis, creating graphs, and creating tables
+
+These two scripts must be saved together in a single directory.  Each app much be saved in a different directory.
+
+### ui.R
+
+Here is a sample ui.R script.  This script makes use of R's built in data set on iris.  For more information on this data set you can type `?iris` in R.
+
+``` {r, eval=FALSE}
+library(shiny)
+
+# Define UI for application that draws a histogram
+shinyUI(fluidPage( #create the overall page
+  
+  # Application title
+  titlePanel("Iris Data"),
+  
+  # Some helpful information
+  helpText("This application creates a boxplot to show difference between",
+           "iris species.  Please use the radio box below to choose a trait",
+           "for plotting"),
+  
+  # Sidebar with a radio box to input which trait will be plotted
+  sidebarLayout(
+    sidebarPanel(
+      radioButtons("trait", #the input variable that the value will go into
+                   "Choose a trait to display:",
+                   c("Sepal.Length",
+                     "Sepal.Width",
+                     "Petal.Length",
+                     "Petal.Width")
+      )),
+      
+      # Show a plot of the generated distribution
+      mainPanel(plotOutput("boxPlot")
+      )
+    )
+  ))
+
+
+```
+
+There are several components in the above script (and note that they are nested)
+
+* `shinyUI` This is the overall function that creates that user interface
+  * `fluidPage` This creates the layout for our webpage.  The webpage has three components:
+  * `titlePanel` Should be obvious
+  * `sidebarLayout` Creates a sidebar layout within fluidpage
+    * `sidebarPanel` specifies the sidebar panel.  
+      * `radioButtons` specifies that we want radio buttons in this sidebar panel.  We could have additional input functions here.
+    * `mainPanel` specifics that we want a main panel as well
+    * `plotOutput` what we want on the main panel.  We could have more than one of these, or could have tables, etc.
+
+To see all the types of input and output that can be included, see the [Shiny reference](http://shiny.rstudio.com/reference/shiny/latest/).  Of particular interest:
+
+* `tabPanel` if we want multiple tabs on the page
+* `checkboxInput`
+* `sliderInput`
+* `tableOutput`
+* `textOutput`
+
+### server.R
+Below is an example of a server script to accompany the ui script above
+
+```{r server, eval=FALSE}
+library(shiny)
+library(ggplot2)
+
+# Define server logic required to draw a boxplot
+shinyServer(function(input, output) {
+  
+  # Expression that generates a boxplot. The expression is
+  # wrapped in a call to renderPlot to indicate that:
+  #
+  #  1) It is "reactive" and therefore should re-execute automatically
+  #     when inputs change
+  #  2) Its output type is a plot
+    
+  output$boxPlot <- renderPlot({
+    
+    # set up the plot
+    pl <- ggplot(data = iris,
+                 #Use aes_string below so that input$trait is interpreted
+                 #correctly.  The other variables need to be quoted
+                 aes_string(x="Species",
+                            y=input$trait,
+                            fill="Species"
+                            )
+    )
+    
+    # draw the boxplot for the specified trait
+    pl + geom_boxplot()
+  })
+})
+```
+
+The key elements of the above script:
+
+* `shinyServer` this creates the server application.
+  * `renderPlot` this tells R that the enclosed code will generate a plot that is to be put on the webpage.  Note that there are similar functions for outputting tables and text.
+* information is passed between the ui.R and server.R scripts via the `input` and `output` variables.
+  * In the ui.R script we specified that the `radioButton()` information should be placed in "trait". server.R accesses that through `input$trait`
+  * Similarly in the server.R script we specify that the rendered plot goes into output$boxPlot.  This in ui.R we can access the plot as "boxPlot"
+* Pay attention to the modifications in how variable are given in the `aes_string()` argument to `ggplot`.  This is different then what you have seen before with `aes` but enables direct access to `input$trait` from ggplot possible.
+* __Important__ any one-time data loading or manipulation (i.e. reading in a file) should be done BEFORE, not within, any `renderNNN` statements.  You can put it just below the `library` statements, before the `shinyServer`
+
+### trying it
+
+To try the app on your computer, save the above scripts in ui.R and server.R, respectively, in a directory for this app.
+Then from the R console:
+
+```{r runapp, eval=FALSE}
+library(shiny)
+runApp('PATH_TO_APP_DIRECTORY')    
+```
+
+## deployment
+
+Now that we have our awesome application how do we share it?
+
+Multiple options:
+
+1. If you are sharing it with someone that uses R and has the shiny library installed, then you can just send it to them, they can download it, and run it as above.
+2. If you have it on GitHub and the person you want to share it with has R they can use:
+```{r rungitapp,eval=FALSE}
+library(shiny)
+runGitHub(repo = "HamiltonDemos",username = "jnmaloof", subdir = "BinomialDrift")
+```
+3. You can use Rstudio's __free__ [shiny server](http://www.shinyapps.io/)
+Once you have signed up for an account and authenticated it a simple as:
+```{r deploy_rstudio,eval=FALSE}
+library(shinyapps)
+shinyapps::deployApp('path/to/your/app')
+```
+You can see my version [here](https://jnmaloof.shinyapps.io/irisApp/)
+4. If you are advanced you can [run your own server](http://www.rstudio.com/products/shiny/shiny-server/) (I actually set up a server my lab--it isn't that hard)
+
+## Practice 1
+
+Change the scripts above so that a violin plot is produced instead of a boxplot.
+
+## Practice 2
+
+Change the scripts above so that all of the traits are plotted as a boxplot but only for a single species.  (The x-axis should be trait; the user selects species).
+
+## Assignment
+
+Your team should work together to create and deploy a ShinyApp that plots some aspect of the data from the BLAST or RICE labs.  The app should allow user input that modifies the plot in a useful way.
+
+I have listed some ideas below, __but feel free to choose something else__
+
+### BLAST ideas
+
+* Interactive plot to explore different hypotheses for Exercise 13 from the [R Intro lab]({{site.url}}/{% post_url 2015-04-14-R-intro %}).
+  * The user could select which trait might affect the sequence length vs score relationship.  The plot could be a scatter plot of score vs sequence length colored by the value of the user-selected variable.  If you want to get fancy add a [slider-bar](http://shiny.rstudio.com/gallery/sliders.html) that allows the user to set the limits of the data ploted.    
+  * Or the plot could be a boxplot of score faceted by high and low sequence length and high and low values of the user-selected variable (you could split these by median length).  Again you could add a [slider-bar](http://shiny.rstudio.com/gallery/sliders.html) that allows the user to set the split point for the graph facets.
+  
+### RICE data ideas
+
+__You might want to limit the user input to 5 or 10 traits in the examples below, just to save yourself some typing and to keep the radio button list not too long__
+
+* Interactive plot showing histograms or violin plots or boxplots of user-selected phenotypic data split by ancestral population assignment or region.  You could also allow the user to choose whether it was a histogram or a violin plot, etc.
+* scatter plot of any two traits (user chosen), colored by the values of a third (user chosen).
+* If you want to get fancy in either of the above then you could use the [selectize](http://shiny.rstudio.com/gallery/selectize-examples.html) tool to allow the user to select from all of the possible phenotypes.
+
+### Scoring (out of 20 points)
+
+16 points for a functional, interactive web app deployed on shinyapps.io and pushed to GitHub.  
+
+\+ 2 points for using two or more input types.  
+\+ 2 points for good annotation on the web page (a new user would understand what the app is about).  
+\- 2 points for each student that does not make at least 2 commits to the team repository.
+
+### Getting started with the assignment
+
+* I have created a repository for each team.  See table above or go to GitHub and find it there.
+* Each user should clone their team's repository __to a directory outside of the "BIS180L_assignments"__ directory.  Sorry about that but we do not want nested repositories.  
+
+```{}
+cd ~
+# optional use mkdir to make a new directory and change into it
+#mkdir shinyapps
+#cd shinyapps
+git clone git@github.com:UCDBIS180L/Shiny_Julin.Kristen.git #replace with your repos.
+```
+
+* Discuss your goals and what you want your final product to look like with your team members.
+* Start simple.
+* Remember that you can use git commit and push and pull to share your file changes among the team.  I recommend that you do not have two people work on the same section of the same file at once; it makes it hard to do automatic merge when you pull.
+* Once you get it running, sign up for an account and deploy it on shiny.io.  See option 3 under deployment, above.
+* Send Kristen and me an email with a link to the deployed application and indicate who the team members are.
+
+## Going further
+To get further inspiration, checkout out the [Shiny Gallery](http://shiny.rstudio.com/gallery/)
+
+You can also include Shiny apps [directly in your Rmarkdown files](http://rmarkdown.rstudio.com/authoring_shiny.html) to be rendered into html.  In some ways the syntax is even easier because you only need a single file.  You can also include interactive graphs in slide presentations this way.
