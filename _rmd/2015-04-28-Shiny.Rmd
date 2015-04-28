@@ -38,8 +38,8 @@ Make sure that you have the latest version of Shiny and Shinyapps
 
 ```{r prelim, eval=FALSE}
 #These two lines only need to be exectued once per computer
-install.packages(shiny) #Needed for making ShinyApps
-devtools::install_github('rstudio/shinyapps') #this is only needed for deployment on the shinyapp web server.
+install.packages("shiny") #Needed for making ShinyApps
+devtools::install_github("rstudio/shinyapps") #this is only needed for deployment on the shinyapp web server.
 ```
 
 
