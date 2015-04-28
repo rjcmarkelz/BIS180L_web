@@ -93,10 +93,10 @@ There are several components in the above script (and note that they are nested)
   * _fluidPage_ This creates the layout for our webpage.  The webpage has three components:
   * _titlePanel_ Should be obvious
   * _sidebarLayout_ Creates a sidebar layout within fluidpage
-    * _sidebarPanel_ specifies the sidebar panel.  We could have more than one.
-      * _radioButtons_ speicifies that we want radio buttons in this sidebar panel
+    * _sidebarPanel_ specifies the sidebar panel.  
+      * _radioButtons_ specifies that we want radio buttons in this sidebar panel.  We could have additional input functions here.
     * _mainPanel_ specifices that we want a main panel as well
-    * _plotOutput_ what we want on the main panel.  We could have more than one of these.
+    * _plotOutput_ what we want on the main panel.  We could have more than one of these, or could have tables, etc.
 
 To see all the types of input and output that can be included, see the [Shiny reference](http://shiny.rstudio.com/reference/shiny/latest/).  Of particular interest:
 * _tabPanel_ if we want multiple tabs on the page
@@ -140,13 +140,55 @@ shinyServer(function(input, output) {
 })
 ```
 
-## Scoring (out of 20 points)
+The key elements of the above script:
+
+* _shinyServer_ this creates the server application.
+  * _renderPlot_ this tells R that the enlcosed code will generate a plot that is to be put on the webpage.  Note that there are similar functions for outputting tables and text.
+* information is passed between the ui.R and server.R scripts via the `input` and `output` variables.
+  * In the ui.R script we specified that the `radioButton()` information should be placed in "trait". server.R accesses that through `input$trait`
+  * Similarly in the server.R script we specify that the rendered plot goes into output$boxPlot.  This in ui.R we can access the plot as "boxPlot"
+* Pay attention to the modifications in how variable are given in the `aes_string()` arguement to `ggplot`.  This is different then what you have seen before with `aes` but enables direct access to `input$trait` from ggplot possible.
+* __Important__ any one-time data loading or manipulation (i.e. reading in a file) should be done BEFORE, not within, any `renderNNN` statements.  You can put it just below the `library` statements, before the `shinyServer`
+
+## trying it
+
+To try the app on your computer, save the above scripts in ui.R and server.R, respectively, in a directory for this app.
+
+## deployment
+
+Now that we have our awesome application how do we share it?
+
+Multiple options:
+
+1. If you are sharing it with someone that uses R and has the shiny library installed, then you can just send it to 
+
+## Practice 1
+
+Change the scripts above so that a violin plot is used.
+
+## Practice 2
+
+Change the scripts above so that all of the traits are plotted but only for a single species
+
+## Assignment
+
+Your team should create and deploy a Shiny App that plots some aspect of the data from the BLAST or RICE labs.  The app should allow user input that modifies the plot in a useful way.
+
+Some ideas:
+
+### BLAST
+* Scatter plot of 
+
+### Scoring (out of 20 points)
 
 14 points for (reasonable) code, even if it doesn't run.  
-+ 2 points for functional web app.  
++ 2 points for functional web app deployed on shinyapps.io .  
 + 2 points for using two or more input types.  
 + 2 points for good annotation on the web page (a new user would understand what the app is about).  
 - 2 points (on a student-by-student basis) for each student that did not make at least 2 commits to the team repository.
+
+
+
 
 
 ## Going further
