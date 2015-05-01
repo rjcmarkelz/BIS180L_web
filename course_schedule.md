@@ -27,8 +27,8 @@ Schedule is subject to change (but not the exam dates)
 | Thur 1:10 - 5:00  |  30-Apr |  Illumina Sequence Data: QC and mapping
 | Fri 1:10 - 2:00   |  1-May  |   __Midterm Handed out__
 |                   |         |  
-| __Tue 1:10 - 5:00__   |  __5-May__  | Illumina: SNP calling; IGV  __Midterm Due @ 1:10__
-| Thur 1:10 - 5:00  |  7-May  |  RNAseq analysis
+| Tue 1:10 - 5:00   |  5-May  | Illumina: SNP calling; IGV 
+| __Thur 1:10 - 5:00__  |  7-May  |  RNAseq analysis  __Midterm Due @ 1:10__
 | Fri 1:10 - 2:00   |  8-May  |  Discussion: Illumina Sequencing
 |                   |         |  
 | Tue 1:10 - 5:00   |  12-May |  RNAseq analysis
