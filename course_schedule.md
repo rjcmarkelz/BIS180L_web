@@ -24,16 +24,16 @@ Schedule is subject to change (but not the exam dates)
 | Fri 1:10 - 2:00   |  24-Apr |  Discussion: SNPs/ GWAS
 |                   |         |  
 | Tue 1:10 - 5:00   |  28-Apr |  Shiny
-| Thur 1:10 - 5:00  |  30-Apr |  Illumina Sequence Data: QC and mapping
+| Thur 1:10 - 5:00  |  30-Apr |  Shiny, cont.  Midterm Q and A review session
 | Fri 1:10 - 2:00   |  1-May  |   __Midterm Handed out__
 |                   |         |  
-| Tue 1:10 - 5:00   |  5-May  | Illumina: SNP calling; IGV 
-| __Thur 1:10 - 5:00__  |  7-May  |  RNAseq analysis  __Midterm Due @ 1:10__
-| Fri 1:10 - 2:00   |  8-May  |  Discussion: Illumina Sequencing
+| Tue 1:10 - 5:00   |  5-May  | Illumina Sequence Data: QC and mapping
+| __Thur 1:10 - 5:00__  |  7-May  |  Illumina: SNPs and IGV  __Midterm Due @ 1:10__
+| Fri 1:10 - 2:00   |  8-May  |  Discussion: Illumina Sequencing, etc
 |                   |         |  
-| Tue 1:10 - 5:00   |  12-May |  RNAseq analysis
+| Tue 1:10 - 5:00   |  12-May |  Illumina: RNAseq analysis
 | Thur 1:10 - 5:00  |  14-May |  Expression clustering; Motif discovery
-| Fri 1:10 - 2:00   |  15-May |  Discussion: RNAseq
+| Fri 1:10 - 2:00   |  15-May |  Discussion: RNAseq, etc
 |                   |         |  
 | Tue 1:10 - 5:00   |  19-May |  Genetic Networks
 | Thur 1:10 - 5:00  |  21-May |  Genetic Networks
