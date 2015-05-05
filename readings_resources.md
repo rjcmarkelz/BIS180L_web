@@ -26,4 +26,8 @@ title: Readings and Resources
 [GWAS Q & A](../docs/Brookfield2010_BMC_Biol.pdf)  
 [Rice GWAS](../docs/Zhao2011_Nat Commun.pdf)
 
+## May 05
+[van Dijk Next Gen Seq](../docs/van Dijk et al. - 2014 - Ten years of next-generation sequencing technology)
+[Illumina Seq technology](http://www.illumina.com/content/dam/illumina-marketing/documents/products/illumina_sequencing_introduction.pdf)
+[Illumina Video](https://www.youtube.com/embed/HMyCqWhwB8E?iframe&rel=0&autoplay=1)
 
