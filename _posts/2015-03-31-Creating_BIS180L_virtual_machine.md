@@ -153,7 +153,7 @@ need to change default terminal to lxterminal
    
 ## short read tools
 
-    sudo apt-get install tophat bwa bowtie bowtie-examples cufflinks samtools bedtools
+    sudo apt-get install tophat bwa bowtie2 bowtie2-examples cufflinks samtools bedtools
     
 ## blast (both versions)
 
