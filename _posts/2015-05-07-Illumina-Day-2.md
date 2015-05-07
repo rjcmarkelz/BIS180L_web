@@ -159,7 +159,11 @@ __b__ Go to A01:15,660,359-15,665,048 (you can cut and paste this into the viewe
 
 ## Calling SNPs using Freebayes
 
-First we removed duplicate reads
+Make a new directory for this analysis:
+
+
+
+First we remove duplicate reads
 
 Then we assign read groups to the files
 
