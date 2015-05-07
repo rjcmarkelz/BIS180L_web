@@ -23,12 +23,13 @@ Today we will pick up where we left off.  Our goals are to:
 
 ## Data files
 
-Download output from tophat run on a larger number of sequences:
+For better viewing and SNP calling I compiled all of the IMB211 internode files and all of the R500 internode files and ran tophat on those.  Then to keep the download to a somewhat reasonable size I subset the bam file to chromosome A01.  Download the files as listed below:
 
-    wget http://de.iplantcollaborative.org/dl/d/4B3E55F9-FF19-456E-9468-36A0BE74E4C0/tophat_out-IMB211_NDP_2_INTERNODE.1_matched.fq.tar.gz
-    tar -xvzf tophat_out-IMB211_NDP_2_INTERNODE.1_matched.fq.tar.gz
+    wget http://de.iplantcollaborative.org/dl/d/3A400919-4820-467A-8F9D-B80E6A6DD5C9/tophat_out-IMB211_All_A01_INTERNODE.fq.tar.gz
+    tar -xvzf tophat_out-IMB211_All_A01_INTERNODE.fq.tar.gz
 
-untar and unzip the files
+    wget http://de.iplantcollaborative.org/dl/d/B31CD90A-9B32-446A-A451-D0D645A91BC0/tophat_out-R500_All_A01_INTERNODE.fq.tar.gz
+    tar -xvzf tophat_out-R500_All_A01_INTERNODE.fq.tar.gz
 
 ## IGV
 
@@ -50,7 +51,7 @@ The source your `.bashrc`
 
 ## FreeBayes
 
-There are many SNP callers available.  We will use one called [FreeBayes](https://github.com/ekg/freebayes) (If you scroll down on the webpage you will get to the help file, etc.)
+There are many SNP callers available.  We will use one called [FreeBayes](https://github.com/ekg/freebayes) (If you scroll down on the webpage you will get to the help file, etc.)  I like it because it automatically deals with alignment issues that are particularly problematic in RNA-seq data.  (but I have not done a good comparison with the other options.)
 
     cd BioinformaticsPackages/
     git clone --recursive git://github.com/ekg/freebayes.git
@@ -62,12 +63,12 @@ There are many SNP callers available.  We will use one called [FreeBayes](https:
 
 ## Examine tophat output
 
-`cd` into one of your tophat output directories
+`cd` into one of the tophat output directories that you downloaded above
 
 You will see several files there.  Some of these are listed below
 
-* `accepted_hits.bam` -- A [bam](https://samtools.github.io/hts-specs/SAMv1.pdf) file for reads that were successfully mapped
-* `unmapped.bam` A bam file for reads that were not able to be mapped
+* `accepted_hits.bam` -- A [bam](https://samtools.github.io/hts-specs/SAMv1.pdf) file for reads that were successfully mapped __(this is called accepeted_hits_A01.bam in the tophat output that I created for you since I only retained chromosome A01)__
+* `unmapped.bam` A bam file for reads that were not able to be mapped __missing from the downloaded directory because I deleted it to save space__
 * `deletions.bed` and `insertions.bed` [bed](https://genome.ucsc.edu/FAQ/FAQformat.html) files giving insertions and deletions
 * `junctions.bed` A bed file giving introns
 * `align_summary.txt` Summarizes the mapping
@@ -80,9 +81,9 @@ __b__.  Give 2 reasons why reads might not map to the reference.
 
 Bam files contain the information about where each read maps.  There are in a binary, compressed format so we can not use `less` on its own.  Thankfully there is a collection of programs called [`samtools`](http://www.htslib.org/) that allow us to view and manipulate these files.
 
-Let's take a look at `accepted_hits.bam`.  For this we use the `samtools view` command
+Let's take a look at `accepted_hits_A01.bam`.  For this we use the `samtools view` command
 
-    samtools view accepted_hits.bam | less
+    samtools view accepted_hits_A01.bam | less
 
 | Field | Value |
 |-------|-------|
@@ -112,7 +113,7 @@ While `samtools view` is nice, it would be nicer to actually see our reads in co
 
 To use IGV we need to create an index of our bam file
 
-    samtools index accepted_hits.bam
+    samtools index accepted_hits_A01.bam
 
 Start IGV from the Start > Education > IGV menu
 
@@ -126,21 +127,43 @@ Fill in the fields as follows:
 
 * Unique Identifier: BrapaV1.5
 * Descriptive name: Brassica rapa version 1.5
-* FASTA file: (click on Browse and point to BrapaV1.5_chrom_only.fa)
+* FASTA file: (click on Browse and point to `BrapaV1.5_chrom_only.fa`)
 * Cytoband file: (leave blank)
-* Gene file: (click on Browse and point to the Brapa_gene_v1.5.gff file)
+* Gene file: (click on Browse and point to the `Brapa_gene_v1.5.gff` file)
 * Alias file: (leave blank)
 
 ### Load some tracks
 
 Now to load our mapped reads:
 
-Click on File > Load From File ; then select the accepted.bam file
+Click on File > Load From File ; then select the `accepted_hits_A01.bam` file
 
-Click on File > Load From File again ; then select the junctions.bed file
+Click on File > Load From File again ; then select the `junctions.bed` file
+
+Click OK to index junctions.bed and OK again to sort it.
 
 ### Take a look
 
-Click on the "ALL" button and select a chromosome.  Then zoom in until you can see the reads.
+Click on the "ALL" button and select a chromosome A01.  Then zoom in until you can see the reads.
+
+* Grey vertical bars are a histogram of coverage
+* Grey horizontal bars represent reads.
+    * Thin lines connect read segments that were split across introns.
+    * Colored vertical lines show places where a read differs from the reference sequence.
+* In the lower panel, the blue blocks and lines show the reference annotation
+* The orange lines show junctions inferred by Tophat from our reads
+
+__Exercise 7__:  
+__a__ Can you distinguish likely SNPs from sequencing/alignment errors?  How?  
+__b__ Go to A01:15,660,359-15,665,048 (you can cut and paste this into the viewer and press "Go".  For each of the the three genes in this region: does the annotation (in blue) appear to be correct or incorrect? If incorrect, describe what is wrong
+
+## Calling SNPs using Freebayes
+
+First we removed duplicate reads
+
+Then we assign read groups to the files
+
+Now we can run freebayes
+
 
 

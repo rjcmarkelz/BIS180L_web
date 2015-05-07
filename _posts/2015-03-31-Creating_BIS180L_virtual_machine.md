@@ -94,6 +94,7 @@ bioconductor (while still in R)
 	biocLite()
     #biocLite("snpMatrix") #not available
     biocLite("edgeR")
+    biocLite("VariantAnnotation")
 
 	
 ## Rstudio
