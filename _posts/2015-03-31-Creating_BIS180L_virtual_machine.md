@@ -123,6 +123,7 @@ not sure which viewer I will use so install several
 
 ## igv
 
+__NO THIS VERSION IS BROKEN__ GET FROM WEBSITE
     sudo apt-get igv
     
 ## lxmed
