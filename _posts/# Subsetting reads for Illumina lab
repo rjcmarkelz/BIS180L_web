@@ -1,0 +1,19 @@
+# Subsetting reads for Illumina lab
+
+I want reads that have R500 and IMB211
+I want reads that can be split by barcode
+I want enough depth to see something interesting by IGV
+
+How to do this?
+
+I could just take the first 200K reads from one fastQ file and then provide a bam file later.  Doesn't seem like much fun.
+
+Subset reads from a chromosome, figure out the read names, grab them from the initial fastq file...
+
+I will try that
+
+Running out of time.
+
+For now Take first Million reads of  /iplant/home/shared/ucd.plantbio/maloof.lab/members/upendra/Parents_stuff/67.20110823.GH_lane1/s_1_1_sequence.txt
+
+    head -n 4000000 s_1_1_sequence.txt > GH.lane67.fastq
