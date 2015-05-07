@@ -37,8 +37,9 @@ Unfortunately the version of IGV installed on your computers does not work and i
 
 Download the binary distribution from the [download page](https://www.broadinstitute.org/software/igv/download)
 
-Move the unzipped directory to BioinformaticsPackages
+Unzip it and move the unzipped directory to BioinformaticsPackages
 
+    unzip IGV_2.3.52.zip
     mv ~/Downloads/IGV_2.3.52 ~/BioinformaticsPackages/
 
 Add the following line to the end of your `.bashrc` file
@@ -48,18 +49,6 @@ Add the following line to the end of your `.bashrc` file
 The source your `.bashrc`
 
     source .bashrc
-
-## FreeBayes
-
-There are many SNP callers available.  We will use one called [FreeBayes](https://github.com/ekg/freebayes) (If you scroll down on the webpage you will get to the help file, etc.)  I like it because it automatically deals with alignment issues that are particularly problematic in RNA-seq data.  (but I have not done a good comparison with the other options.)
-
-    cd BioinformaticsPackages/
-    git clone --recursive git://github.com/ekg/freebayes.git
-    sudo apt-get install cmake
-    cd freebayes
-    make
-    sudo make install
-
 
 ## Examine tophat output
 
@@ -157,17 +146,29 @@ __Exercise 7__:
 __a__ Can you distinguish likely SNPs from sequencing/alignment errors?  How?  
 __b__ Go to A01:15,660,359-15,665,048 (you can cut and paste this into the viewer and press "Go".  For each of the the three genes in this region: does the annotation (in blue) appear to be correct or incorrect? If incorrect, describe what is wrong
 
-## Calling SNPs using Freebayes
+## Calling SNPs
 
-Make a new directory for this analysis:
+The goal of this section is to find polymorphisms between IMB211 and R500.  There are many tools available.  We will use [mpileup and bcftools](http://samtools.sourceforge.net/mpileup.shtml) part of the samtools suite.
 
+Make a new directory for this analysis inside the Brassica_assigment directory
 
+    mkdir SNP_analysis
+    cd SNP_analysis
 
-First we remove duplicate reads
+In the library preparation step there is a PCR amplification.  This can cause duplication of DNA fragments.  We want to remove these duplicate reads because they can skew our SNP analysis (essentially they represent pseudo-replication, giving us artificially high sample numbers).  We will use `samtools rmdup` to remove the duplicate reads 
 
-Then we assign read groups to the files
+    samtools rmdup -s ../tophat_out-IMB211_All_A01_INTERNODE.fq/accepted_hits_A01.bam IMB211_rmdup.bam
 
-Now we can run freebayes
+    rmdup -s ../tophat_out-R500_All_A01_INTERNODE.fq/accepted_hits_A01.bam  R500_rmdup.bam
 
+Next create an index for each of the new files
 
+    samtools index IMB211_rmdup.bam
+    samtools index R500_rmdup.bam
+
+Now we us `samtools mpileup` to look for SNPs.
+
+    samtools mpileup -uf ../Brapa_reference/BrapaV1.5_chrom_only.fa IMB211_rmdup.bam R500_rmdup.bam | bcftools view -vcg - > IMB211_R500.vcf
+
+We will examine these in R either at the end of this lab or on Friday.
 
