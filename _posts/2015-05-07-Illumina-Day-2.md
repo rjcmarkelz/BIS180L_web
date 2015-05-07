@@ -108,7 +108,7 @@ Then start IGV by typing
 
     igv.sh
 
-__Important do not try starting it from the command line, it will not work__
+__Important do not try starting it from the start menu, it will not work__
 
 ### Create a .genome file for IGV to use
 
