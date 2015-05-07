@@ -104,7 +104,11 @@ To use IGV we need to create an index of our bam file
 
     samtools index accepted_hits_A01.bam
 
-Start IGV from the Start > Education > IGV menu
+Then start IGV by typing
+
+    igv.sh
+
+__Important do not try starting it from the command line, it will not work__
 
 ### Create a .genome file for IGV to use
 
@@ -148,7 +152,7 @@ __b__ Go to A01:15,660,359-15,665,048 (you can cut and paste this into the viewe
 
 ## Calling SNPs
 
-The goal of this section is to find polymorphisms between IMB211 and R500.  There are many tools available.  We will use [mpileup and bcftools](http://samtools.sourceforge.net/mpileup.shtml) part of the samtools suite.
+The goal of this section is to find polymorphisms between IMB211 and R500.  There are many tools available.  We will use [mpileup and bcftools](http://samtools.sourceforge.net/mpileup.shtml) part of the samtools suite.  [Additional Info](http://massgenomics.org/2012/03/5-things-to-know-about-samtools-mpileup.html)
 
 Make a new directory for this analysis inside the Brassica_assigment directory
 
