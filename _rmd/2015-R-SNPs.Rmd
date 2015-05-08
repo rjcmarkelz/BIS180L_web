@@ -1,0 +1,138 @@
+```{r}
+setwd("~/BIS180L_Assignments_Julin.Maloof/Brassica_Assignment/SNP_analysis/")
+```
+
+
+The .vcf file contain information on SNPs.  We want to filter the SNPs to remove low quality SNPs.  We also could use this for downstream analyses, i.e. use these as genetic markers for mapping or QTL mapping, look for genes with coding changes, etc.
+```{r getdata}
+library(ggplot2)
+vcf.data <- read.table("IMB211_R500.vcf",as.is=T)
+head(vcf.data)
+```
+
+There is no column heading.  It is in the .vcf file but is not loaded into R because its first character is "#".  Here we get it by using a system()` call.  This has R issue a command to the linux shell.  The column headings start with "#CHROM" so we use grep to search for that line.  `intern = TRUE` tells R that we want to capture the output of the command.
+
+```{r getheader}
+vcf.header <- system("grep '#C' IMB211_R500.vcf",intern = TRUE) #might not work on Windows
+vcf.header
+vcf.header <- sub("#","",vcf.header) #get rid of the pound sign
+```
+
+The header is tab delimited, so we split on tabs and use those as column names
+```{r formatheader}
+vcf.header <- unlist(strsplit(vcf.header,split="\t"))
+colnames(vcf.data) <- vcf.header
+head(vcf.data)
+```
+
+Now with the headers attached the file makes a bit more sense.  Detailed information [is here](https://samtools.github.io/hts-specs/VCFv4.2.pdf), but briefly:
+
+* CHROM and POS should be obvious
+* ID is not used here
+* REF is the reference sequence (From the fasta file)
+* ALT is the allele found in out sample(s)
+* QUAL is the phred-scaled quality of the polymorphism.
+* FILTER is not used here.  There are programs that will place flags in this field to indicate that a SNP should be filtered out.
+* INFO lots of INFO.  We can learn about these from the beginning of the vcf file (See below)
+* FORMAT tells is the identity of the numbers in the next two fields
+    * GT: The most probably genotype.  1/1 is homozygous alternate; 0/0 is homozygous reference; 0/1 is heterozygous.
+    * PL: Phred scaled relative likelihoods of the 3 genotypic possiblities (0/0 , 0/1, 1/1).  The most likely is scored "0".  Higher is worse.
+    * DP: Total high quality read counts
+    * DV: High quality read counts that match the alternate allele
+    * GQ: Overall Phred-scaled Genotype Quality; higher is better (probability that the genotype call is wrong)
+
+This information is at the beginning of the .vcf file which we could look at with `less` at the Linux command line, or we can look at it in R using system calls.  (Might not work on Windows)
+
+```{r moreHeader}
+system("grep '##INFO' IMB211_R500.vcf")
+
+system("grep '##FORMAT' IMB211_R500.vcf")
+```
+
+To be able to use the SNP data in R we need to break up the data in the final two columns.  We use the command `strsplit()` for this.  `strsplit()` splits a character string based at every occurence of a character.  We will make a temporary data frame and then bind it back to the original data file.
+
+```{r split}
+IMB211.tmp <- matrix(
+  unlist(strsplit(vcf.data$IMB211_rmdup.bam,split = ":")),
+  nrow=nrow(vcf.data),
+  byrow=TRUE
+  )
+head(IMB211.tmp)
+colnames(IMB211.tmp) <- paste("IMB211",c("gt","lik","tot.depth","alt.depth","qual"),sep="_")
+
+R500.tmp <- matrix(
+  unlist(strsplit(vcf.data$R500_rmdup.bam,split = ":")),
+  nrow=nrow(vcf.data),
+  byrow=TRUE
+  )
+head(R500.tmp)
+colnames(R500.tmp) <- paste("R500",c("gt","lik","tot.depth","alt.depth","qual"),sep="_")
+
+vcf.data <- cbind(vcf.data,IMB211.tmp,R500.tmp,stringsAsFactors=FALSE)
+summary(vcf.data)
+```
+
+We see one problem: we need to convert the columns that should be numbers back to numeric.  This is done by extracting the relecant columns, using `apply` to apply the `as.numeric` function to each column, and then placing the results back in the correct place
+
+```{r numeric}
+head(vcf.data)
+vcf.data[,c("POS","QUAL","IMB211_tot.depth","IMB211_alt.depth","IMB211_qual","R500_tot.depth","R500_alt.depth","R500_qual")] <- 
+  apply(vcf.data[,c("POS","QUAL","IMB211_tot.depth","IMB211_alt.depth","IMB211_qual","R500_tot.depth","R500_alt.depth","R500_qual")],
+        2,
+        as.numeric
+        )
+head(vcf.data)
+summary(vcf.data)
+```
+
+Now let's do some data exploration.  First let's limit ourselves to the SNP data.  In the line below, `grepl` returns a TRUE or FALSE depending on whether or not "INDEL" is found in the info field.  By reversing this ("!") we can only keep those rows without an INDEL, (i.e. we keep the SNPs) 
+```{r snp.data}
+snp.data <- vcf.data[!grepl("INDEL",vcf.data$INFO),]
+```
+
+__Exercise 1__  
+Make two histograms, one for R500 genotype quality and one for IMB211 quality
+```{r histograms}
+hist(snp.data$R500_qual)
+hist(snp.data$IMB211_qual)
+```
+
+__Exercise 2__  
+__a__Subset the data to only keep positions where both IMB211 and R500 have a quality >= 20.  
+__b__ At a quality of 20 what is the probability that the genotype call is wrong? (Hint: check the wikipedia)
+```{r filter}
+snp.data.good <- snp.data[snp.data$IMB211_qual>=20 & snp.data$R500_qual>=20,]
+```
+
+We can count the number of homozygous and heterzougous snps using table:
+
+```{r snptable}
+table(snp.data.good$IMB211_gt)
+table(snp.data.good$R500_gt)
+```
+
+We can even count the numbers common and unique to each genotype
+
+```{r}
+ftable(snp.data.good[,c("IMB211_gt","R500_gt")])
+
+```
+
+__Exercise 3__  
+__a__ Using the higher quality SNP list, plot the position along the chromosome of each SNP (x axis), read depth (R500 and IMB211 combined) (y axis).  
+__b__ Why might there be gaps with no SNPs?  
+__Bonus__: color each SNP for whether it is R500 specific, IMB specific, or common.
+```{r}
+library(ggplot2)
+snp.data.good$category <- NA                             
+snp.data.good$category[snp.data.good$IMB211_gt=="0/0"]  <- "R500_only"
+snp.data.good$category[snp.data.good$R500_gt=="0/0"] <- "IMB211_only"
+snp.data.good$category[snp.data.good$R500_gt!="0/0" & snp.data.good$IMB211_gt!="0/0"] <- "Both"
+table(snp.data.good$category)
+snp.data.good$tot.depth <- snp.data.good$IMB211_tot.depth+snp.data.good$R500_tot.depth
+qplot(x=POS,y=tot.depth,color=category,pch=category,data=snp.data.good)
+
+```
+
+__For Fun (?)--not graded--__  
+Plot the number of each type of base change (A->G, etc).  Are the differences?  Is this expected?
