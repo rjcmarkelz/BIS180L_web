@@ -9,7 +9,7 @@ hidden: true
 output: html_document
 ---
 
-In Thursday's lab we finished by making a .vcf file.  I realized that we need to add a couple of additional flags to `samtools mpileup` to get all of the information that we need about these polymorphisms (Thursday's lab is now updated).  Unless you have already run `samtools mpileup` with the -DV flags, please re-run it as follows:
+In Thursday's lab we finished by making a .vcf file.  I realized that we need to add a couple of additional flags to `samtools mpileup` to get all of the information that we need about these polymorphisms (Thursday's lab is now updated).  Unless you have already run `samtools mpileup` with the -DV flags, please re-run it as below.  Or [download a new version]({{site.url}}/data/IMB211_R500.vcf).
 
 ```
 samtools mpileup -DVuf ../Brapa_reference/BrapaV1.5_chrom_only.fa IMB211_rmdup.bam R500_rmdup.bam | bcftools view -vcg - > IMB211_R500.vcf
@@ -134,16 +134,16 @@ Now let's do some data exploration.  First let's limit ourselves to the SNP data
 snp.data <- vcf.data[!grepl("INDEL",vcf.data$INFO),]
 ```
 
-__Exercise 1__  
-Make two histograms, one for R500 genotype quality and one for IMB211 quality
-```{r histograms}
+__Practice 1__  
+To explore the quality of our data, make two histograms, one for R500 genotype quality and one for IMB211 quality
+```{r histograms, echo=FALSE, eval=FALSE}
 hist(snp.data$R500_qual)
 hist(snp.data$IMB211_qual)
 ```
 
-__Exercise 2__  
+__Practice 2__  
 __a__Subset the data to only keep positions where both IMB211 and R500 have a quality >= 20.  
-__b__ At a quality of 20 what is the probability that the genotype call is wrong? (Hint: check the wikipedia)
+__b__ At a quality of 20 what is the probability that the genotype call is wrong? (Hint: check the wikipedia entry on Phred scores)
 ```{r filter, echo=FALSE}
 snp.data.good <- snp.data[snp.data$IMB211_qual>=20 & snp.data$R500_qual>=20,]
 ```
@@ -162,7 +162,7 @@ ftable(snp.data.good[,c("IMB211_gt","R500_gt")])
 
 ```
 
-__Exercise 3__  
+__Practice 3__  
 __a__ Using the higher quality SNP list, plot the position along the chromosome of each SNP (x axis), read depth (R500 and IMB211 combined) (y axis).  
 __b__ Why might there be gaps with no SNPs?  
 __Bonus__: color each SNP for whether it is R500 specific, IMB specific, or common.
