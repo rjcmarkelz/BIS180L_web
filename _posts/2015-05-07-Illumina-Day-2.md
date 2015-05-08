@@ -163,7 +163,7 @@ In the library preparation step there is a PCR amplification.  This can cause du
 
     samtools rmdup -s ../tophat_out-IMB211_All_A01_INTERNODE.fq/accepted_hits_A01.bam IMB211_rmdup.bam
 
-    rmdup -s ../tophat_out-R500_All_A01_INTERNODE.fq/accepted_hits_A01.bam  R500_rmdup.bam
+    samtools rmdup -s ../tophat_out-R500_All_A01_INTERNODE.fq/accepted_hits_A01.bam  R500_rmdup.bam
 
 Next create an index for each of the new files
 
