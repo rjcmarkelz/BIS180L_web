@@ -170,7 +170,7 @@ Next create an index for each of the new files
     samtools index IMB211_rmdup.bam
     samtools index R500_rmdup.bam
 
-Now we us `samtools mpileup` to look for SNPs.  Samtools mpileup calculates the number of reference and alternate alleles at each position in the genome and genotype likelihoods.  bcftools makes a call of the most likely genotype.
+Now we use `samtools mpileup` to look for SNPs.  Samtools mpileup calculates the number of reference and alternate alleles at each position in the genome and genotype likelihoods.  bcftools makes a call of the most likely genotype.
 
     samtools mpileup -DVuf ../Brapa_reference/BrapaV1.5_chrom_only.fa IMB211_rmdup.bam R500_rmdup.bam | bcftools view -vcg - > IMB211_R500.vcf
 
