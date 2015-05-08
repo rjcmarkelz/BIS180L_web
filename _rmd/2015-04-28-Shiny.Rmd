@@ -201,7 +201,7 @@ I have listed some ideas below, __but feel free to choose something else__
 
 ### BLAST ideas
 
-* Interactive plot to explore different hypotheses for Exercise 13 from the [R Intro lab]({{site.url}}/{% post_url 2015-04-14-R-intro %}).
+* Interactive plot to explore different hypotheses for Exercise 13 from the [R Intro lab]({{site.baseurl}}/{% post_url 2015-04-14-R-intro %}).
   * The user could select which trait might affect the sequence length vs score relationship.  The plot could be a scatter plot of score vs sequence length colored by the value of the user-selected variable.  If you want to get fancy add a [slider-bar](http://shiny.rstudio.com/gallery/sliders.html) that allows the user to set the limits of the data ploted.    
   * Or the plot could be a boxplot of score faceted by high and low sequence length and high and low values of the user-selected variable (you could split these by median length).  Again you could add a [slider-bar](http://shiny.rstudio.com/gallery/sliders.html) that allows the user to set the split point for the graph facets.
   
