@@ -170,9 +170,27 @@ Next create an index for each of the new files
     samtools index IMB211_rmdup.bam
     samtools index R500_rmdup.bam
 
-Now we us `samtools mpileup` to look for SNPs.
+Now we us `samtools mpileup` to look for SNPs.  Samtools mpileup calculates the number of reference and alternate alleles at each position in the genome and genotype likelihoods.  bcftools makes a call of the most likely genotype.
 
-    samtools mpileup -uf ../Brapa_reference/BrapaV1.5_chrom_only.fa IMB211_rmdup.bam R500_rmdup.bam | bcftools view -vcg - > IMB211_R500.vcf
+    samtools mpileup -DVuf ../Brapa_reference/BrapaV1.5_chrom_only.fa IMB211_rmdup.bam R500_rmdup.bam | bcftools view -vcg - > IMB211_R500.vcf
+
+You should check the man page for the meaning of the flags, but briefly, 
+
+* for samtools, 
+    * -D and -V indicate that per sample depth and variant depth should be reported.  
+    * -u is uncompressed format
+    * -f specifies the reference fasta file.  
+* For bcftools,
+    * -c specifies that variants should be called. 
+    * -v limits the output to variant sites only
+    * -g reports separate genotype calls for each sample
+
 
 We will examine these in R either at the end of this lab or on Friday.
+
+## Further info on SNP calling:
+
+* Other mpileup flags [may be useful depending on your situation](http://samtools.sourceforge.net/mpileup.shtml).
+* Realigning your reads around indels using the [GATK realigner](https://www.broadinstitute.org/gatk/guide/tooldocs/org_broadinstitute_gatk_tools_walkers_indels_IndelRealigner.php) is recommended.
+* GATK offers an alternative and popular [genotyping pipeline and caller](https://www.broadinstitute.org/gatk/)
 
