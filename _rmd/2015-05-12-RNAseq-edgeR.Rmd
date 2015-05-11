@@ -1,0 +1,65 @@
+---
+type: lab
+hidden: true
+title: Differential Gene Expression from Illumina RNAseq
+output: html_document
+---
+
+## Background
+
+## Preliminaries
+
+We need a couple of additional Bioconductor libraries.  The `Rsubread` library will enable us to go from mapped reads to a count of reads per gene.  The `rtracklayer` library enables us to convert gff files to gtf files.
+
+First we need to install a Linux dependency.  From the Linux command line:
+
+  sudo apt-get install libxml2-dev
+
+Now we can install the R pacakages.  Start Rstudio and enter:
+
+```{r install_subread,eval=FALSE}
+  source("http://bioconductor.org/biocLite.R")
+	biocLite(c("Rsubread","rtracklayer"))
+```
+
+If R asks you about using a personal library, answer "y".  If R asks you if you want to update pacakages you can answer "n". 
+
+Don't worry about the warning messages.  Do worry if you get a message saying "ERROR could not install."
+
+## GFF to GTF
+
+There are two closely related file formats that describe genomic features, [GFF](http://www.sequenceontology.org/gff3.shtml) and [GTF](http://mblab.wustl.edu/GTF22.html).  Unfortunately we have a GFF but we need a GTF.  Fortunately the conversion is pretty easy.
+
+Set your working directory to the Brassica_Assignment directory.  Then:
+
+```{r GFF2GTF}
+library(rtracklayer)
+gff <- import.gff("Brapa_reference/Brapa_gene_v1.5.gff")
+gff #take a look
+
+#create a column "gene_id" that contains the gene name for every entry
+gff$gene_id <- regmatches(gff$group,regexpr("Bra[0-9]+$",gff$group))
+
+export(gff,"Brapa_reference/Brapa_gene_v1.5.gtf",format="gtf")
+```
+
+## Bam to read counts
+
+As you know from last week's lab, we mapped RNAseq reads to the _B. rapa_ genome.  In order to ask if reads are differentially expressed between cultivars (IMB211 vs. R500) or treatments (dense planting vs. non-dense planting) we need to know how many reads were sequences from each gene.
+
+To do this we use the bam files (telling us where in the genome the reads mapped) and the .gtf file that we just generated (telling us where the genes are) to figure out which reads belong to which genes.  Thankfully the `Rsubread` package does this for us.  An alternative workflow (not used here) would be to use the python package [`HTSeq`](http://www-huber.embl.de/HTSeq/)
+
+Let's try this on the two files from Thursday.  You may need to change the path listed below to make this work.
+
+```{r Rsubread}
+library(Rsubread)
+readCounts <- featureCounts(
+  files=c("tophat_out-IMB211_All_A01_INTERNODE.fq/accepted_hits_A01.bam","tophat_out-R500_All_A01_INTERNODE.fq/accepted_hits_A01.bam"),
+  file.type="BAM", #can be SAM or BAM
+  annot.ext="Brapa_reference/Brapa_gene_v1.5.gtf", 
+  isGTFAnnotationFile=TRUE,
+  GTF.featureType="CDS", # This depends on GTF file.  Often it would be "exon"
+  GTF.attrType="gene_id"
+  )
+```
+
