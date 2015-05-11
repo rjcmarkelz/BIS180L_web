@@ -55,11 +55,25 @@ Let's try this on the two files from Thursday.  You may need to change the path 
 library(Rsubread)
 readCounts <- featureCounts(
   files=c("tophat_out-IMB211_All_A01_INTERNODE.fq/accepted_hits_A01.bam","tophat_out-R500_All_A01_INTERNODE.fq/accepted_hits_A01.bam"),
-  file.type="BAM", #can be SAM or BAM
   annot.ext="Brapa_reference/Brapa_gene_v1.5.gtf", 
   isGTFAnnotationFile=TRUE,
   GTF.featureType="CDS", # This depends on GTF file.  Often it would be "exon"
   GTF.attrType="gene_id"
   )
 ```
+
+__Exercise 1__  
+Read the help file for feature counts.  Be sure to look at the section "Value" where it describes the output.  
+__a__ Provide a line of code that displays the counts of the first 6 genes.  Not very interesting because the first genes in the file are on chromosome A03 (strange numbering...) and our bam file only has counts from A01...  
+__b__ `Bra011030` is on chromosome A01.  What are its read counts in the two files?
+__c__ What percentage of reads (from each file) were assigned to a gene?  What percentage were unassigned because they were not located in a gene (aka "Feature")?  
+```{r Ex1,echo=FALSE,eval=FALSE}
+head(readCounts$count)
+readCounts$count["Bra011030",]
+readCounts$stat
+100*readCounts$stat[,-1]/colSums(readCounts$stat[,-1])
+```
+
+
+
 
