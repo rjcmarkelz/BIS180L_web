@@ -22,7 +22,7 @@ Now we can install the R pacakages.  Start Rstudio and enter:
 	biocLite(c("Rsubread","rtracklayer"))
 ```
 
-If R asks you about using a personal library, answer "y".  If R asks you if you want to update pacakages you can answer "n". 
+If R asks you about using a personal library, answer "y".  If R asks you if you want to update packages you can answer "n". 
 
 Don't worry about the warning messages.  Do worry if you get a message saying "ERROR could not install."
 
@@ -64,16 +64,14 @@ readCounts <- featureCounts(
 
 __Exercise 1__  
 Read the help file for feature counts.  Be sure to look at the section "Value" where it describes the output.  
-__a__ Provide a line of code that displays the counts of the first 6 genes.  Not very interesting because the first genes in the file are on chromosome A03 (strange numbering...) and our bam file only has counts from A01...  
-__b__ `Bra011030` is on chromosome A01.  What are its read counts in the two files?
-__c__ What percentage of reads (from each file) were assigned to a gene?  What percentage were unassigned because they were not located in a gene (aka "Feature")?  
+__a__ Provide a line of code that displays the counts of the first 6 genes.  (It is not very interesting because the first genes in the file are on chromosome A03 (strange numbering...) and our bam file only has counts from A01...  )
+__b__ The gene `Bra011030` is on chromosome A01.  What are its read counts in the two files?
+__c__ What percentage of reads (from each file) were assigned to a gene?  What percentage were unassigned because they were not located in a gene (aka "Feature")?
+__d__ What are 2 possible reasons why there are reads that cannot be assigned to a gene?  
 ```{r Ex1,echo=FALSE,eval=FALSE}
 head(readCounts$count)
 readCounts$count["Bra011030",]
 readCounts$stat
 100*readCounts$stat[,-1]/colSums(readCounts$stat[,-1])
 ```
-
-
-
 
