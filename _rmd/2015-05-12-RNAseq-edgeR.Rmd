@@ -55,8 +55,8 @@ There are two closely related file formats that describe genomic features, [GFF]
 
 Set your working directory to the Brassica_Assignment directory.  Then:
 
-```{r GFF2GTF}
-library(rtracklayer, eval=FALSE)
+```{r GFF2GTF, eval=FALSE}
+library(rtracklayer)
 gff <- import.gff("../Brapa_reference/Brapa_gene_v1.5.gff")
 gff #take a look
 
@@ -87,9 +87,9 @@ readCounts <- featureCounts(
 
 __Exercise 1__  
 Read the help file for feature counts.  Be sure to look at the section "Value" where it describes the output.  
-__a__ Provide a line of code that displays the counts of the first 6 genes.  (It is not very interesting because the first genes in the file are on chromosome A03 (strange numbering...) and our bam file only has counts from A01...  )
-__b__ The gene `Bra011030` is on chromosome A01.  What are its read counts in the two files?
-__c__ What percentage of reads (from each file) were assigned to a gene?  What percentage were unassigned because they were not located in a gene (aka "Feature")?
+__a__ Provide a line of code that displays the counts of the first 6 genes.  (It is not very interesting because the first genes in the file are on chromosome A03 (strange numbering...) and our bam file only has counts from A01...  )  
+__b__ The gene `Bra011030` is on chromosome A01.  What are its read counts in the two files?  
+__c__ What percentage of reads (from each file) were assigned to a gene?  What percentage were unassigned because they were not located in a gene (aka "Feature")?  
 __d__ What are 2 possible reasons why there are reads that cannot be assigned to a gene?  
 ```{r Ex1,echo=FALSE,eval=FALSE}
 head(readCounts$count)
@@ -121,7 +121,7 @@ Move the downloaded data to your current working directory.
 __a__. Create a new object in R called `counts.data` with either the leaf data or the internode data.  
 __b__. Check to make sure that the data looks as expected.  (What do you expect and how do you confirm?  Show your commands and output.)
 
-```{r import_data,echo=FALSE}
+```{r import_data,echo=FALSE,results='hide'}
 counts.data <- read.delim("../data/gh_internode_counts.tsv")
 summary(counts.data)
 dim(counts.data)
@@ -172,7 +172,7 @@ counts.data <- counts.data[rowSums(counts.data > 10) >= 3,]
 ```
 
 __Exercise 5:__  
-We expect that read counts, especially from biological replicates, will be highly correlated.  Check to see if this is the case using the `pairs()` function and the `cor()`.  Function.  Explain what each of these functions does and comment on the results.  __Important Hint 3:__ _`pairs` is slow on the full dataset.  Try it on the first 1,000 genes.  Do you need to transform to make the pairs output more meaningful?_
+We expect that read counts, especially from biological replicates, will be highly correlated.  Check to see if this is the case using the `pairs()` function and the `cor()` function.  Explain what each of these functions does and comment on the results.  __Important Hint:__ _`pairs` is slow on the full dataset.  Try it on the first 1,000 genes.  Do you need to transform to make the pairs output more meaningful?_
 
 ```{r Ex 5, echo=FALSE,eval=FALSE}
 pairs(log10(counts.data[1:1000,]))
@@ -187,7 +187,7 @@ In this section, we will normalize the counts data and determine how normalizati
 
 Before we can normalize the data we need to be able to tell edgeR which groups the samples belong to.  Here group refers to the distinct sample types (i.e. combinations of genotype and treatment), not considering biorep.  In a later step we will need to tell edgeR our experimental design (the treatment and genotype relevant for each sample).  Here we create a data.frame with both group, genotype, and treatment info.  To do this we use the powerful search features of regular expressions.  There is a reasonable tutorial [here](https://bioinfomagician.wordpress.com/category/regular-expression/).  Regular expressions are a very important tool found in most computer langauges, including the Linux shell, Perl, Python, and R.
 
-```{r sample_descriptons}
+```{r sample_descriptons,results='hide'}
 sample.description <- data.frame(
   sample=colnames(counts.data),
   
@@ -212,7 +212,7 @@ sample.description
 
 Now we use the edgeR function `calcNormFactors()` to calculate the effective library size and normalization factors using the TMM method on our counts data.  First we create a DGEList object, which is an object class defined by edgeR to hold the data for differential expression analysis.
 
-```{r normFactor}
+```{r normFactor,results='hide'}
 library(edgeR)
 dge.data <- DGEList(counts=counts.data, group=sample.description$group)
 dim(dge.data) 
@@ -221,6 +221,7 @@ dge.data$samples # look at the normalization factors
 ```
 
 #### Make a plot of the Biological Coefficient of Variation of each sample
+
 Statistically significant differential expression is assessed based on variance within and between treatments. We can partition the variance between replicate RNA samples into two sources: **technical variance** and **biological variance**. 
 
 Technical variance usually decreases as the number of total gene counts increases. Biological variance, however, will not change even if total library size increases. One way of analyzing the variation in a data set is to look at the coefficient of variation (CV), or the variation related to the average value of the whole population (of genes in this case).  CV is calculated as standard deviation divided by the mean.  We can also look at the CV of the biological variance, or BCV.  A reliable estimate of the Biological Coefficient of Variation is required for realistic assessment of differential expression in RNA-seq experiments.
@@ -228,7 +229,7 @@ Technical variance usually decreases as the number of total gene counts increase
 We can use the BCV to calculate the distance between samples based on their gene expression.  Similar to the SNP data set we have a high dimension data set.  Like the SNP data set we can use multi-dimensional scaling to plot the gene expression distances in 2 dimensions.
 
 
-```{r MDS}
+```{r MDS,results='hide'}
 plotMDS(dge.data, method = "bcv") 
 ```
 
@@ -274,7 +275,7 @@ design
 This has created a design matrix where each row represents one sample and each column represents a factor in the experiment.  The "1"s indicate that a particular factor applies to a sample.  In this design we have a coefficient to indicate the genotype and a coefficient to indicate the treatment.
 
 Now we estimate the dispersions
-```{r dispersion}
+```{r dispersion, results='hide'}
 #First the overall dispersion
 dge.data <- estimateGLMCommonDisp(dge.data,design,verbose = TRUE)
 
@@ -290,7 +291,7 @@ plotBCV(dge.data)
 
 You can see from the plot why you would not want to rely on the common dispersion!
 
-#### Find differentially expressed genes
+### Find differentially expressed genes
 
 Finally we are ready to look for differentially expressed genes.  We proceed by fitting a generalized linear model (GLM) for each gene.
 
@@ -339,6 +340,8 @@ It would be handy to plot bar charts of genes of interest.  Below is a function 
 
 ```{r plotDE_function}
 plotDE <- function(genes, dge, sample.description) {
+  require(ggplot2)
+  require(reshape2)
   tmp.data <- t(log2(cpm(dge[genes,])+1))
   tmp.data <- merge(tmp.data,sample.description,by.x="row.names",by.y="sample")
   tmp.data <- melt(tmp.data,value.name="log2_cpm",variable.name="gene")
@@ -351,7 +354,7 @@ plotDE <- function(genes, dge, sample.description) {
 ```
 
 With the function defined we can call it as follows:
-```{r plotDE}
+```{r plotDE,eval=FALSE}
 # A single gene
 plotDE("Bra009785",dge.data,sample.description)
 
@@ -416,9 +419,4 @@ write.csv(DEgene.interaction,"DEgenes.interaction.csv")
 #top 9 genes
 plotDE(rownames(DEgene.interaction)[1:9],dge.data.interaction,sample.description)
 ```
-
-
-
-
-
 
