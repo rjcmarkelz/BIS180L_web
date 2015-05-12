@@ -1,8 +1,13 @@
 ---
-type: lab
+layout: lab
 hidden: true
 title: Differential Gene Expression from Illumina RNAseq
 output: html_document
+tags:
+- R
+- Brassica
+- Illumina
+- RNAseq
 ---
 
 ```{r setup, include=FALSE}
