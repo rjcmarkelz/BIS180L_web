@@ -7,6 +7,17 @@ output: html_document
 
 ## Background
 
+The principle behind calling differentially expressed genes is similar to that for other hypothesis-based tests such as ANOVA or t-tests.  We will call genes differentially expressed if the mean expression between treatments is larger than would be expected by chance given the amount of variance among replicates within a treatment type.  However there are several important issues to consider: the first is multiple testing.  Imagine doing a t-test for differential expression on 30,000 genes.  At p < .05 you would expect 5% (600!) of the genes to be called as significantly different by random chance.  This is known as the multiple testing problem and the p-values must be adjusted to compensate for the large number of tests.  Second there are typically very few replicates per treatment reducing power; thankfully techniques have been developed to “share” information between genes to somewhat deal with this issue.  Third, the methods developed for microarray analysis are not directly applicable. Log-transformed microarray data can be effectively modeled as normally distributed.  In contrast RNAseq data is count data and therefore has a different (non-normal) numerical distribution. Consequently statistical models require a different error distribution.
+
+At first glance one might think that the [Poisson distribution](http://en.wikipedia.org/wiki/Poisson_distribution) would be an appropriate model for RNAseq data: reads are discrete events and the chance of a read landing in any particular gene is very low.  Indeed Poisson models were originally tried.  However, in the Poisson distribution the expected mean and variance should be equal.  For most RNAseq data this is not true; the data is overdispersed: the variance is larger than the mean.  Alternatives are the [Negative Binomial](http://en.wikipedia.org/wiki/Negative_binomial_distribution) and Quasi-Poisson models.
+
+It is important to consider an appropriate measure of expression.  While some favor RPKM (Reads per kilobase exon length per million reads mapped), for finding DE genes it is better to normalize counts between samples using a different method (discussed below) and to not adjust for gene length.  Why?  1) the number of reads is not always a linear function of gene length. 2) dividing by gene length causes a loss of information.  By RPKM a gene of 1kb with 10 counts would be treated the same as a 100bp gene with 1 count, but clearly we are much more confident of the expression level when we have 10 counts instead of 1.  This information is lost in RPKM.
+
+Regarding normalization between samples, genes with very high expression levels can skew RPKM type normalization.  Consider two samples where gene expression is the same except that in the first sample RUBISCO is expressed at a very high level, taking up half of the reads.  In the second sample RUBISCO is expressed at a lower level, accounting for 25% of the reads.  By RPKM all non RUBISCO genes will appear to be expressed more highly in the second sample because RUBISO “takes up” fewer reads.  Methods such as [TMM normalization](http://genomebiology.com/2010/11/3/R25) can account for this.
+
+The two packages that I am aware of that effectively deal with the above issues are [DESeq](http://bioconductor.org/packages/release/bioc/html/DESeq.html) and [edgeR](http://www.bioconductor.org/packages/release/bioc/html/edgeR.html), both available through [Bioconductor](http://bioconductor.org/).  We will use edgeR for today's exercises.  
+
+
 ## Preliminaries
 
 We need a couple of additional Bioconductor libraries.  The `Rsubread` library will enable us to go from mapped reads to a count of reads per gene.  The `rtracklayer` library enables us to convert gff files to gtf files.
@@ -47,9 +58,9 @@ export(gff,"Brapa_reference/Brapa_gene_v1.5.gtf",format="gtf")
 
 As you know from last week's lab, we mapped RNAseq reads to the _B. rapa_ genome.  In order to ask if reads are differentially expressed between cultivars (IMB211 vs. R500) or treatments (dense planting vs. non-dense planting) we need to know how many reads were sequences from each gene.
 
-To do this we use the bam files (telling us where in the genome the reads mapped) and the .gtf file that we just generated (telling us where the genes are) to figure out which reads belong to which genes.  Thankfully the `Rsubread` package does this for us.  An alternative workflow (not used here) would be to use the python package [`HTSeq`](http://www-huber.embl.de/HTSeq/)
+To do this we use the bam files (telling us where in the genome the reads mapped) and the .gtf file that we just generated (telling us where the genes are) to figure out which reads belong to which genes.  Thankfully the `Rsubread` package does this for us.  An alternative workflow (not used here) would be to use the python package [`HTSeq`](http://www-huber.embl.de/HTSeq/).  Yet another alternative would have been to map our reads to cDNA fasta files and then use `samtools idxstats` on the bam file.
 
-Let's try this on the two files from Thursday.  You may need to change the path listed below to make this work.
+But for this lab we will use `Rsubread` on the two files from Thursday.  You may need to change the path listed below to make this work.
 
 ```{r Rsubread}
 library(Rsubread)
@@ -74,4 +85,19 @@ readCounts$count["Bra011030",]
 readCounts$stat
 100*readCounts$stat[,-1]/colSums(readCounts$stat[,-1])
 ```
+
+## Finding differentially expressed genes with edgeR
+
+The steps for finding differnetially expressed genes are to:
+
+1. Load the RNAseq counts.
+2. Normalize the counts.
+3. QC the counts.
+4. Create a data frame that describes the experiment.
+5. Determine the dispersion parameter (how over-dispersed is the data?)
+6. Fit a statistical model for gene expression as a function of experimental parameters.
+7. Test the significance of experimental parameters for explaining gene expression.
+8. Examine results
+
+### Get the counts data
 
