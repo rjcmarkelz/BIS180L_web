@@ -54,6 +54,8 @@ Pull your BIS180L_Assignments repository.
 
 Set your working directory in R to the "Diff_Exp" directory.
 
+You can open the `RNA_Seq_Assignment1.Rmd` file there to record you answers.
+
 ## GFF to GTF
 
 There are two closely related file formats that describe genomic features, [GFF](http://www.sequenceontology.org/gff3.shtml) and [GTF](http://mblab.wustl.edu/GTF22.html).  Unfortunately we have a GFF but we need a GTF.  Fortunately the conversion is pretty easy.
