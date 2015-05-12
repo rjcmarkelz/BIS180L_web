@@ -37,6 +37,12 @@ If R asks you about using a personal library, answer "y".  If R asks you if you 
 
 Don't worry about the warning messages.  Do worry if you get a message saying "ERROR could not install."
 
+## Set your working directory
+
+Pull your BIS180L_Assignments repository.
+
+Set your working directory in R to the "Diff_Exp" directory.
+
 ## GFF to GTF
 
 There are two closely related file formats that describe genomic features, [GFF](http://www.sequenceontology.org/gff3.shtml) and [GTF](http://mblab.wustl.edu/GTF22.html).  Unfortunately we have a GFF but we need a GTF.  Fortunately the conversion is pretty easy.
@@ -45,13 +51,13 @@ Set your working directory to the Brassica_Assignment directory.  Then:
 
 ```{r GFF2GTF}
 library(rtracklayer)
-gff <- import.gff("Brapa_reference/Brapa_gene_v1.5.gff")
+gff <- import.gff("../Brapa_reference/Brapa_gene_v1.5.gff")
 gff #take a look
 
 #create a column "gene_id" that contains the gene name for every entry
 gff$gene_id <- regmatches(gff$group,regexpr("Bra[0-9]+$",gff$group))
 
-export(gff,"Brapa_reference/Brapa_gene_v1.5.gtf",format="gtf")
+export(gff,"..Brapa_reference/Brapa_gene_v1.5.gtf",format="gtf")
 ```
 
 ## Bam to read counts
@@ -65,8 +71,8 @@ But for this lab we will use `Rsubread` on the two files from Thursday.  You may
 ```{r Rsubread}
 library(Rsubread)
 readCounts <- featureCounts(
-  files=c("tophat_out-IMB211_All_A01_INTERNODE.fq/accepted_hits_A01.bam","tophat_out-R500_All_A01_INTERNODE.fq/accepted_hits_A01.bam"),
-  annot.ext="Brapa_reference/Brapa_gene_v1.5.gtf", 
+  files=c("../tophat_out-IMB211_All_A01_INTERNODE.fq/accepted_hits_A01.bam","../tophat_out-R500_All_A01_INTERNODE.fq/accepted_hits_A01.bam"),
+  annot.ext="../Brapa_reference/Brapa_gene_v1.5.gtf", 
   isGTFAnnotationFile=TRUE,
   GTF.featureType="CDS", # This depends on GTF file.  Often it would be "exon"
   GTF.attrType="gene_id"
@@ -100,4 +106,71 @@ The steps for finding differnetially expressed genes are to:
 8. Examine results
 
 ### Get the counts data
+
+You can choose to study differential expression either in internodes or leafs.  Click to download the [internode data]({{site.baseurl}}/data/gh_internode_counts.tsv) or the [leaf data]({{site.baseurl}}/data/gh_leaf_counts.tsv).  Each of these has 12 samples with counts of 40991 genes.
+
+__Exercise 2__  
+Move the downloaded data to your current working directory.
+
+__a__. Create a new object in R called `counts.data` with either the leaf data or the internode data.  
+__b__. Check to make sure that the data looks as expected.  (What do you expect and how do you confirm?  Show your commands and output.)
+
+```{r import_data,echo=FALSE}
+counts.data <- read.delim("../data/gh_internode_counts.tsv")
+summary(counts.data)
+dim(counts.data)
+```
+
+You may have noticed that the first row is labelled "*".  These are the reads that did not map to a gene.  Let's remove this row from the data.  Also lets replace any "NA" records with "0" because that is really what is meant in this case
+
+```{r remove*}
+counts.data <- counts.data[rownames(counts.data)!="*",]
+counts.data[is.na(counts.data)] <- 0
+```
+
+
+__Exercise 3__  
+The column names are too long.  Use the `sub()` command to remove the ".1_matched.merged.fq.bam" suffix from each column name.  Although it doesn't matter in this case, using the argument "fixed=TRUE" is a good idea because "." is a wildcard character.
+
+When you are done, then typing `names(counts.data)` should give results below
+
+```{r ex3,echo=FALSE}
+colnames(counts.data) <- sub(".1_matched.merged.fq.bam","",colnames(counts.data),fixed=TRUE)
+names(counts.data)
+```
+
+### Data exploration
+
+__Exercise 4__
+Make a histogram of counts for each of the samples.  Is the data normally distributed?  Apply an appropriate transformation if needed and make a new set of histograms.  __Hint 1__: _see the use of the `melt()` function in the Rice-SNP lab_.  __Hint 2__: _You can transform the axes in ggplot by adding `scale_x_log10()` or `scale_x_sqrt()` to the plot.  One of these should be sufficient if you need to transorm, but for other ideas see the [Cookbook for R page](http://www.cookbook-r.com/Graphs/Axes_%28ggplot2%29/#axis-transformations-log-sqrt-etc)_.  
+
+```{r Ex4, eval=FALSE,echo=FALSE}
+library(reshape2)
+library(ggplot2)
+counts.melt <- melt(counts.data)
+head(counts.melt)
+pl <- ggplot(data=counts.melt,aes(x=value))
+pl <- pl + facet_wrap( ~ variable)
+pl <- pl + geom_histogram()
+pl
+pl + scale_x_sqrt()  # nope!
+pl + scale_x_log10() # Ahhh.  Looks good, although an abundance of low read samples.
+```
+
+For our subsequent analyses we want to reduce the data set to only those genes with some expression.  In this case we will ask for > 10 reads in >= 3 samples
+
+```{r reduce_data}
+counts.data <- counts.data[rowSums(counts.data > 10) >= 3,]
+```
+
+__Exercise 5:__  
+We expect that read counts, especially from biological replicates, will be highly correlated.  Check to see if this is the case using the `pairs()` function and the `cor()`.  Function.  Explain what each of these functions does and comment on the results.  __Important Hint 3:__ _`pairs` is slow on the full dataset.  Try it on the first 1,000 genes.  Do you need to transform?_
+
+```{r Ex 5, echo=FALSE,eval=FALSE}
+pairs(log10(counts.data[1:1000,]))
+cor(counts.data)
+```
+
+
+
 
