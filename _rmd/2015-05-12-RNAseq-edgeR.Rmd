@@ -107,7 +107,7 @@ The steps for finding differnetially expressed genes are to:
 
 ### Get the counts data
 
-You can choose to study differential expression either in internodes or leafs.  Click to download the [internode data]({{site.baseurl}}/data/gh_internode_counts.tsv) or the [leaf data]({{site.baseurl}}/data/gh_leaf_counts.tsv).  Each of these has 12 samples with counts of 40991 genes.
+We will study gene expression levels in _Brassica rapa_ internodes grown under two treatments, Dense Planting (DP) and Not Dense Planting (NDP).  We will study the response to DP in two cultivars, IMB211 and R500.  Click to download the [internode data]({{site.baseurl}}/data/gh_internode_counts.tsv).  This data set has 12 samples with counts of 40991 genes.
 
 __Exercise 2__  
 Move the downloaded data to your current working directory.
@@ -171,6 +171,81 @@ pairs(log10(counts.data[1:1000,]))
 cor(counts.data)
 ```
 
+### Data normalization
+
+In this section, we will normalize the counts data and determine how normalization influences the overall distribution of gene expression data. Data normalization is used in the analysis of differential gene expression using statistical models to account for differences in sequencing depth between samples, differences in the distribution of counts between different samples, and (sometimes) differences in the lengths of genes across the genome. Two commonly performed normalization methods used to analyze RNA seq data are RPKM (Reads per Kilobase per Million) and TMM (Trimmed Mean of M Values). RPKM and TMM will be discussed in lecture, but we will only test TMM in lab since TMM normalization is required for edgeR, and because RPKM has a number of unfortunate qualities. Normalized and unnormalized data will be visualized using boxplots.
+
+#### Assign Groups
+
+Before we can normalize the data we need to be able to tell edgeR which groups the samples belong to.  Here group refers to the distinct sample types (i.e. combinations of genotype and treatment), not considering biorep.  In a later step we will need to tell edgeR our experimental design (the treatment and genotype relevant for each sample).  Here we create a data.frame with both group, genotype, and treatment info.  We use the powerful search features of regular expressions.  There is a reasonable tutorial [here](https://bioinfomagician.wordpress.com/category/regular-expression/).  Regular expressions are a very important tool found in Linux, perl, python, and R.
+
+```{r sample_descriptons}
+sample.description <- data.frame(
+  sample=colnames(counts.data),
+  
+  #This next line searches for IMB211 or R500 in the colnames of counts.data and returns anything that matches
+  #In this way we can extract the genotype info.
+  gt=regmatches(colnames(counts.data),regexpr("R500|IMB211",colnames(counts.data))),
+  
+  #Now we use the same method to get the treatment
+  trt=regmatches(colnames(counts.data),regexpr("NDP|DP",colnames(counts.data)))
+  )
+
+# Now we can paste the trt and gt columns together to give a group identifier
+sample.description$group <- paste(sample.description$gt,sample.description$trt,sep="_")
+
+sample.description
+```
+
+#### Calculate normalization factors
+
+Now we use the edgeR function `calcNormFactors()` to calculate the effective library size and normalization factors using the TMM method on our counts data.  First we create a DGEList object, which is an object class defined by edgeR to hold the data for differential expression analysis.
+
+```{r normFactor, comment=""}
+library(edgeR)
+dge.data <- DGEList(counts=counts.data, group=sample.description$group)
+dim(dge.data) 
+dge.data <- calcNormFactors(dge.data, method = "TMM")
+dge.data$samples # look at the normalization factors
+```
+
+#### Make a plot of the Biological Coefficient of Variation of each sample
+Statistically significant differential expression is assessed based on variance both within and between treatments. There are two sources of variance in between replicate RNA samples - **technical variance** and **biological variance**. 
+
+Technical variance usually decreases as the number of total gene counts increases. Biological variance, however, will not change even if total library size increases. One way of analyzing the variation in a dataset is to look at the coefficient of variation (CV), or the variation related to the average value of the whole population (so, CV is calculated as standard deviation divided by the mean).  We can also look at the CV of the biological variance, or BCV.  A reliable estimate of the Biological Coefficient of Variation is required for realistic assessment of differential expression in RNA-seq experiments.
+
+We can use the BCV to calculate the distance between samples based on their gene expression.  Similar to the SNP data set we have a high dimension data set.  Like the SNP dataset we can use multi-dimensional scaling to plot the distances in 2 dimensions.
 
 
+```{r MDS}
+plotMDS(dge.data, method = "bcv") 
+```
+
+__Exercise 6__  
+Discuss the MDS plot.  Does this give you confidence in the experiment?
+
+__Exercise 7__  
+
+We can extract the normalized data with:
+
+```{r}
+counts.data.normal <- cpm(dge.data)
+```
+
+To get a graphical idea for what the normalization eie, make box plots of the count data for each sample before and after normalization.  Discuss the effect of normalization.
+
+__Hint 1__: _log2 transform the counts before plotting.  Add a value of "1" before log2 tranforming to avoid having to take the log2 of 0.  Your transformation will look something like this:
+
+```{r}
+counts.data.log <- log2(counts.data + 1)
+```
+
+__Hint 2__: _If you don't want to bother with melting before going to ggplot, you can just use the `boxplot()` function and feed it the (transformed) matrix directly._
+
+```{r Ex 8,eval=FALSE,echo=FALSE}
+boxplot(log2(counts.data + 1),main="counts before transformation",ylab = "log2(counts)")
+boxplot(log2(counts.data.normal + 1),main="cpm after transformation",ylab = "log2(cpm)")
+```
+
+#### Calculate dispersion factors
 
