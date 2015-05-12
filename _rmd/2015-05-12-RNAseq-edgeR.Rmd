@@ -194,6 +194,9 @@ sample.description <- data.frame(
 # Now we can paste the trt and gt columns together to give a group identifier
 sample.description$group <- paste(sample.description$gt,sample.description$trt,sep="_")
 
+# set the reference treatment to "NDP"
+sample.description$trt <- relevel(sample.description$trt,ref="NDP")
+
 sample.description
 ```
 
@@ -248,4 +251,115 @@ boxplot(log2(counts.data.normal + 1),main="cpm after transformation",ylab = "log
 ```
 
 #### Calculate dispersion factors
+
+Dispersion, or spread of the data, describes how “squeezed” or “broad” a distribution is. In a negative binomial distribution (as is used for sequence count data), the BCV is the *square root of the dispersion of the negative binomial distribution*. You will calculate the tagwise dispersion in this section. The use of this tagwise (or gene-specific) dispersion is necessary to allow genes whose expression is consistent between replicates to be ranked more highly than genes that are not. Also, tagwise dispersion is important in RNAseq experiments in order for differential expression to not be driven by outliers.  
+
+EdgeR offers 3 ways to calculate dispersion: Common, Trended, and Tagwise.  To calculate dispersion, we need to set up a model of our experiment (aka the Design). The output plot graphs the Biological Coefficient of Variation (BCV) on the y-axis, relative to gene expression level on the x-axis.  Each type of dispersion value is indicated on the `plotBCV()` graph.  An empirical Bayes strategy is used to squeeze the dispersion of all genes toward the common dispersion.  
+
+First we tell edgeR about our full experimental design.
+```{r design}
+design <- model.matrix(~gt+trt,data = sample.description)
+rownames(design) <- sample.description$sample
+design
+```
+
+This has created a design matrix where each row represents one sample and each column represents a factor in the experiment.  The "1"s indicate that a particlar factor applies to a sample.  In this design we have a coefficient to indicate the genotype and a coefficient to indicate the treatment.
+
+Now we estimate the dispersions
+```{r dispersion}
+#First the overall dispersion
+dge.data <- estimateGLMCommonDisp(dge.data,design,verbose = TRUE)
+
+#Then a trended dispersion based on count level
+dge.data <- estimateGLMTrendedDisp(dge.data,design)
+
+#And lastly we calculate the gene-wise dispersion, using the prior estimates to "squeeze" the dispersion towards the common dispersion.
+dge.data <- estimateGLMTagwiseDisp(dge.data,design)
+
+#We can examine this with a plot
+plotBCV(dge.data)
+```
+
+You can see from the plot why you would not want to rely on the common dispersion!
+
+#### Find differentially expressed genes
+
+Finally we are ready to look for differentially expressed genes.  We proceed by fitting a generalized linear model (GLM) for each gene.
+
+```{r fitglm}
+fit <- glmFit(dge.data, design)
+```
+
+The model fit above is the "full" model, including coefficients for genotype and treatment.  To look for differentially expressed genes we compare the full model to a reduced model with fewer coefficients. For example we could compare the full model to a model that removed the "genotype" term.  For genes where the simpler model fits as well as the full model we can conclude that the dropped term was not important.  Conversely, for genes fit signficantly better by the full model we conclude that "genotype" was important.  The function to do this is `glmLRT()` which performs a likelihood ratio test between full and reduced model.
+
+To find genes that are differentially expressed in R500 vs IMB211 we use
+
+```{r glmlrt1}
+gt.lrt <- glmLRT(fit,coef = "gtR500")
+```
+
+The differentially expressed genes can be viewed with `topTags()`
+
+```{r topTags1}
+topTags(gt.lrt) # the top 10 most differentially expressed genes
+```
+
+In the resulting table,
+
+* logFC is the log2 fold-change in expression between R500 and IMB211.  So a logFC of 2 indicates that the gene is expressed 4 times higher in R500; a logFC of -3 indicates that it is 8 times lower in R500.
+* logCPM is the average expression across all samples.
+* LR is the likelihood ratio: L(Full model) / L (small model) .
+* PValue: unadjusted p-value
+* FDR: False discovery rate (p-value adjusted for multiple testing...this is the one to use)
+
+If we want to create a table of all differentially expressed genes at a given FDR, then:
+```{r toptags2}
+#Extract genes with a FDR < 0.01
+DEgene.gt <- topTags(gt.lrt,n = Inf)$table[topTags(gt.lrt,n = Inf)$table$FDR<0.01,]
+
+#save to a file
+write.csv(DEgene.gt,"DEgenes.gt.csv")
+```
+
+It would be handy to plot bar charts of genes of interest.  Below is a function to do that.
+
+```{r plotDE_function}
+plotDE <- function(genes, dge) {
+  tmp.data <- log2(cpm(dge[genes,])+1)
+  colnames(tmp.data) <- dge.data$samples$group
+  pl <- ggplot(melt(tmp.data),aes(x=Var2,y=value))
+  pl <- pl + facet_wrap( ~ Var1)
+  pl <- pl + ylab("log2(cpm)") + xlab("group")
+  pl <- pl + geom_boxplot()
+  pl + theme(axis.text.x  = element_text(angle=45, vjust=1,hjust=1))
+}
+```
+
+With the function defined we can call it as follows:
+```{r plotDE}
+# A single gene
+plotDE("Bra009785",dge.data)
+
+#top 10 genes
+plotDE(rownames(DEgene.gt)[1:10],dge.data)
+```
+
+__Exercise 8__  
+__a__.  Find all genes differentially expressed in response to the DP treatment (at a FDR < 0.01).  
+__b__.  How many genes are differentially expressed?
+__c__.  Make a plot of the top 10
+```{r Ex8, eval=FALSE, echo=FALSE}
+trt.lrt <- glmLRT(fit,coef="trtDP")
+topTags(trt.lrt)
+DEgene.trt <- topTags(trt.lrt,n = Inf)$table[topTags(trt.lrt,n = Inf)$table$FDR<0.01,]
+#save to a file
+write.csv(DEgene.trt,"DEgenes.trt.csv")
+
+#top 10 genes
+plotDE(rownames(DEgene.trt)[1:10],dge.data)
+
+```
+
+### Gene by Treatment interaction
+
 
