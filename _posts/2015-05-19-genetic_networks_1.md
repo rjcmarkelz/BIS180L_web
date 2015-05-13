@@ -17,6 +17,39 @@ tags:
 * abstract concept that can represent data or process
 * examples of social nodes
 
+### Graph Models
+Nodes:
+
+**(PersonA)**
+
+**(PersonB)**
+
+**(A)**    **(B)**    **(C)**
+
+**(Gene1)**    **(Gene2)**    **(Gene3)**
+
+
+Relationships:
+
+**(PersonA)--knows--(PersonB)**
+
+**(PersonB)--doesnotknow--(PersonC)**
+
+**(PersonC)--knows--(PersonB)**
+
+Simplified:
+
+**(A)--1--(B)**
+
+**(A)--0--(C)**
+
+**(B)--1--(C)**
+
+
+
+
+
+
 ### Relationships
 * adjacency 
 * corr based networks
@@ -41,6 +74,7 @@ tags:
 * have each team (or set of) create networks for tissue types - need to double check time
 * create adjacency network first- visualize with heatmap
 * use either WGCNA or Network package to create full network - need to do speed comparisons
+
 
 
 
