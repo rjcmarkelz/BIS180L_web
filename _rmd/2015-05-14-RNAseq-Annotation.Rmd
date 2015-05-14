@@ -31,7 +31,7 @@ We have found our lists of differentially expressed genes.  Now what?  We want t
 
 ## Annotate the differentially expressed genes.
 
-As part of [his B_rapa annotation paper](www.g3journal.org/content/4/11/2065.long) postdoc in my lab, Upendra Devisetty, did a quick annotation of the _B. rapa_ genes by BLASTing each gene to the NCBI non-redundant database and taking the gene description of the best match (above a threshold). You can download the description with this command:
+As part of [his B_rapa annotation paper](www.g3journal.org/content/4/11/2065.long) a postdoc in my lab, Upendra Devisetty, did a quick annotation of the _B. rapa_ genes by BLASTing each gene to the NCBI non-redundant database and taking the gene description of the best match (above a threshold). You can download the description with this command:
 
   wget http://www.g3journal.org/content/suppl/2014/08/12/g3.114.012526.DC1/FileS9.txt
   
@@ -96,19 +96,86 @@ Gene Length:
   
 ### Format data for GOseq
 
-We need to do a bit of data wrangling to get things in the correct format for GOSeq
+We need to do a bit of data wrangling to get things in the correct format for GOSeq.  First we import the gene lengths and GO terms.  We also import a table of all expressed genes in the experiment (you could have gotten this from Tueday's data)
 
+Get the data
 ```{r goseq_prep, eval=FALSE}
 library(goseq)
-gene.lengths <- read.table("../Brapa_reference/Brapa_CDS_lengths.txt",as.is=TRUE)
-head(gene.lengths)
-summary(gene.lengths)
-
 go.terms <- read.delim("../Brapa_reference/FileS11.txt",header=FALSE,as.is=TRUE)
 head(go.terms)
 names(go.terms) <- c("GeneID","GO")
 summary(go.terms)
 
+expressed.genes <- read.delim("internode_expressed_genes.txt",as.is=TRUE)
+head(expressed.genes)
+names(expressed.genes) <- "GeneID"
 
+gene.lengths <- read.table("../Brapa_reference/Brapa_CDS_lengths.txt",as.is=TRUE)
+head(gene.lengths)
+summary(gene.lengths)
+
+#we need to reduce the gene.length to only contain entries for those genes in our expressed.genes set.  We also need this as a vector
+gene.lengths.vector <- gene.lengths$Length[gene.lengths$GeneID %in% expressed.genes$GeneID]
+names(gene.lengths.vector) <- gene.lengths$GeneID[gene.lengths$GeneID %in% expressed.genes$GeneID]
+head(gene.lengths.vector)
+
+#Do the reverse to make sure everyting matches up (it seems that we don't have length info for some genes?)
+expressed.genes <- expressed.genes[expressed.genes$GeneID %in% names(gene.lengths.vector),]
 ```
+
+Format go.terms for goseq.  We want them in list format, and we need to separate the terms into separate elemants.
+```{r goseq_prep2,eval=FALSE}
+go.list <- strsplit(go.terms$GO,split=",")
+names(go.list) <- go.terms$GeneID
+head(go.list)
+```
+
+Format gene expression data for goseq.  We need a vector for each gene with 1 indicating differential expression and 0 indicating no differential expression.
+```{r goseq_prep3, eval=FALSE}
+DE.interaction <- expressed.genes %in% rownames(DEgene.interaction) 
+    #for each gene in expressed gene, return FALSE if it is not in DEgene.trt and TRUE if it is.
+names(DE.interaction) <- expressed.genes$GeneID
+head(DE.interaction)
+DE.trt <- as.numeric(DE.interaction) #convert to 0s and 1s
+head(DE.interaction)
+sum(DE.interaction) # number of DE genes
+```
+
+### Calculate over-representation
+
+Now we can look for GO enrichment
+```{r goseq}
+#determines if there is bias due to gene length.  The plot shows the relationship.
+nullp.result <- nullp(DEgenes = DE.interaction,bias.data = gene.lengths.vector)
+
+#calculate p-values for each GO term
+rownames(nullp.result) <- names(gene.lengths.vector) #because of a bug in nullp()
+GO.out <- goseq(pwf = nullp.result,gene2cat = go.list,test.cats=("GO:BP"))
+
+#list over-represented GO terms (p < 0.05)
+GO.out[GO.out$over_represented_pvalue < 0.05,]
+```
+
+### GO visualization
+
+Looking through a long list can be tough.  There is a nice visualizer called [REVIGO](http://revigo.irb.hr/).  To use it we need to cut and paste the column with the GO term and the one with the p-value.  Use the command below to print these to columns to the console:
+```{r goseq_revigo}
+print(GO.out[GO.out$over_represented_pvalue < 0.05,1:2],row.names=FALSE)
+```
+
+Cut and paste the GO terms and p-values into [REVIGO](http://revigo.irb.hr/).  You can use the default settings.  There are three types of GOterms:
+
+* Biological Process (BP)
+* Cellular Compartment (CC)
+* Molecular Functions (MF)
+
+Generally I find the BP terms most helpful but you can look at each type by clicking in the tabs.
+
+REVIGO has three types of visualizers.  The "TreeMap"  Can be particular nice because it groups the GO terms into a hierarchy.
+
+__Exercise 2__:  
+
+__a:__ In REVIGO display a "TreeMap" of the BP GO terms.  Was our hypothesis that cell wall genes are enriched in the genotype X treatment gene set correct?  You DO NOT need to include the treemap in your answer.
+
+__b:__ Display a "TreeMap" of the CC GO terms.  There are four general categories shown, some with sub-categories.  What are the two general categories with the largest number of sub categories?  How might these general categories relate to differences in plant growth? 
 
