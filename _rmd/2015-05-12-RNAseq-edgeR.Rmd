@@ -79,7 +79,7 @@ As you know from last week's lab, we mapped RNAseq reads to the _B. rapa_ genome
 
 To do this we use the bam files (telling us where in the genome the reads mapped) and the .gtf file that we just generated (telling us where the genes are) to figure out which reads belong to which genes.  Thankfully the `Rsubread` package does this for us.  An alternative workflow (not used here) would be to use the python package [`HTSeq`](http://www-huber.embl.de/HTSeq/).  Yet another alternative would have been to map our reads to cDNA fasta files and then use `samtools idxstats` on the bam file.
 
-But for this lab we will use `Rsubread` on the two files from Thursday.  You may need to change the path listed below to make this work.
+But for this lab we will use `Rsubread` on the two files from Thursday.  You may need to change the path listed below to make this work.  __Important: tilde expansion for your home directory will not work in this function.  Do not include a "~" in your path.  Use relative or the full absolute path__
 
 ```{r Rsubread, eval=FALSE}
 library(Rsubread)
