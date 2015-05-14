@@ -1,0 +1,68 @@
+---
+layout: lab
+hidden: true
+title: 'Differential Gene Expresion: Now What?'
+output: html_document
+tags:
+- R
+- Brassica
+- Illumina
+- RNAseq
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache=TRUE)
+```
+
+# Assignment
+
+The three 
+
+# Background
+
+Now what?
+
+We have found our lists of differentially expressed genes.  Now what?  We want to know the potential functions of those differentially expressed genes and possibly their regulators.  Specifically we will:
+
+1. Merge the listd of differentially expressed genes with a gene annotation file to learn about the function of the most upregulated genes.
+2. Ask if particular classes of genes genes are upregualted, by using functional classifiers known as [Gene Ontology (GO) terms](http://geneontology.org/).
+3. Determine whether the differentially expressed genes have any common promoter motifs.
+4. Group genes based on their pattern of gene expression across the samples.
+
+## Annotate the differentially expressed genes.
+
+As part of [his B_rapa annotation paper](www.g3journal.org/content/4/11/2065.long) postdoc in my lab, Upendra Devisetty, did a quick annotation of the _B. rapa_ genes by BLASTing each gene to the NCBI non-redundant database and taking the gene description of the best match (above a threshold). You can download the description with this command:
+
+  wget http://www.g3journal.org/content/suppl/2014/08/12/g3.114.012526.DC1/FileS9.txt
+  
+Place the file into your `Brapa_reference` directory.
+  
+Now open Rstudio, set the working directory to your `Diff_Exp` directory, and proceed.
+  
+__Exercise 1__
+
+__a.__ Use `merge()` to add gene descriptions for the genes found to be regualted by the DP treatment.  Output a table of the top 10 genes that includes the output from edgeR and the descriptions.  __Important: Pay attention to the "sort="" argument to `merge()`.  Should it be TRUE or FALSE?
+
+__b.__ Repeat this for  genes with a genotype x trt interaction.
+
+```{r Ex1 ,echo=FALSE,eval=FALSE}
+#a
+annotation <- read.delim("../data/FileS9.txt",header=FALSE,row.names=1) #path will be different for students
+head(annotation)
+DEgene.trt <- read.csv("DEgenes.trt.csv",row.names=1)
+head(DEgene.trt)
+DE.trt.annotated <- merge(DEgene.trt,annotation,by="row.names",sort=FALSE)
+head(DE.trt.annotated,10)
+
+#b
+DEgene.interaction <- read.csv("DEgenes.interaction.csv",row.names=1)
+head(DEgene.interaction)
+DE.interaction.annotated <- merge(DEgene.interaction,annotation,by="row.names",sort=FALSE)
+head(DE.interaction.annotated,10)
+```
+
+For the interaction gene list, many of the identified genes code for proteins that modify the plant cell wall.  This might relate to the different properties of the two cultivars, IMB211 and R500, and their different responses to the treatment.  Depending on our interests and knowledge of the sytsem we might at this point choose follow up study on specific genes.
+
+## Determine if different functional classes of genes are specifically, and statistically, enriched among the differentially expressed genes.
+
+A casual glance indicated that their might be an enrichment for cell wall related genes in in the gt X trt DE gene list.  We can test this more rigorously by looking 
