@@ -1,7 +1,7 @@
 ---
 layout: lab
 hidden: true
-title: 'Differential Gene Expresion: Now What?'
+title: 'Differential Gene Expression: Now What?'
 output: html_document
 tags:
 - R
@@ -16,7 +16,11 @@ knitr::opts_chunk$set(cache=TRUE)
 
 # Assignment
 
-The three 
+Pull your repository.
+
+There are three questions below.  Please answer them using the new file `RNA_Seq_Assignment2.Rmd` in your `Brassica_Assignment/Diff_Exp` directory.
+
+Knit the file and submit the .Rmd and .html when you are done.  Open an issue indicating that the assignment is ready to be graded.
 
 # Background
 
@@ -24,8 +28,8 @@ Now what?
 
 We have found our lists of differentially expressed genes.  Now what?  We want to know the potential functions of those differentially expressed genes and possibly their regulators.  Specifically we will:
 
-1. Merge the listd of differentially expressed genes with a gene annotation file to learn about the function of the most upregulated genes.
-2. Ask if particular classes of genes genes are upregualted, by using functional classifiers known as [Gene Ontology (GO) terms](http://geneontology.org/).
+1. Merge the list of differentially expressed genes with a gene annotation file to learn about the function of the most up-regulated genes.
+2. Ask if particular classes of genes genes are up-regulated, by using functional classifiers known as [Gene Ontology (GO) terms](http://geneontology.org/).
 3. Determine whether the differentially expressed genes have any common promoter motifs.
 
 ## Annotate the differentially expressed genes.
@@ -40,7 +44,7 @@ Now open Rstudio, set the working directory to your `Diff_Exp` directory, and pr
   
 __Exercise 1__
 
-__a.__ Use `merge()` to add gene descriptions for the genes found to be regualted by the DP treatment.  Output a table of the top 10 genes that includes the output from edgeR and the descriptions.  __Important: Pay attention to the "sort="" argument to `merge()`.  Should it be TRUE or FALSE?
+__a.__ Use `merge()` to add gene descriptions for the genes found to be regulated by the DP treatment.  Output a table of the top 10 genes that includes the output from edgeR and the descriptions.  __Important: Pay attention to the "sort="" argument to `merge()`.  Should it be TRUE or FALSE?
 
 __b.__ Repeat this for  genes with a genotype x trt interaction.
 
@@ -60,15 +64,15 @@ DE.interaction.annotated <- merge(DEgene.interaction,annotation,by="row.names",s
 head(DE.interaction.annotated,10)
 ```
 
-By looking at the annotated interaction gene list we can see that many of the identified genes code for proteins that modify the plant cell wall (I wouldn't expect you to know this unless you are a plant biologist).  This might relate to the different properties of the two cultivars, IMB211 and R500, and their different responses to the treatment.  Depending on our interests and knowledge of the sytsem we might at this point choose follow up study on specific genes.
+By looking at the annotated interaction gene list we can see that many of the identified genes code for proteins that modify the plant cell wall (I wouldn't expect you to know this unless you are a plant biologist).  This might relate to the different properties of the two cultivars, IMB211 and R500, and their different responses to the treatment.  Depending on our interests and knowledge of the system we might at this point choose follow up study on specific genes.
 
 ## Test for enrichment of functional classes of genes.
 
 A casual glance indicated that there might be an enrichment for cell wall related genes in  the gt X trt DE gene list.  We can test this more rigorously by asking if there is statistical over-representation of particular [Gene Ontology (GO)](http://geneontology.org/) terms in this set of genes.  GO terms provide a precise, defined language to describe gene function.
 
-To test for test for enrichment of GO terms we essentially ask the question of whether the prevalence of a term in our gene set of interest is higher than its prevalence in the rest of the genome (aka the universe).  For example if 20% of the differentially expressed genes have the GO term "Cell Wall" but only 10% of the not-differentially expressed genes have the term Cell Wall that the term "Cell Wall" might be over-represented, or enriched, in our differentially expressed genes.  In principle this could be tested using a [Chi-squared test](http://www.biostathandbook.com/chiind.html) or [Fisher's exact test](http://www.biostathandbook.com/fishers.html) for contigency tables.  In practice we will use [GOseq](http://www.bioconductor.org/packages/release/bioc/html/goseq.html) that [makes an adjustement for gene-length bias](http://genomebiology.com/2010/11/2/r14) since it is easier to detect differential expression of longer genes.  
+To test for test for enrichment of GO terms we essentially ask the question of whether the prevalence of a term in our gene set of interest is higher than its prevalence in the rest of the genome (aka the universe).  For example if 20% of the differentially expressed genes have the GO term "Cell Wall" but only 10% of the not-differentially expressed genes have the term Cell Wall that the term "Cell Wall" might be over-represented, or enriched, in our differentially expressed genes.  In principle this could be tested using a [Chi-squared test](http://www.biostathandbook.com/chiind.html) or [Fisher's exact test](http://www.biostathandbook.com/fishers.html) for contingency tables.  In practice we will use [GOseq](http://www.bioconductor.org/packages/release/bioc/html/goseq.html) that [makes an adjustement for gene-length bias](http://genomebiology.com/2010/11/2/r14) since it is easier to detect differential expression of longer genes.  
 
-It is important in these analyses to define the "Universe" correctly.  The Universe of genes is all of the genes where you could have detected an expression difference.  It would not have been possible to detect an expression difference in genes that were not expressed at a detectable level in our expereiment.  So the Universe in this case is all expressed genes, rather than all genes.
+It is important in these analyses to define the "Universe" correctly.  The Universe of genes is all of the genes where you could have detected an expression difference.  It would not have been possible to detect an expression difference in genes that were not expressed at a detectable level in our experiment.  So the Universe in this case is all expressed genes, rather than all genes.
 
 ### Install GOseq
 
@@ -83,7 +87,7 @@ GO term annotation for _B. rapa_ is also available from the [Devisetty et al pap
 
 cDNA gene lengths were estimated by the `featureCounts()` command used in Tuesday's lab.  I have saved them for you and you can download them as instructed below.  (You're welcome)
 
-Download the files usind the commands below (in Linux) and place the file in your `Brapa_reference` directory.
+Download the files using the commands below (in Linux) and place the file in your `Brapa_reference` directory.
 
 GO terms:
 
@@ -95,7 +99,7 @@ Gene Length:
   
 ### Format data for GOseq
 
-We need to do a bit of data wrangling to get things in the correct format for GOSeq.  First we import the gene lengths and GO terms.  We also import a table of all expressed genes in the experiment (you could have gotten this from Tueday's data)
+We need to do a bit of data wrangling to get things in the correct format for GOSeq.  First we import the gene lengths and GO terms.  We also import a table of all expressed genes in the experiment (you could have gotten this from Tuesday's data)
 
 Get the data
 ```{r goseq_prep, eval=FALSE}
@@ -122,7 +126,7 @@ head(gene.lengths.vector)
 expressed.genes.match <- expressed.genes[expressed.genes$GeneID %in% names(gene.lengths.vector),]
 ```
 
-Format go.terms for goseq.  We want them in list format, and we need to separate the terms into separate elemants.
+Format go.terms for goseq.  We want them in list format, and we need to separate the terms into separate elements.
 ```{r goseq_prep2,eval=FALSE}
 go.list <- strsplit(go.terms$GO,split=",")
 names(go.list) <- go.terms$GeneID
@@ -162,7 +166,7 @@ Looking through a long list can be tough.  There is a nice visualizer called [RE
 print(GO.out[GO.out$over_represented_pvalue < 0.05,1:2],row.names=FALSE)
 ```
 
-Cut and paste the GO terms and p-values into [REVIGO](http://revigo.irb.hr/).  You can use the default settings.  There are three types of GOterms:
+Cut and paste the GO terms and p-values into [REVIGO](http://revigo.irb.hr/).  You can use the default settings.  There are three types of GO terms:
 
 * Biological Process (BP)
 * Cellular Compartment (CC)
@@ -182,7 +186,7 @@ __b:__ Display a "TreeMap" of the CC GO terms.  There are four general categorie
 
 To help us understand what causes these genes to be differentially expressed it would be helpful to know if they have any common transcription factor binding motifs in their promoters.
 
-First we must get the sequence of the promoters.  For ease we will define the promoters as the 1000bp upstream of the startof the gene.  In the interest of time I have precomputed this for you, but I show you how to do this below in case you need to do it in the future.
+First we must get the sequence of the promoters.  For ease we will define the promoters as the 1000bp upstream of the start of the gene.  In the interest of time I have pre-computed this for you, but I show you how to do this below in case you need to do it in the future.
 
 ### Get gene "promoters".
 
@@ -207,7 +211,7 @@ Download the promoters and place them in your `Brapa_reference` directory.  You 
 
   wget {{site.baseurl}}/data/BrapaV1.5_1000bp_upstream.fa.gz
   
-Siobhan Brady has compiled a file of plant transcrition factor binding motifs.  You can download those from
+Siobhan Brady has compiled a file of plant transcription factor binding motifs.  You can download those from
 
   wget {{site.baseurl}}/data/element_name_and_motif_IUPACsupp.txt
   
@@ -249,7 +253,7 @@ target.promoters <- promoters[DEgene.interaction.match]
 I have written a function to wrap up the required code.  Paste this into R to create the function
 ```{r motif_enrich}
 #create a function to summarize the results and test for significance
-motifEnrichment <- function(target.promoters,universe.promoters,label=NULL,all.counts=F,motifs=motifsSS) {
+motifEnrichment <- function(target.promoters,universe.promoters,all.counts=F,motifs=motifsSS) {
   
   #use vcountPDict to count the occurences of each motif in each promoter
   target.counts <- vcountPDict(motifs,target.promoters,fixed=F) + 
@@ -286,18 +290,19 @@ motifEnrichment <- function(target.promoters,universe.promoters,label=NULL,all.c
     } #else
     results[i] <- fisher.test(m,alternative="greater")$p.value
   } #for loop
-  results.table <- cbind(names(motifs),round(universe.counts.sum/dim(universe.counts)[2],3)*100,
-                         round(target.counts.sum/dim(target.counts)[2],3)*100,
-                         results)
-  colnames(results.table) <- c("motif",paste(label,c("%universe","%target","p.value"),sep="."))
-  results.table <- results.table[order(results.table[,paste(label,"p.value",sep=".")]),]
+  results.table <- data.frame(
+    motif=names(motifs),
+    universe.percent = round(universe.counts.sum/dim(universe.counts)[2],3)*100,
+    target.percent = round(target.counts.sum/dim(target.counts)[2],3)*100,
+    p.value =  results)
+  results.table <- results.table[order(results.table$p.value),]
   results.table
 }
 ```
 
 Now with the function entered we can do the enrichment
 ```{r enrich_finally}
-motif.results <- motifEnrichment(target.promoters,universe.promoters,"Interaction_DEgenes")
+motif.results <- motifEnrichment(target.promoters,universe.promoters)
 head(motif.results)
 ```
 The resulting table gives the p-value for enrichment for each motif, as well as the %of promoters in the universe and in our target gene set that have the motif.
@@ -307,7 +312,8 @@ __Exercise 3__
 
 __a.__ How many motifs are enriched at P < 0.05?
 __b.__ What is the identity of the most significantly over-enriched promoter?
-__c.__ What percentage of genes in the "Universe" have this motif?  What perventage in our target set?  Do you think this is a biologically meaningful result?  Discuss why or why not.
+__c.__ What percentage of genes in the "Universe" have this motif?  What percentage in our target set?
+__d.__ You can find information on the motifs [here](http://arabidopsis.med.ohio-state.edu/AtcisDB/bindingsites.html).  Do you think that the most enriched motif represents a biologically meaningful result?  Discuss why or why not.
 
 
 
