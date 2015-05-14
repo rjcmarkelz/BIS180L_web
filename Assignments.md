@@ -15,4 +15,6 @@ Right click on the link to download the markdown template.  Edit the markdown te
 | Tue Apr 21    | Pop Struc and GWAS | Template pushed to your github repository  | __Tue Apr 28 9AM__ |
 | Tue Apr 27    | Create a Shiny App | [See lab]({{site.baseurl}}/{% post_url 2015-04-28-Shiny%}) | __Fri May 02, 5PM__ |
 | Tue May 05 & Thur 07    | Understanding Illumina | [See lab]({{site.baseurl}}/{% post_url 2015-05-08-R-SNPs%}) | __Tue May 12 9AM__ |
+| Tue May 12  | RNAseq Differential Expression 1 | [See lab]({{site.baseurl}}/{% post_url 2015-05-12-RNAseq-edgeR%}) | __Tue May 19 9AM__ | 
+| Thur May 14 | RNAseq Differential Expression 2 |  [See lab]({{site.baseurl}}/{% post_url 2015-05-14-RNAseq-Annotation%})| __Tue May 19 9AM__ |
 
