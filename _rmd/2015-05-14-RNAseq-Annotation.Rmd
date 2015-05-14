@@ -162,7 +162,9 @@ GO.out[GO.out$over_represented_pvalue < 0.05,]
 ### GO visualization
 
 Looking through a long list can be tough.  There is a nice visualizer called [REVIGO](http://revigo.irb.hr/).  To use it we need to cut and paste the column with the GO term and the one with the p-value.  Use the command below to print these to columns to the console:
+
 ```{r goseq_revigo, eval=FALSE}
+
 print(GO.out[GO.out$over_represented_pvalue < 0.05,1:2],row.names=FALSE)
 ```
 
@@ -205,20 +207,20 @@ extract-utr.pl --gff_file=Brapa_gene_v1.5.gff \
 
 ### Gather data for motif enrichment
 
-First lets gather the data that we need
+First lets gather the data that we need.  you do need to run the following.
 
 Download the promoters and place them in your `Brapa_reference` directory.  You can download them with
 
-  wget {{site.baseurl}}/data/BrapaV1.5_1000bp_upstream.fa.gz
+    wget {{site.baseurl}}/data/BrapaV1.5_1000bp_upstream.fa.gz
   
 Siobhan Brady has compiled a file of plant transcription factor binding motifs.  You can download those from
 
-  wget {{site.baseurl}}/data/element_name_and_motif_IUPACsupp.txt
+    wget {{site.baseurl}}/data/element_name_and_motif_IUPACsupp.txt
   
 Place these in your `Brapa_reference` directory
 
 Load the promoter sequences
-```{r load_promoters}
+```{r load_promoters, eval=FALSE}
 library(Biostrings) #R package for handling DNA and protein data
 promoters <- readDNAStringSet("../Brapa_reference/BrapaV1.5_1000bp_upstream.fa.gz")
 
@@ -229,7 +231,7 @@ promoters
 ```
 
 Load the motifs and convert to a good format for R
-```{r load_motifs}
+```{r load_motifs, eval=FALSE}
 motifs <- read.delim("../Brapa_reference/element_name_and_motif_IUPACsupp.txt",header=FALSE,as.is=TRUE)
 head(motifs)
 motifsV <- as.character(motifs[,2])
@@ -239,7 +241,7 @@ motifsSS
 ```
 
 Next we need to subset the promoters into those in our DE genes and those in the "Universe"
-```{r subset_promoters}
+```{r subset_promoters, eval=FALSE}
 #get names to match...there are are few names in the DEgene list not in the promoter set
 DEgene.interaction.match <- row.names(DEgene.interaction)[row.names(DEgene.interaction) %in% names(promoters)]
 
@@ -251,7 +253,7 @@ target.promoters <- promoters[DEgene.interaction.match]
 ### Look for over-represented motifs
 
 I have written a function to wrap up the required code.  Paste this into R to create the function
-```{r motif_enrich}
+```{r motif_enrich, eval=FALSE}
 #create a function to summarize the results and test for significance
 motifEnrichment <- function(target.promoters,universe.promoters,all.counts=F,motifs=motifsSS) {
   
@@ -301,7 +303,7 @@ motifEnrichment <- function(target.promoters,universe.promoters,all.counts=F,mot
 ```
 
 Now with the function entered we can do the enrichment
-```{r enrich_finally}
+```{r enrich_finally, eval=FALSE}
 motif.results <- motifEnrichment(target.promoters,universe.promoters)
 head(motif.results)
 ```
@@ -310,9 +312,9 @@ The resulting table gives the p-value for enrichment for each motif, as well as 
 
 __Exercise 3__ 
 
-__a.__ How many motifs are enriched at P < 0.05?
-__b.__ What is the identity of the most significantly over-enriched promoter?
-__c.__ What percentage of genes in the "Universe" have this motif?  What percentage in our target set?
+__a.__ How many motifs are enriched at P < 0.05?  
+__b.__ What is the identity of the most significantly over-enriched promoter?  
+__c.__ What percentage of genes in the "Universe" have this motif?  What percentage in our target set?  
 __d.__ You can find information on the motifs [here](http://arabidopsis.med.ohio-state.edu/AtcisDB/bindingsites.html).  Do you think that the most enriched motif represents a biologically meaningful result?  Discuss why or why not.
 
 
