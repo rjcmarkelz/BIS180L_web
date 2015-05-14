@@ -10,9 +10,7 @@ tags:
 - RNAseq
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(cache=TRUE)
-```
+
 
 # Assignment
 
@@ -48,21 +46,7 @@ __a.__ Use `merge()` to add gene descriptions for the genes found to be regulate
 
 __b.__ Repeat this for  genes with a genotype x trt interaction.
 
-```{r Ex1 ,echo=FALSE,eval=FALSE}
-#a
-annotation <- read.delim("../data/FileS9.txt",header=FALSE,row.names=1) #path will be different for students
-head(annotation)
-DEgene.trt <- read.csv("DEgenes.trt.csv",row.names=1)
-head(DEgene.trt)
-DE.trt.annotated <- merge(DEgene.trt,annotation,by="row.names",sort=FALSE)
-head(DE.trt.annotated,10)
 
-#b
-DEgene.interaction <- read.csv("DEgenes.interaction.csv",row.names=1)
-head(DEgene.interaction)
-DE.interaction.annotated <- merge(DEgene.interaction,annotation,by="row.names",sort=FALSE)
-head(DE.interaction.annotated,10)
-```
 
 By looking at the annotated interaction gene list we can see that many of the identified genes code for proteins that modify the plant cell wall (I wouldn't expect you to know this unless you are a plant biologist).  This might relate to the different properties of the two cultivars, IMB211 and R500, and their different responses to the treatment.  Depending on our interests and knowledge of the system we might at this point choose follow up study on specific genes.
 
@@ -76,7 +60,8 @@ It is important in these analyses to define the "Universe" correctly.  The Unive
 
 ### Install GOseq
 
-```{r, eval = FALSE}
+
+```r
 source("http://bioconductor.org/biocLite.R")
 biocLite("goseq")
 ```
@@ -102,7 +87,8 @@ Gene Length:
 We need to do a bit of data wrangling to get things in the correct format for GOSeq.  First we import the gene lengths and GO terms.  We also import a table of all expressed genes in the experiment (you could have gotten this from Tuesday's data)
 
 Get the data
-```{r goseq_prep, eval=FALSE}
+
+```r
 library(goseq)
 go.terms <- read.delim("../Brapa_reference/FileS11.txt",header=FALSE,as.is=TRUE)
 head(go.terms)
@@ -127,14 +113,16 @@ expressed.genes.match <- expressed.genes[expressed.genes$GeneID %in% names(gene.
 ```
 
 Format go.terms for goseq.  We want them in list format, and we need to separate the terms into separate elements.
-```{r goseq_prep2,eval=FALSE}
+
+```r
 go.list <- strsplit(go.terms$GO,split=",")
 names(go.list) <- go.terms$GeneID
 head(go.list)
 ```
 
 Format gene expression data for goseq.  We need a vector for each gene with 1 indicating differential expression and 0 indicating no differential expression.
-```{r goseq_prep3, eval=FALSE}
+
+```r
 DE.interaction <- expressed.genes.match %in% rownames(DEgene.interaction) 
     #for each gene in expressed gene, return FALSE if it is not in DEgene.trt and TRUE if it is.
 names(DE.interaction) <- expressed.genes.match
@@ -147,7 +135,8 @@ sum(DE.interaction) # number of DE genes
 ### Calculate over-representation
 
 Now we can look for GO enrichment
-```{r goseq, eval=FALSE}
+
+```r
 #determines if there is bias due to gene length.  The plot shows the relationship.
 nullp.result <- nullp(DEgenes = DE.interaction,bias.data = gene.lengths.vector)
 
@@ -163,8 +152,8 @@ GO.out[GO.out$over_represented_pvalue < 0.05,]
 
 Looking through a long list can be tough.  There is a nice visualizer called [REVIGO](http://revigo.irb.hr/).  To use it we need to cut and paste the column with the GO term and the one with the p-value.  Use the command below to print these to columns to the console:
 
-```{r goseq_revigo, eval=FALSE}
 
+```r
 print(GO.out[GO.out$over_represented_pvalue < 0.05,1:2],row.names=FALSE)
 ```
 
@@ -220,7 +209,8 @@ Siobhan Brady has compiled a file of plant transcription factor binding motifs. 
 Place these in your `Brapa_reference` directory
 
 Load the promoter sequences
-```{r load_promoters, eval=FALSE}
+
+```r
 library(Biostrings) #R package for handling DNA and protein data
 promoters <- readDNAStringSet("../Brapa_reference/BrapaV1.5_1000bp_upstream.fa.gz")
 
@@ -231,7 +221,8 @@ promoters
 ```
 
 Load the motifs and convert to a good format for R
-```{r load_motifs, eval=FALSE}
+
+```r
 motifs <- read.delim("../Brapa_reference/element_name_and_motif_IUPACsupp.txt",header=FALSE,as.is=TRUE)
 head(motifs)
 motifsV <- as.character(motifs[,2])
@@ -241,7 +232,8 @@ motifsSS
 ```
 
 Next we need to subset the promoters into those in our DE genes and those in the "Universe"
-```{r subset_promoters, eval=FALSE}
+
+```r
 #get names to match...there are are few names in the DEgene list not in the promoter set
 DEgene.interaction.match <- row.names(DEgene.interaction)[row.names(DEgene.interaction) %in% names(promoters)]
 
@@ -253,7 +245,8 @@ target.promoters <- promoters[DEgene.interaction.match]
 ### Look for over-represented motifs
 
 I have written a function to wrap up the required code.  Paste this into R to create the function
-```{r motif_enrich, eval=FALSE}
+
+```r
 #create a function to summarize the results and test for significance
 motifEnrichment <- function(target.promoters,universe.promoters,all.counts=F,motifs=motifsSS) {
   
@@ -303,7 +296,8 @@ motifEnrichment <- function(target.promoters,universe.promoters,all.counts=F,mot
 ```
 
 Now with the function entered we can do the enrichment
-```{r enrich_finally, eval=FALSE}
+
+```r
 motif.results <- motifEnrichment(target.promoters,universe.promoters)
 head(motif.results)
 ```
