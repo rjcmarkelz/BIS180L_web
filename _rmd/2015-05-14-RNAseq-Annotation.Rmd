@@ -147,7 +147,7 @@ sum(DE.interaction) # number of DE genes
 ### Calculate over-representation
 
 Now we can look for GO enrichment
-```{r goseq}
+```{r goseq,eval=FALSE}
 #determines if there is bias due to gene length.  The plot shows the relationship.
 nullp.result <- nullp(DEgenes = DE.interaction,bias.data = gene.lengths.vector)
 
@@ -162,7 +162,7 @@ GO.out[GO.out$over_represented_pvalue < 0.05,]
 ### GO visualization
 
 Looking through a long list can be tough.  There is a nice visualizer called [REVIGO](http://revigo.irb.hr/).  To use it we need to cut and paste the column with the GO term and the one with the p-value.  Use the command below to print these to columns to the console:
-```{r goseq_revigo}
+```{r goseq_revigo,eval=FALSE}
 print(GO.out[GO.out$over_represented_pvalue < 0.05,1:2],row.names=FALSE)
 ```
 
@@ -205,7 +205,7 @@ extract-utr.pl --gff_file=Brapa_gene_v1.5.gff \
 
 ### Gather data for motif enrichment
 
-First lets gather the data that we need
+First lets gather the data that we need.  you do need to run the following.
 
 Download the promoters and place them in your `Brapa_reference` directory.  You can download them with
 
@@ -218,7 +218,7 @@ Siobhan Brady has compiled a file of plant transcription factor binding motifs. 
 Place these in your `Brapa_reference` directory
 
 Load the promoter sequences
-```{r load_promoters}
+```{r load_promoters, eval=FALSE}
 library(Biostrings) #R package for handling DNA and protein data
 promoters <- readDNAStringSet("../Brapa_reference/BrapaV1.5_1000bp_upstream.fa.gz")
 
@@ -229,7 +229,7 @@ promoters
 ```
 
 Load the motifs and convert to a good format for R
-```{r load_motifs}
+```{r load_motifs, eval=FALSE}
 motifs <- read.delim("../Brapa_reference/element_name_and_motif_IUPACsupp.txt",header=FALSE,as.is=TRUE)
 head(motifs)
 motifsV <- as.character(motifs[,2])
@@ -239,7 +239,7 @@ motifsSS
 ```
 
 Next we need to subset the promoters into those in our DE genes and those in the "Universe"
-```{r subset_promoters}
+```{r subset_promoters, eval=FALSE}
 #get names to match...there are are few names in the DEgene list not in the promoter set
 DEgene.interaction.match <- row.names(DEgene.interaction)[row.names(DEgene.interaction) %in% names(promoters)]
 
@@ -251,7 +251,7 @@ target.promoters <- promoters[DEgene.interaction.match]
 ### Look for over-represented motifs
 
 I have written a function to wrap up the required code.  Paste this into R to create the function
-```{r motif_enrich}
+```{r motif_enrich, eval=FALSE}
 #create a function to summarize the results and test for significance
 motifEnrichment <- function(target.promoters,universe.promoters,all.counts=F,motifs=motifsSS) {
   
@@ -301,7 +301,7 @@ motifEnrichment <- function(target.promoters,universe.promoters,all.counts=F,mot
 ```
 
 Now with the function entered we can do the enrichment
-```{r enrich_finally}
+```{r enrich_finally, eval=FALSE}
 motif.results <- motifEnrichment(target.promoters,universe.promoters)
 head(motif.results)
 ```
