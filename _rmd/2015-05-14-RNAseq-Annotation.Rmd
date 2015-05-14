@@ -61,8 +61,54 @@ DE.interaction.annotated <- merge(DEgene.interaction,annotation,by="row.names",s
 head(DE.interaction.annotated,10)
 ```
 
-For the interaction gene list, many of the identified genes code for proteins that modify the plant cell wall.  This might relate to the different properties of the two cultivars, IMB211 and R500, and their different responses to the treatment.  Depending on our interests and knowledge of the sytsem we might at this point choose follow up study on specific genes.
+By looking at the annotated interaction gene list we can see that many of the identified genes code for proteins that modify the plant cell wall (I wouldn't expect you to know this unless you are a plant biologist).  This might relate to the different properties of the two cultivars, IMB211 and R500, and their different responses to the treatment.  Depending on our interests and knowledge of the sytsem we might at this point choose follow up study on specific genes.
 
-## Determine if different functional classes of genes are specifically, and statistically, enriched among the differentially expressed genes.
+## Test for enrichment of functional classes of genes.
 
-A casual glance indicated that their might be an enrichment for cell wall related genes in in the gt X trt DE gene list.  We can test this more rigorously by looking 
+A casual glance indicated that there might be an enrichment for cell wall related genes in  the gt X trt DE gene list.  We can test this more rigorously by asking if there is statistical over-representation of particular [Gene Ontology (GO)](http://geneontology.org/) terms in this set of genes.  GO terms provide a precise, defined language to describe gene function.
+
+To test for test for enrichment of GO terms we essentially ask the question of whether the prevalence of a term in our gene set of interest is higher than its prevalence in the rest of the genome (aka the universe).  For example if 20% of the differentially expressed genes have the GO term "Cell Wall" but only 10% of the not-differentially expressed genes have the term Cell Wall that the term "Cell Wall" might be over-represented, or enriched, in our differentially expressed genes.  In principle this could be tested using a [Chi-squared test](http://www.biostathandbook.com/chiind.html) or [Fisher's exact test](http://www.biostathandbook.com/fishers.html) for contigency tables.  In practice we will use [GOseq](http://www.bioconductor.org/packages/release/bioc/html/goseq.html) that [makes an adjustement for gene-length bias](http://genomebiology.com/2010/11/2/r14) since it is easier to detect differential expression of longer genes.  
+
+It is important in these analyses to define the "Universe" correctly.  The Universe of genes is all of the genes where you could have detected an expression difference.  It would not have been possible to detect an expression difference in genes that were not expressed at a detectable level in our expereiment.  So the Universe in this case is all expressed genes, rather than all genes.
+
+### Install GOseq
+
+```{r, eval = FALSE}
+source("http://bioconductor.org/biocLite.R")
+biocLite("goseq")
+```
+
+### Download the GO annotation and gene length for B.rapa
+
+GO term annotation for _B. rapa_ is also available from the [Devisetty et al paper](http://www.g3journal.org/content/4/11/2065.long).
+
+cDNA gene lengths were estimated by the `featureCounts()` command used in Tuesday's lab.  I have saved them for you and you can download them as instructed below.  (You're welcome)
+
+Download the files usind the commands below (in Linux) and place the file in your `Brapa_reference` directory.
+
+GO terms:
+
+    wget http://www.g3journal.org/content/suppl/2014/08/12/g3.114.012526.DC1/FileS11.txt
+    
+Gene Length:
+
+    wget {{site.baseurl}}/data/Brapa_CDS_lengths.txt
+  
+### Format data for GOseq
+
+We need to do a bit of data wrangling to get things in the correct format for GOSeq
+
+```{r goseq_prep, eval=FALSE}
+library(goseq)
+gene.lengths <- read.table("../Brapa_reference/Brapa_CDS_lengths.txt",as.is=TRUE)
+head(gene.lengths)
+summary(gene.lengths)
+
+go.terms <- read.delim("../Brapa_reference/FileS11.txt",header=FALSE,as.is=TRUE)
+head(go.terms)
+names(go.terms) <- c("GeneID","GO")
+summary(go.terms)
+
+
+```
+
