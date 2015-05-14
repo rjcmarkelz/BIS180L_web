@@ -209,11 +209,11 @@ First lets gather the data that we need.  you do need to run the following.
 
 Download the promoters and place them in your `Brapa_reference` directory.  You can download them with
 
-  wget {{site.baseurl}}/data/BrapaV1.5_1000bp_upstream.fa.gz
+    wget {{site.baseurl}}/data/BrapaV1.5_1000bp_upstream.fa.gz
   
 Siobhan Brady has compiled a file of plant transcription factor binding motifs.  You can download those from
 
-  wget {{site.baseurl}}/data/element_name_and_motif_IUPACsupp.txt
+    wget {{site.baseurl}}/data/element_name_and_motif_IUPACsupp.txt
   
 Place these in your `Brapa_reference` directory
 
@@ -310,9 +310,9 @@ The resulting table gives the p-value for enrichment for each motif, as well as 
 
 __Exercise 3__ 
 
-__a.__ How many motifs are enriched at P < 0.05?
-__b.__ What is the identity of the most significantly over-enriched promoter?
-__c.__ What percentage of genes in the "Universe" have this motif?  What percentage in our target set?
+__a.__ How many motifs are enriched at P < 0.05?  
+__b.__ What is the identity of the most significantly over-enriched promoter?  
+__c.__ What percentage of genes in the "Universe" have this motif?  What percentage in our target set?  
 __d.__ You can find information on the motifs [here](http://arabidopsis.med.ohio-state.edu/AtcisDB/bindingsites.html).  Do you think that the most enriched motif represents a biologically meaningful result?  Discuss why or why not.
 
 
