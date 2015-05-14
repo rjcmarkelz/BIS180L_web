@@ -34,9 +34,9 @@ We have found our lists of differentially expressed genes.  Now what?  We want t
 
 ## Annotate the differentially expressed genes.
 
-As part of [his B_rapa annotation paper](www.g3journal.org/content/4/11/2065.long) a postdoc in my lab, Upendra Devisetty, did a quick annotation of the _B. rapa_ genes by BLASTing each gene to the NCBI non-redundant database and taking the gene description of the best match (above a threshold). You can download the description with this command:
+As part of [his B_rapa annotation paper](http://www.g3journal.org/content/4/11/2065.long) a postdoc in my lab, Upendra Devisetty, did a quick annotation of the _B. rapa_ genes by BLASTing each gene to the NCBI non-redundant database and taking the gene description of the best match (above a threshold). You can download the description with this command:
 
-  wget http://www.g3journal.org/content/suppl/2014/08/12/g3.114.012526.DC1/FileS9.txt
+    wget http://www.g3journal.org/content/suppl/2014/08/12/g3.114.012526.DC1/FileS9.txt
   
 Place the file into your `Brapa_reference` directory.
   
@@ -147,7 +147,7 @@ sum(DE.interaction) # number of DE genes
 ### Calculate over-representation
 
 Now we can look for GO enrichment
-```{r goseq}
+```{r goseq, eval=FALSE}
 #determines if there is bias due to gene length.  The plot shows the relationship.
 nullp.result <- nullp(DEgenes = DE.interaction,bias.data = gene.lengths.vector)
 
@@ -162,7 +162,7 @@ GO.out[GO.out$over_represented_pvalue < 0.05,]
 ### GO visualization
 
 Looking through a long list can be tough.  There is a nice visualizer called [REVIGO](http://revigo.irb.hr/).  To use it we need to cut and paste the column with the GO term and the one with the p-value.  Use the command below to print these to columns to the console:
-```{r goseq_revigo}
+```{r goseq_revigo, eval=FALSE}
 print(GO.out[GO.out$over_represented_pvalue < 0.05,1:2],row.names=FALSE)
 ```
 
