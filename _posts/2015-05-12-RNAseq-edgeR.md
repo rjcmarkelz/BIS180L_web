@@ -24,7 +24,7 @@ Regarding normalization between samples, genes with very high expression levels 
 
 Two packages that effectively deal with the above issues are [DESeq](http://bioconductor.org/packages/release/bioc/html/DESeq.html) and [edgeR](http://www.bioconductor.org/packages/release/bioc/html/edgeR.html), both available through [Bioconductor](http://bioconductor.org/).  We will use edgeR for today's exercises.  
 
-If you are going to do more RNAseq analyses I __strongly recommend__ that you thoroughly study the [edgeR user manual](http://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf) available both at the [link](http://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf) and by typing `edgeRUsersGuide()` in R (after you have loaded the library)
+If you are going to do more RNAseq analyses I __strongly recommend__ that you thoroughly study the [edgeR user manual](http://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf) available both at the [link](http://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf) and by typing `edgeRUsersGuide()` in R (after you have loaded the library).
 
 
 ## Preliminaries
@@ -75,11 +75,11 @@ export(gff,"..Brapa_reference/Brapa_gene_v1.5.gtf",format="gtf")
 
 ## Bam to read counts
 
-As you know from last week's lab, we mapped RNAseq reads to the _B. rapa_ genome.  In order to ask if reads are differentially expressed between cultivars (IMB211 vs. R500) or treatments (dense planting vs. non-dense planting) we need to know how many reads were sequences from each gene.
+As you know from last week's lab, we mapped RNAseq reads to the _B. rapa_ genome.  In order to ask if reads are differentially expressed between cultivars (IMB211 vs. R500) or treatments (dense planting vs. non-dense planting) we need to know how many reads were sequenced from each gene.
 
 To do this we use the bam files (telling us where in the genome the reads mapped) and the .gtf file that we just generated (telling us where the genes are) to figure out which reads belong to which genes.  Thankfully the `Rsubread` package does this for us.  An alternative workflow (not used here) would be to use the python package [`HTSeq`](http://www-huber.embl.de/HTSeq/).  Yet another alternative would have been to map our reads to cDNA fasta files and then use `samtools idxstats` on the bam file.
 
-But for this lab we will use `Rsubread` on the two files from Thursday.  You may need to change the path listed below to make this work.
+But for this lab we will use `Rsubread` on the two files from Thursday.  You may need to change the path listed below to make this work.  __Important: tilde expansion for your home directory will not work in this function.  Do not include a "~" in your path.  Use relative or the full absolute path__
 
 
 ```r
@@ -154,8 +154,8 @@ When you are done, then typing `names(counts.data)` should give results below
 
 __Exercise 4__  
 __a.__ Make a histogram of counts for each of the samples.  
-__b.__ Is the data normally distributed?  Apply an appropriate transformation if needed and make a new set of histograms.  
-__Hint 1__: _see the use of the `melt()` function in the Rice-SNP lab_.  __Hint 2__: _You can transform the axes in ggplot by adding `scale_x_log10()` or `scale_x_sqrt()` to the plot.  One of these should be sufficient if you need to transorm, but for other ideas see the [Cookbook for R page](http://www.cookbook-r.com/Graphs/Axes_%28ggplot2%29/#axis-transformations-log-sqrt-etc)_.  
+__b.__ Is the data normally distributed?  Make a new set of histograms after applying an appropriate transformation if needed.
+__Hint 1__: _see the use of the `melt()` function in the Rice-SNP lab_.  __Hint 2__: _You can transform the axes in ggplot by adding `scale\_x\_log10()` or `scale\_x\_sqrt()` to the plot.  One of these should be sufficient if you need to transorm, but for other ideas see the [Cookbook for R page](http://www.cookbook-r.com/Graphs/Axes_%28ggplot2%29/#axis-transformations-log-sqrt-etc)_.  
 
 
 
@@ -208,13 +208,6 @@ Now we use the edgeR function `calcNormFactors()` to calculate the effective lib
 
 ```r
 library(edgeR)
-```
-
-```
-## Loading required package: limma
-```
-
-```r
 dge.data <- DGEList(counts=counts.data, group=sample.description$group)
 dim(dge.data) 
 dge.data <- calcNormFactors(dge.data, method = "TMM")
@@ -310,13 +303,7 @@ dge.data <- estimateGLMCommonDisp(dge.data,design,verbose = TRUE)
 
 #Then a trended dispersion based on count level
 dge.data <- estimateGLMTrendedDisp(dge.data,design)
-```
 
-```
-## Loading required package: splines
-```
-
-```r
 #And lastly we calculate the gene-wise dispersion, using the prior estimates to "squeeze" the dispersion towards the common dispersion.
 dge.data <- estimateGLMTagwiseDisp(dge.data,design)
 
@@ -356,16 +343,16 @@ topTags(gt.lrt) # the top 10 most differentially expressed genes
 ```
 ## Coefficient:  gtR500 
 ##                logFC   logCPM       LR        PValue           FDR
-## Bra033098 -12.153106 6.068467 998.6286 3.567444e-219 8.573994e-215
-## Bra023495 -11.889170 5.789511 974.7529 5.522556e-214 6.636456e-210
-## Bra016271 -14.250692 8.143807 891.5845 6.625961e-196 5.308278e-192
-## Bra020631 -11.318306 5.202817 871.9668 1.219006e-191 7.324399e-188
-## Bra011216 -11.258770 5.129307 853.8612 1.052269e-187 5.058046e-184
-## Bra020643 -14.383989 8.280215 841.6326 4.793719e-185 1.920204e-181
-## Bra009785   7.950946 6.020666 786.7807 4.038360e-173 1.386542e-169
-## Bra011765  -7.319948 6.340366 749.1397 6.172451e-165 1.854359e-161
-## Bra026924  -8.334015 5.024615 729.7444 1.018056e-160 2.718661e-157
-## Bra029392   8.339095 6.298419 725.1631 1.009170e-159 2.425439e-156
+## Bra033098 -12.153106 6.068467 998.6286 3.567448e-219 8.574005e-215
+## Bra023495 -11.889170 5.789511 974.7529 5.522564e-214 6.636465e-210
+## Bra016271 -14.250692 8.143807 891.5845 6.625962e-196 5.308279e-192
+## Bra020631 -11.318306 5.202817 871.9668 1.219007e-191 7.324402e-188
+## Bra011216 -11.258770 5.129307 853.8612 1.052269e-187 5.058047e-184
+## Bra020643 -14.383989 8.280215 841.6326 4.793724e-185 1.920206e-181
+## Bra009785   7.950946 6.020666 786.7807 4.038365e-173 1.386544e-169
+## Bra011765  -7.319948 6.340366 749.1397 6.172454e-165 1.854359e-161
+## Bra026924  -8.334015 5.024615 729.7444 1.018056e-160 2.718662e-157
+## Bra029392   8.339095 6.298419 725.1631 1.009171e-159 2.425440e-156
 ```
 
 In the resulting table,
@@ -400,7 +387,7 @@ DEgene.gt <- topTags(gt.lrt,n = Inf)$table[topTags(gt.lrt,n = Inf)$table$FDR<0.0
 write.csv(DEgene.gt,"DEgenes.gt.csv")
 ```
 
-It would be handy to plot bar charts of genes of interest.  Below is a function to do that.  Once the function is entered we can use it to plot gene expression values.
+It would be handy to plot bar charts of genes of interest.  Below is a function to do that.  Once the function is entered and sourced, we can use it to plot gene expression values.
 
 
 ```r
