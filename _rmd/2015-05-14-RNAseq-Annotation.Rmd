@@ -97,6 +97,14 @@ Gene Length:
 
     wget http://jnmaloof.github.io/BIS180L_web/data/Brapa_CDS_lengths.txt
   
+### Expressed genes
+
+We need a list of expressed genes.  You could generate this yourself, or you can download this with
+
+    wget http://jnmaloof.github.io/BIS180L_web/data/internode_expressed_genes.txt
+    
+Place this file in you `Diff_Exp` directory.
+  
 ### Format data for GOseq
 
 We need to do a bit of data wrangling to get things in the correct format for GOSeq.  First we import the gene lengths and GO terms.  We also import a table of all expressed genes in the experiment (you could have gotten this from Tuesday's data)
