@@ -481,3 +481,10 @@ __c__. Make a plot of the top 9 genes that have a significantly different respon
 
 
 
+## Next steps
+
+Now that we know which genes are differentially expressed by their ID, what follow up questions would we like to persue?
+
+1. What types of genes are differentially expressed?  This can be asked at the individual gene level and also at the group level
+2. What patterns of differential expression do we observe in our data?
+3. Are there any common promoter motifs among the differentially expressed genes?  Such motifs could allow us to form testable hypotheses about the transcription factors responsible for the differential expression.
