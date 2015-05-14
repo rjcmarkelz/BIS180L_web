@@ -27,7 +27,6 @@ We have found our lists of differentially expressed genes.  Now what?  We want t
 1. Merge the listd of differentially expressed genes with a gene annotation file to learn about the function of the most upregulated genes.
 2. Ask if particular classes of genes genes are upregualted, by using functional classifiers known as [Gene Ontology (GO) terms](http://geneontology.org/).
 3. Determine whether the differentially expressed genes have any common promoter motifs.
-4. Group genes based on their pattern of gene expression across the samples.
 
 ## Annotate the differentially expressed genes.
 
@@ -120,7 +119,7 @@ names(gene.lengths.vector) <- gene.lengths$GeneID[gene.lengths$GeneID %in% expre
 head(gene.lengths.vector)
 
 #Do the reverse to make sure everyting matches up (it seems that we don't have length info for some genes?)
-expressed.genes <- expressed.genes[expressed.genes$GeneID %in% names(gene.lengths.vector),]
+expressed.genes.match <- expressed.genes[expressed.genes$GeneID %in% names(gene.lengths.vector),]
 ```
 
 Format go.terms for goseq.  We want them in list format, and we need to separate the terms into separate elemants.
@@ -132,9 +131,9 @@ head(go.list)
 
 Format gene expression data for goseq.  We need a vector for each gene with 1 indicating differential expression and 0 indicating no differential expression.
 ```{r goseq_prep3, eval=FALSE}
-DE.interaction <- expressed.genes %in% rownames(DEgene.interaction) 
+DE.interaction <- expressed.genes.match %in% rownames(DEgene.interaction) 
     #for each gene in expressed gene, return FALSE if it is not in DEgene.trt and TRUE if it is.
-names(DE.interaction) <- expressed.genes$GeneID
+names(DE.interaction) <- expressed.genes.match
 head(DE.interaction)
 DE.trt <- as.numeric(DE.interaction) #convert to 0s and 1s
 head(DE.interaction)
@@ -178,4 +177,143 @@ __Exercise 2__:
 __a:__ In REVIGO display a "TreeMap" of the BP GO terms.  Was our hypothesis that cell wall genes are enriched in the genotype X treatment gene set correct?  You DO NOT need to include the treemap in your answer.
 
 __b:__ Display a "TreeMap" of the CC GO terms.  There are four general categories shown, some with sub-categories.  What are the two general categories with the largest number of sub categories?  How might these general categories relate to differences in plant growth? 
+
+## Promoter motif enrichment
+
+To help us understand what causes these genes to be differentially expressed it would be helpful to know if they have any common transcription factor binding motifs in their promoters.
+
+First we must get the sequence of the promoters.  For ease we will define the promoters as the 1000bp upstream of the startof the gene.  In the interest of time I have precomputed this for you, but I show you how to do this below in case you need to do it in the future.
+
+### Get gene "promoters".
+
+__You do not need to run this__
+
+To extract the promoters I used Mike Covington's [extract-utr script](https://github.com/mfcovington/extract-utr) and downloaded the CDS as file S4 from [Devisetty et al](http://www.g3journal.org/content/4/11/2065.long)
+
+The command I used was
+```
+extract-utr.pl --gff_file=Brapa_gene_v1.5.gff \
+--genome_fa_file=BrapaV1.5_chrom_only.fa  \
+--cds_fa_file=Brassica_rapa_final_CDS.fa  \
+--fiveprime --utr_length=1000 --gene_length=0 \
+--output_fa_file=BrapaV1.5_1000bp_upstream.fa
+```
+
+### Gather data for motif enrichment
+
+First lets gather the data that we need
+
+Download the promoters and place them in your `Brapa_reference` directory.  You can download them with
+
+  wget {{site.baseurl}}/data/BrapaV1.5_1000bp_upstream.fa.gz
+  
+Siobhan Brady has compiled a file of plant transcrition factor binding motifs.  You can download those from
+
+  wget {{site.baseurl}}/data/element_name_and_motif_IUPACsupp.txt
+  
+Place these in your `Brapa_reference` directory
+
+Load the promoter sequences
+```{r load_promoters}
+library(Biostrings) #R package for handling DNA and protein data
+promoters <- readDNAStringSet("../Brapa_reference/BrapaV1.5_1000bp_upstream.fa.gz")
+
+#convert "N" to "-" in promoters.  otherwise motifs will match strings of "N"s
+promoters <- DNAStringSet(gsub("N","-",promoters))
+
+promoters
+```
+
+Load the motifs and convert to a good format for R
+```{r load_motifs}
+motifs <- read.delim("../Brapa_reference/element_name_and_motif_IUPACsupp.txt",header=FALSE,as.is=TRUE)
+head(motifs)
+motifsV <- as.character(motifs[,2])
+names(motifsV) <- motifs[,1]
+motifsSS <- DNAStringSet(motifsV)
+motifsSS
+```
+
+Next we need to subset the promoters into those in our DE genes and those in the "Universe"
+```{r subset_promoters}
+#get names to match...there are are few names in the DEgene list not in the promoter set
+DEgene.interaction.match <- row.names(DEgene.interaction)[row.names(DEgene.interaction) %in% names(promoters)]
+
+#subset promoter files
+universe.promoters <- promoters[expressed.genes.match]
+target.promoters <- promoters[DEgene.interaction.match]
+```
+
+### Look for over-represented motifs
+
+I have written a function to wrap up the required code.  Paste this into R to create the function
+```{r motif_enrich}
+#create a function to summarize the results and test for significance
+motifEnrichment <- function(target.promoters,universe.promoters,label=NULL,all.counts=F,motifs=motifsSS) {
+  
+  #use vcountPDict to count the occurences of each motif in each promoter
+  target.counts <- vcountPDict(motifs,target.promoters,fixed=F) + 
+    vcountPDict(motifsSS,reverseComplement(target.promoters),fixed=F)
+  universe.counts <- vcountPDict(motifs,universe.promoters,fixed=F) + 
+    vcountPDict(motifsSS,reverseComplement(universe.promoters),fixed=F)
+  
+  if (all.counts) { 
+    #count all occurences of a motif instead of the number of promoters that it occurs in
+    target.counts.sum <- apply(target.counts,1,sum)
+    universe.counts.sum <- apply(universe.counts,1,sum)
+  } else {
+    target.counts.sum <- apply(ifelse(target.counts > 0,1,0),1,sum)
+    universe.counts.sum <- apply(ifelse(universe.counts > 0 , 1, 0),1,sum)
+  }
+  n.motifs <- length(target.counts.sum)
+  results <- vector(mode="numeric",length=n.motifs)
+  for (i in 1:n.motifs) {
+    if (all.counts) { #the contigency tables are different depending on whether we are looking at promoters or overall occurences
+      #test if ratio of occurences to promoters is the same in the target and the universe
+      m <- matrix(c(
+        target.counts.sum[i],                       #number of occurences within target
+        dim(target.counts)[2],                      #number of promoters in target
+        universe.counts.sum[i],                  #number of occurences within universe
+        dim(universe.counts)[2]                  #number of promoters in universe
+      ),ncol=2)
+    } else { #looking at promoters with and without hits
+      m <- matrix(c(
+        target.counts.sum[i],                        #number of promoters in target with hit
+        dim(target.counts)[2]-target.counts.sum[i],            #number of promoters in target with no hit
+        universe.counts.sum[i],                   #number of promoters in universe with hit
+        dim(universe.counts)[2]-universe.counts.sum[i]   #number of promoters in universe with no hit
+      ),ncol=2)
+    } #else
+    results[i] <- fisher.test(m,alternative="greater")$p.value
+  } #for loop
+  results.table <- cbind(names(motifs),round(universe.counts.sum/dim(universe.counts)[2],3)*100,
+                         round(target.counts.sum/dim(target.counts)[2],3)*100,
+                         results)
+  colnames(results.table) <- c("motif",paste(label,c("%universe","%target","p.value"),sep="."))
+  results.table <- results.table[order(results.table[,paste(label,"p.value",sep=".")]),]
+  results.table
+}
+```
+
+Now with the function entered we can do the enrichment
+```{r enrich_finally}
+motif.results <- motifEnrichment(target.promoters,universe.promoters,"Interaction_DEgenes")
+head(motif.results)
+```
+The resulting table gives the p-value for enrichment for each motif, as well as the %of promoters in the universe and in our target gene set that have the motif.
+
+
+__Exercise 3__ 
+
+__a.__ How many motifs are enriched at P < 0.05?
+__b.__ What is the identity of the most significantly over-enriched promoter?
+__c.__ What percentage of genes in the "Universe" have this motif?  What perventage in our target set?  Do you think this is a biologically meaningful result?  Discuss why or why not.
+
+
+
+
+
+
+
+
 
