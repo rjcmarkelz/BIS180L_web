@@ -42,6 +42,8 @@ Now open Rstudio, set the working directory to your `Diff_Exp` directory, and pr
   
 __Exercise 1__
 
+(Note: you should have these gene lists from the previous lab.  And they should have been saved as files `DEgenes.trt.csv` and `DEgenes.interaction.csv`, so you can load them in from these files).
+
 __a.__ Use `merge()` to add gene descriptions for the genes found to be regulated by the DP treatment.  Output a table of the top 10 genes that includes the output from edgeR and the descriptions.  __Important: Pay attention to the "sort="" argument to `merge()`.  Should it be TRUE or FALSE?
 
 __b.__ Repeat this for  genes with a genotype x trt interaction.
