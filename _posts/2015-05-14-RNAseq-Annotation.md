@@ -60,7 +60,17 @@ To test for test for enrichment of GO terms we essentially ask the question of w
 
 It is important in these analyses to define the "Universe" correctly.  The Universe of genes is all of the genes where you could have detected an expression difference.  It would not have been possible to detect an expression difference in genes that were not expressed at a detectable level in our experiment.  So the Universe in this case is all expressed genes, rather than all genes.
 
+### Expressed genes
+
+We need a list of expressed genes.  You could generate this yourself, or you can download this with
+
+    wget http://jnmaloof.github.io/BIS180L_web/data/internode_expressed_genes.txt
+    
+Place this file in you `Diff_Exp` directory.
+
 ### Install GOseq
+
+__If you can't install GOseq, skip ahead to "GO visualization below"__
 
 
 ```r
@@ -84,13 +94,6 @@ Gene Length:
 
     wget http://jnmaloof.github.io/BIS180L_web/data/Brapa_CDS_lengths.txt
   
-### Expressed genes
-
-We need a list of expressed genes.  You could generate this yourself, or you can download this with
-
-    wget http://jnmaloof.github.io/BIS180L_web/data/internode_expressed_genes.txt
-    
-Place this file in you `Diff_Exp` directory.
   
 ### Format data for GOseq
 
@@ -159,6 +162,17 @@ GO.out[GO.out$over_represented_pvalue < 0.05,]
 ```
 
 ### GO visualization
+
+If you were not able to run `goseq` then you can download the [output as an .Rdata file](http://jnmaloof.github.io/BIS180L_web/data/GO.out.Rdata)
+
+Then from  within R (only if you downloaded the file).  You may need to update the path.
+
+    load("GO.out.Rdata")
+
+This creates an object "GO.out" that otherwise would have been created by goseq.  You can look at it with:
+
+    GO.out[GO.out$over_represented_pvalue < 0.05,]
+
 
 Looking through a long list can be tough.  There is a nice visualizer called [REVIGO](http://revigo.irb.hr/).  To use it we need to cut and paste the column with the GO term and the one with the p-value.  Use the command below to print these to columns to the console:
 
