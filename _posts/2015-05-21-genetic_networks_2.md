@@ -7,21 +7,62 @@ tags:
 ---
 ## Day 2 Concepts
 
-## Network Comparisons
-* comparisons of general network topologies
-* summarize networks for each genotype treatment combo
+# Part II
+## Graph Models
+Nodes:
 
-## Network to trait correlations
-* eigenvalues
-* can explain phenotypes with gene expression?
+* abstract concept that can represent data or process
+* examples of social and biological nodes
 
-## Network follow-up for enrichment
-* gene expression enrichment
+**(PersonA)**
 
-## Metabolic Networks
-* comparing genes of metabolic pathways
-* visualize
+**(PersonB)**
 
-## Network Summary Statistics
-* have all groups answer questions about pre-run general summary statistics
-* leave some biological interpretation up to groups, but values will be the same to be easier to grade
+**(A)**    **(B)**    **(C)**
+
+**(Gene1)**    **(Gene2)**    **(Gene3)**
+
+Relationships:
+* abstract concept that can represent data or process
+* examples of social nodes
+
+**(PersonA)--knows--(PersonB)**
+
+**(PersonB)--doesnotknow--(PersonC)**
+
+**(PersonC)--knows--(PersonB)**
+
+Simplified:
+
+**(A)--1--(B)**
+
+**(A)--0--(C)**
+
+**(B)--1--(C)**
+
+# Concept Outline
+
+### Relationships
+* adjacency 
+* corr based networks
+* other weightings
+* social networks examples
+
+### Graphs
+* intro to graphs
+* igraph basics
+* now code simple social network by hand
+* ask question that requires following information along network
+
+### Brief intro of shade avoidance and dataset we will be working with
+* see how much Julin did this
+
+### Gene co-expression networks and phenotype networks
+* transition from social network to gene-gene interaction example
+* code small shade avoidance network beforehand to play with
+* ask biologically motivated question with simulated shade network
+
+### Break into teams for network construction
+* have each team (or set of) create networks for tissue types - need to double check time
+* create adjacency network first- visualize with heatmap
+* use either WGCNA or Network package to create full network - need to do speed comparisons
