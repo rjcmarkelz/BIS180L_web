@@ -59,7 +59,7 @@ plot(hclust(dist(cities)))
 ```
 
 ![plot of chunk unnamed-chunk-1]({{ site.baseurl }}/figure/unnamed-chunk-1-1.png) 
-**Exercise 1:**
+**Exercise 1:**  
 Extending the example that I gave for BOS/NY/DC, what are the distances that define each split in the West Coast side of the hclust plot?  
 *Hint 1: Start with the distances between SF and LA. Then look at the difference between that cluster up to SEA*  
 *Hint 2: Print cities, you only need to look at the upper right triangle of data matrix.*
@@ -122,7 +122,7 @@ plot(hc)
 ```
 
 ![plot of chunk unnamed-chunk-4]({{ site.baseurl }}/figure/unnamed-chunk-4-1.png) 
-**Exercise 2:**
+**Exercise 2:**  
 What is the general pattern in the h-clustering data? 
 Using what you learned from the city example, what is the subcluster that looks very different than the rest of the samples?  
 *Hint: It is a group of 3 libraries. You will have to plot this yourself and stretch it out. The rendering on the website compresses the output.*
@@ -138,11 +138,11 @@ rect.hclust(hc, k = 4, border = "red")
 ```
 
 ![plot of chunk unnamed-chunk-5]({{ site.baseurl }}/figure/unnamed-chunk-5-1.png) 
-**Exercise 3:**
-With k = 4 as one of the arguments to the rect.hclust() function, what is the largest and smallest group contained within the rectangles? 
+**Exercise 3:**  
+With k = 4 as one of the arguments to the `rect.hclust()` function, what is the largest and smallest group contained within the rectangles? Use characteristics in the sample name to describe the clusters.  
 Play with the k-values. Find a new k-value between 3 and 7 and describe how the samples are falling out. 
 
-You may have noticed that your results and potential interpretation of the data could change very dramatically based on the how many subclusters you choose! This is one of the main drawbacks with this technique. Fortunately there are other packages that can help us determine which sub-clusters have good support. 
+You may have noticed that your results and potential interpretation of the data could change very dramatically based on the how many sub-clusters you choose! This is one of the main drawbacks with this technique. Fortunately there are other packages that can help us determine which sub-clusters have good support. 
 
 
 ```r
@@ -159,7 +159,7 @@ install.packages("pvclust")
 library(pvclust)
 ?pvclust #check out the documentation
 
-set.seed(12456) #important to run this
+set.seed(12456) # sets state of the random number generator in R to help with reproducibility
 fit <- pvclust(GxE_counts, method.hclust = "ward.D", method.dist = "euclidean", nboot = 50)
 ```
 
@@ -177,20 +177,20 @@ fit <- pvclust(GxE_counts, method.hclust = "ward.D", method.dist = "euclidean", 
 ```
 
 ```r
-plot(fit) # dendogram with p-values
+plot(fit) # dendogram with p-values indicated by AU and BP
 ```
 
 ![plot of chunk unnamed-chunk-6]({{ site.baseurl }}/figure/unnamed-chunk-6-1.png) 
-Normally we would do 1000+ bootstrap samples, to get our support for each of the branches in the tree, but we do not have lots of time today. The red values are the "Approximate Unbiased" (AU) values with numbers closer to 100 providing more support. Bootstrapping is a popular resampling technique that you can read about more *[here](http://en.wikipedia.org/wiki/Bootstrapping_%28statistics%29)*.
+Normally we would do 1000+ bootstrap samples, to get our support for each of the branches in the tree, but we do not have lots of time today. `pvclust` calculates the probability values (*p*-values) for each cluster using bootstrap resampling techniques which you can read more about [here](http://en.wikipedia.org/wiki/Bootstrapping_%28statistics%29). Two types of *p*-values are available. Red values are "Approximate Unbiased" (AU) values. Numbers closer to 100 provide more support, and this metric is superior to the ordinary bootstrap resampling indicated in green for "Bootstrap Probability" (BP).
 
-**Exercise 4:**
-After running the 50 bootstrap samples, leave the plot open. Then change nboot up to 500. In general what happens to AU comparing the two plots by flipping between them?
+**Exercise 4:**  
+After running the 50 bootstrap samples, leave the plot open. Then change `nboot` to 500. In general, what happens to AU comparing the two plots by flipping between them?
 
 
 We will be discussing more methods for choosing the number of clusters in the k-means section. Until then, we will expand what we learned about h-clustering to do a more sophisticated visualization of the data. 
 
 # Heatmaps
-Heatmaps are another way to visualize h-clustering results. Instead of looking at either the rows (genes) or the columns (samples) like we did with the h-clustering examples we can view the entire data matrix at once. Well how do we do this? We could just print the matrix, but that would just be a bunch of numbers. Heatmaps take all the values within the data matrix and convert them to a color value. The human eye is really good at picking out patterns so lets convert that data matrix to a color value AND do some h-clustering. Although we can do this really easily with the heatmap() function that comes preloaded in R, there is a small library that provides some additional functionality to the heatmaps. We will start with the cities example because it is small and easy to see what is going on. 
+Heatmaps are another way to visualize h-clustering results. Instead of looking at either the rows (genes) or the columns (samples) like we did with the h-clustering examples we can view the entire data matrix at once. Well how do we do this? We could just print the matrix, but that would just be a bunch of numbers. Heatmaps take all the values within the data matrix and convert them to a color value. The human eye is really good at picking out patterns so let's convert that data matrix to a color value AND do some h-clustering. Although we can do this really easily with the `heatmap()` function that comes preloaded in R, there is a small library that provides some additional functionality to the heatmaps. We will start with the cities example because it is small and easy to see what is going on. 
 
 *A general programming tip: always have little test data sets. That allows you to figure out what the functions are doing. If you understand how it works on a small scale then you will be better able to troubleshoot when scaling to large datasets.*
 
