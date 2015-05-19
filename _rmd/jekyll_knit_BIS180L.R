@@ -1,4 +1,6 @@
-setwd("~/git.repos/BIS180L_web/")
+#setwd("~/git.repos/BIS180L_web/") #Cody
+setwd("~/git/BIS180L_web/") #Julin
+
 library(knitr)
 
 jekyll.knit <- function(input) {
