@@ -1,8 +1,0 @@
-targets, factors
-auxin, !PhyB & YUCCA
-PhyB, PhyB
-PIF4_5, PhyB
-HFR1, PIF4_5
-TAA1, TAA1
-YUCCA, TAA1 & PIF4_5
-elongation, auxin
