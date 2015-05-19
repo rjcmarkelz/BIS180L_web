@@ -8,7 +8,7 @@ __Student ID:__
 
 ## Assignment 6: Gene Networks
 
-This should be a knittable .Rmd file.  Include this file, a .pdf and a .html when you turn in the assignment.
+This should be a knittable .Rmd file.  Include this file and a .html when you turn in the assignment.
 
 **EXERCISE 1:** Extending the example that I gave for BOS/NY/DC, what are the distances that define each split in the West Coast side of the hclust plot?  
 *Hint 1: Start with the distances between SF and LA. Then look at the difference between that cluster up to SEA*  
