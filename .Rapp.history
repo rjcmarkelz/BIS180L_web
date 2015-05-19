@@ -1,3 +1,178 @@
+str(A)
+data <- data.frame(y=y,gid=1:200)
+head(data)
+ans <- kin.blup(data = data, geno = "gid", pheno = "y", K = A)
+accuracy <- cor(g,ans$g)
+accuracy
+str(ans)
+str(A)
+head(A)
+M <- matrix(rep(0,100*1400),100,1400)
+M[i,] <- ifelse(runif(1400)<0.5,-1,1)
+}
+M <- matrix(rep(0,100*1400),100,1400)
+for (i in 1:100) {#
+M[i,] <- ifelse(runif(1400)<0.5,-1,1)#
+}
+head(M)
+u <- rnorm(1000)
+u <- rnorm(1400)
+head(u)
+g <- as.vector(crossprod(t(M),u))
+head(g)
+plot(g)
+h2 <- 0.5 #heritability
+y <- g + rnorm(100,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+head(y)
+rownames(M) <- 1:100
+A <- A.mat(M)
+str(A)
+head(A)
+h2 <- 0.5 #heritability
+y <- g + rnorm(100,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+head(y)
+data <- data.frame(y = y, gid = 1:200)
+head(data)
+ans <- kin.blup(data = data, geno = "gid", pheno = "y", K = A)
+data <- data.frame(y = y, gid = 1:100)
+head(data)
+ans <- kin.blup(data = data, geno = "gid", pheno = "y", K = A)
+accuracy <- cor(g,ans$g)
+accuracy
+str(ans)
+plot(g, ans$g)
+ans2 <- mixed.solve(y,K=A.mat(M))
+str(ans2)
+accuracy2 <- cor(g,ans2$u)
+accuracy2
+plot(g, ans2$u)
+M <- matrix(rep(0,124*1400),124,1400)
+for (i in 1:124) {#
+M[i,] <- ifelse(runif(1400)<0.5,-1,1)#
+}
+head(M)
+u <- rnorm(1400)
+head(u)
+g <- as.vector(crossprod(t(M),u))
+head(g)
+plot(g)
+h2 <- 0.5 #heritability
+y <- g + rnorm(124,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+head(y)
+phenoEST <- y[1:100,]
+dim(y)
+str(y)
+phenoEST <- y[1:100]
+phenoVal <- y[101:124]
+g
+str(M)
+marksEst <- M[1:100,]
+marksVal <- M[101:124,]
+mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
+mrkEff
+gebvVec1 <- mrksVal%*%mrkEff
+gebvVec1 <- marksVal%*%mrkEff
+(predAb1 <- cor(gebvVec1, phenoVal))
+u <- rnorm(1400)
+head(u)
+g <- as.vector(crossprod(t(M),u))
+head(g)
+plot(g)
+h2 <- 0.9 #heritability
+y <- g + rnorm(124,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+phenoEST <- y[1:100]
+phenoVal <- y[101:124]
+marksEst <- M[1:100,]
+marksVal <- M[101:124,]
+mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
+mrkEff
+gebvVec1 <- marksVal%*%mrkEff
+(predAb1 <- cor(gebvVec1, phenoVal))
+y <- g + rnorm(124,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+head(y)
+dim(y)
+str(y)
+phenoEST <- y[1:100]
+phenoVal <- y[101:124]
+g
+str(M)
+marksEst <- M[1:100,]
+marksVal <- M[101:124,]
+mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
+mrkEff
+gebvVec1 <- marksVal%*%mrkEff
+(predAb1 <- cor(gebvVec1, phenoVal))
+h2 <- 0.9 #heritability
+y <- g + rnorm(124,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+head(y)
+dim(y)
+str(y)
+phenoEST <- y[1:100]
+phenoVal <- y[101:124]
+g
+str(M)
+marksEst <- M[1:100,]
+marksVal <- M[101:124,]
+mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
+mrkEff
+gebvVec1 <- marksVal%*%mrkEff
+(predAb1 <- cor(gebvVec1, phenoVal))
+h2 <- 0.9 #heritability
+y <- g + rnorm(124,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+head(y)
+dim(y)
+str(y)
+phenoEST <- y[1:100]
+phenoVal <- y[101:124]
+g
+str(M)
+marksEst <- M[1:100,]
+marksVal <- M[101:124,]
+mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
+mrkEff
+gebvVec1 <- marksVal%*%mrkEff
+(predAb1 <- cor(gebvVec1, phenoVal))
+h2 <- 0.9 #heritability
+y <- g + rnorm(124,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+head(y)
+dim(y)
+str(y)
+phenoEST <- y[1:100]
+phenoVal <- y[101:124]
+g
+str(M)
+marksEst <- M[1:100,]
+marksVal <- M[101:124,]
+mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
+mrkEff
+gebvVec1 <- marksVal%*%mrkEff
+(predAb1 <- cor(gebvVec1, phenoVal))
+h2 <- 0.9 #heritability
+y <- g + rnorm(124,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+head(y)
+dim(y)
+str(y)
+phenoEST <- y[1:100]
+phenoVal <- y[101:124]
+g
+str(M)
+marksEst <- M[1:100,]
+marksVal <- M[101:124,]
+mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
+mrkEff
+gebvVec1 <- marksVal%*%mrkEff
+(predAb1 <- cor(gebvVec1, phenoVal))
+h2 <- 0.9 #heritability
+y <- g + rnorm(124,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+head(y)
+dim(y)
+str(y)
+phenoEST <- y[1:100]
+phenoVal <- y[101:124]
+g
+str(M)
+marksEst <- M[1:100,]
+marksVal <- M[101:124,]
 mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
 mrkEff
 gebvVec1 <- marksVal%*%mrkEff
@@ -73,191 +248,8 @@ plot(hclust(dist(npk)))
 data(Loblolly)
 head(Loblolly)
 Loblolly
-cities <- read.table("us_cities.txt", sep = "\t")
-head(cities)
-cities <- read.table("us_cities.txt", sep = "\t", header = TRUE)
-head(cities)
-plot(hclust(cities))
-plot(hclust(dist(cities)))
-cities <- read.table("us_cities.txt", sep = "\t", header = TRUE, rownames = TRUE)
-?read.table
-cities <- read.table("us_cities.txt", sep = "\t", header = TRUE, row.names = TRUE)
-rownames(cities) <- cities$X
-head(cities)
-cities <- cities[,-1]
-head(cities)
-plot(hclust(dist(cities)))
-plot(hclust(cities))
-plot(hclust(dist(cities)))
-setwd("/Users/Cody_2/git.repos/BIS180L/data")
-DE_genes <- read.table("DEgenes_GxE.csv", sep = ",")
-head(DE_genes) #check out the data
-DE_gene_names <- row.names(DE_genes)
-dim(DE_gene_names)
-DE_gene_names
-hr <- hclust(dist(GxE_mat)), method="complete")
-hr <- hclust(dist(GxE_mat)))
-hr <- hclust(dist(GxE_mat))
-GxE_counts <- as.matrix(brass_voom_E[DE_gene_names,])
-brass_voom_E <- read.table("voom_transform_brassica.csv", sep = ",", header = TRUE)
-head(brass_voom_E)
-GxE_counts <- as.matrix(brass_voom_E[DE_gene_names,])
-str(GxE_counts) #check out the structure of the data
-GxE_counts <- as.data.frame(brass_voom_E[DE_gene_names,])
-str(GxE_counts) #check out the structure of the data
-GxE_counts <- as.matrix(GxE_counts) # some of the downstream steps require a data matrix
-hr <- hclust(dist(GxE_counts))
-plot(hr)
-hc <- hclust(dist(t(GxE_mat)), method="complete")
-hc <- hclust(dist(t(GxE_counts)), method="complete")
-plot(hc)
-hc <- hclust(dist(t(GxE_counts))
-plot(hc)
-hc <- hclust(dist(t(GxE_counts)))
-plot(hc)
-?rect.hclust
-hc <- hclust(dist(t(GxE_counts)))
-plot(hc) #redraw the tree
-rect.hclust(hc, k = 5, border = "red")
-plot(hc) #redraw the tree
-rect.hclust(hc, k = 6, border = "red")
-rect.hclust(hc, k = 4, border = "red")
-plot(hc) #redraw the tree
-rect.hclust(hc, k = 4, border = "red")
-?rect.hclust
-install.packages("pvclust")
-library(pvclust)
-fit <- pvclust(t(GxE_counts), method.hclust = "ward", method.dist = "euclidean")
-?pvclust
-fit <- pvclust(t(GxE_counts), method.hclust = "ward", method.dist = "euclidean", nboot = 50)
-plot(fit) # dendogram with p values
-fit <- pvclust(GxE_counts, method.hclust = "ward", method.dist = "euclidean", nboot = 50)
-plot(fit) # dendogram with p values
-pvrect(fit, alpha=.95)
-pvrect(fit, alpha=.80)
-pvrect(fit, alpha=.99)
-plot(fit) # dendogram with p values
-pvrect(fit, alpha=.99)
-pvpick(fit)
-set.seed(12456) #important to run this
-fit <- pvclust(GxE_counts, method.hclust = "ward", method.dist = "euclidean", nboot = 50)
-plot(fit) # dendogram with p-values
-set.seed(12456) #important to run this
-fit <- pvclust(GxE_counts, method.hclust = "ward", method.dist = "euclidean", nboot = 500)
-plot(fit) # dendogram with p-values
-install.packages("heatmap.2")
-library(heatmap.2)
-library("heatmap.2")
-install.packages("gplots")
-library(gplots)
-heatmap.2(GxE_mat, Rowv=as.dendrogram(hr), scale="row", density.info="none", trace="none")
-heatmap.2(GxE_counts, Rowv=as.dendrogram(hr), scale="row", density.info="none", trace="none")
-head(cities)
-cityclust <- hclust(dist(cities))
-heatmap.2(cities, Rowv=as.dendrogram(cityclust), scale="row", density.info="none", trace="none")
-head(cities)
-cities_mat <- as.matrix(cities)
-cities_mat <- as.matrix(cities)
-cityclust <- hclust(dist(cities_mat))
-heatmap.2(cities_mat, Rowv=as.dendrogram(cityclust), scale="row", density.info="none", trace="none")
-heatmap.2(GxE_counts, Rowv=as.dendrogram(hc), scale="row", density.info="none", trace="none")
-heatmap.2(GxE_counts, Rowv=as.dendrogram(hr), scale="row", density.info="none", trace="none")
-heatmap.2(GxE_counts, Rowv=as.dendrogram(hc), scale="row", density.info="none", trace="none")
-hc <- hclust(dist(t(GxE_counts)))
-plot(hc)
-heatmap.2(GxE_counts, Rowv = as.dendrogram(hc), scale = "row", density.info="none", trace="none")
-hr <- hclust(dist(GxE_counts))
-plot(hr)
-heatmap.2(GxE_counts, Rowv = as.dendrogram(hr), scale = "row", density.info="none", trace="none")
-?heatmap.2
-heatmap.2(GxE_counts, Rowv = as.dendrogram(hr), scale = "row", density.info="none", trace="none")
-library(devtools)
-install_github('sinhrks/ggfortify')
-library(ggfortify)
-autoplot(prcomp(GxE_counts_s))
-autoplot(prcomp(GxE_counts))
-autoplot(fit, data = GxE_counts_s, label = TRUE)
-set.seed(25)
-fit <- kmeans(GxE_counts, 9)
-autoplot(fit, data = GxE_counts, label = TRUE)
-plot(GxE_counts)
-autoplot(fit, data = GxE_counts, label = TRUE)
-library(cluster)
-head(GxE_counts)
-autoplot(pam(GxE_counts, 3), frame = TRUE, frame.type = 'norm')
-autoplot(pam(GxE_counts, 5), frame = TRUE, frame.type = 'norm')
-setwd("~/git.repos/BIS180L_web/_rmd")
-library(knitr)
-jekyll.knit <- function(input) {#
-    rel.path = substr(input, 5, nchar(input) - 4)#
-    output = paste("_posts/", rel.path, ".md", sep = "")#
-    knit(input = input, output = output)#
-    #system(paste("perl -pi -e 's|images/|{{ site.baseurl }}/images/|gi'", output, sep = " ")) # for non-R generated figures#
-    #system(paste("perl -pi -e 's|figure/|{{ site.baseurl }}/figure/|gi'", output, sep = " ")) # for R figures generated during knitting#
-}
-jekyll.knit("2015-05-19-genetic-networks-1.Rmd")
-jekyll.knit("_rmd/2015-05-19-genetic-networks-1.Rmd")
-jekyll.knit("_rmd/2015-05-19-genetic-networks-1.Rmd")
-jekyll.knit("2015-05-19-genetic-networks-1.Rmd")
-rel.path = substr("2015-05-19-genetic-networks-1.Rmd", 5, nchar(input) - 4)
-rel.path = substr("2015-05-19-genetic-networks-1.Rmd", 5, nchar("2015-05-19-genetic-networks-1.Rmd") - 4)
-rel.path
-rel.path = substr("_rmd/2015-05-19-genetic-networks-1.Rmd", 5, nchar("_rmd/2015-05-19-genetic-networks-1.Rmd") - 4)
-rel.path
-rel.path = substr("_rmd/2015-05-19-genetic-networks-1.Rmd", 5, nchar("_rmd/2015-05-19-genetic-networks-1.Rmd") - 5)
-rel.path
-?knit
-knit(input = "~/git.repos/BIS180L_web/_rmd/2015-05-19-genetic-networks1.Rmd", output = "~/git.repos/BIS180L_web/_posts/2015-05-19-genetic-networks-1.md")
-knit(input = "~/git.repos/BIS180L_web/_rmd/2015-05-19-genetic-networks-1.Rmd", output = "~/git.repos/BIS180L_web/_posts/2015-05-19-genetic-networks-1.md")
-setwd("~/git.repos/BIS180L_web/_rmd")
-knit(input = "~/git.repos/BIS180L_web/_rmd/2015-05-19-genetic-networks-1.Rmd", output = "~/git.repos/BIS180L_web/_posts/2015-05-19-genetic-networks-1.md")
-rel.path = substr("_rmd/2015-05-19-genetic-networks-1.Rmd", 5, nchar("_rmd/2015-05-19-genetic-networks-1.Rmd") - 5)
-rel.path
-rel.path = substr("_rmd/2015-05-19-genetic-networks-1.Rmd", 5, nchar("_rmd/2015-05-19-genetic-networks-1.Rmd") - 4)
-rel.path
-input = paste("2015-05-19-genetic-networks-1.Rmd")
-output = paste("_posts/", rel.path, ".md", sep = "")
-output
-output = paste("_posts", rel.path, ".md", sep = "")
-output
-jekyll.knit <- function(input) {#
-    rel.path = substr(input, 5, nchar(input) - 4)#
-    output = paste("_posts", rel.path, ".md", sep = "")#
-    knit(input = input, output = output)#
-    #system(paste("perl -pi -e 's|images/|{{ site.baseurl }}/images/|gi'", output, sep = " ")) # for non-R generated figures#
-    #system(paste("perl -pi -e 's|figure/|{{ site.baseurl }}/figure/|gi'", output, sep = " ")) # for R figures generated during knitting#
-}
-jekyll.knit("2015-05-19-genetic-networks-1.Rmd")
-setwd("./BIS180L_web/_rmd")
-rel.path = substr(input, 5, nchar(input) - 4)
-rel.path
-substr
-?substr
-x <- c("asfef", "qwerty", "yuiop[", "b", "stuff.blah.yech")#
-substr(x, 2, 5)#
-substring(x, 2, 4:6)
-substr("abcdef", 2, 4)
-input = paste("_rmd/2015-05-19-genetic-networks-1.Rmd")
-rel.path = substr(input, 5, nchar(input) - 4)
-rel.path
-rel.path = substr(input, 6, nchar(input) - 4)
-rel.path
-input = paste("_rmd/2015-05-19-genetic-networks-1.Rmd")
-rel.path = substr(input, 6, nchar(input) - 4)
-rel.path
-output = paste("_posts", rel.path, ".md", sep = "")
-output
-output = paste("_posts/", rel.path, ".md", sep = "")
-output
-setwd("~/git.repos/BIS180L_web/BIS180L_web/")
 setwd("~/git.repos/BIS180L_web/")
-jekyll.knit <- function(input) {#
-    rel.path = substr(input, 5, nchar(input) - 4)#
-    output = paste("_posts/", rel.path, ".md", sep = "")#
-    knit(input = input, output = output)#
-    system(paste("perl -pi -e 's|images/|{{ site.baseurl }}/images/|gi'", output, sep = " ")) # for non-R generated figures#
-    system(paste("perl -pi -e 's|figure/|{{ site.baseurl }}/figure/|gi'", output, sep = " ")) # for R figures generated during knitting#
-}
+library(knitr)
 jekyll.knit <- function(input) {#
     rel.path = substr(input, 6, nchar(input) - 4)#
     output = paste("_posts/", rel.path, ".md", sep = "")#
@@ -265,12 +257,4 @@ jekyll.knit <- function(input) {#
     system(paste("perl -pi -e 's|images/|{{ site.baseurl }}/images/|gi'", output, sep = " ")) # for non-R generated figures#
     system(paste("perl -pi -e 's|figure/|{{ site.baseurl }}/figure/|gi'", output, sep = " ")) # for R figures generated during knitting#
 }
-jekyll.knit("_rmd/2015-05-19-genetic-networks-1.Rmd")
-jekyll.knit("_rmd/2015-05-19-genetic-networks-1.Rmd")
-setwd("~/git.repos/BIS180L_web/")
-jekyll.knit("_rmd/2015-05-19-genetic-networks-1.Rmd")
-jekyll.knit("_rmd/2015-05-19-genetic-networks-1.Rmd")
-DE_genes <- read.table("~/git.repos/BIS180L_web/DEgenes_GxE.csv", sep = ",")
-DE_genes <- read.table("~/git.repos/BIS180L_web/data/DEgenes_GxE.csv", sep = ",")
-setwd("~/git.repos/BIS180L_web/")
 jekyll.knit("_rmd/2015-05-19-genetic-networks-1.Rmd")

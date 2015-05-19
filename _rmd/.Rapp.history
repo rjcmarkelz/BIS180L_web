@@ -1,0 +1,262 @@
+marksEst <- M[1:100,]
+marksVal <- M[101:124,]
+mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
+mrkEff
+gebvVec1 <- marksVal%*%mrkEff
+(predAb1 <- cor(gebvVec1, phenoVal))
+y <- g + rnorm(124,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+head(y)
+dim(y)
+str(y)
+phenoEST <- y[1:100]
+phenoVal <- y[101:124]
+g
+str(M)
+marksEst <- M[1:100,]
+marksVal <- M[101:124,]
+mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
+mrkEff
+gebvVec1 <- marksVal%*%mrkEff
+(predAb1 <- cor(gebvVec1, phenoVal))
+h2 <- 0.9 #heritability
+y <- g + rnorm(124,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+head(y)
+dim(y)
+str(y)
+phenoEST <- y[1:100]
+phenoVal <- y[101:124]
+g
+str(M)
+marksEst <- M[1:100,]
+marksVal <- M[101:124,]
+mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
+mrkEff
+gebvVec1 <- marksVal%*%mrkEff
+(predAb1 <- cor(gebvVec1, phenoVal))
+h2 <- 0.9 #heritability
+y <- g + rnorm(124,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+head(y)
+dim(y)
+str(y)
+phenoEST <- y[1:100]
+phenoVal <- y[101:124]
+g
+str(M)
+marksEst <- M[1:100,]
+marksVal <- M[101:124,]
+mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
+mrkEff
+gebvVec1 <- marksVal%*%mrkEff
+(predAb1 <- cor(gebvVec1, phenoVal))
+h2 <- 0.9 #heritability
+y <- g + rnorm(124,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+head(y)
+dim(y)
+str(y)
+phenoEST <- y[1:100]
+phenoVal <- y[101:124]
+g
+str(M)
+marksEst <- M[1:100,]
+marksVal <- M[101:124,]
+mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
+mrkEff
+gebvVec1 <- marksVal%*%mrkEff
+(predAb1 <- cor(gebvVec1, phenoVal))
+h2 <- 0.9 #heritability
+y <- g + rnorm(124,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+head(y)
+dim(y)
+str(y)
+phenoEST <- y[1:100]
+phenoVal <- y[101:124]
+g
+str(M)
+marksEst <- M[1:100,]
+marksVal <- M[101:124,]
+mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
+mrkEff
+gebvVec1 <- marksVal%*%mrkEff
+(predAb1 <- cor(gebvVec1, phenoVal))
+h2 <- 0.9 #heritability
+y <- g + rnorm(124,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+head(y)
+dim(y)
+str(y)
+phenoEST <- y[1:100]
+phenoVal <- y[101:124]
+g
+str(M)
+marksEst <- M[1:100,]
+marksVal <- M[101:124,]
+mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
+mrkEff
+gebvVec1 <- marksVal%*%mrkEff
+(predAb1 <- cor(gebvVec1, phenoVal))
+h2 <- 0.9 #heritability
+y <- g + rnorm(124,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+head(y)
+dim(y)
+str(y)
+phenoEST <- y[1:100]
+phenoVal <- y[101:124]
+g
+str(M)
+marksEst <- M[1:100,]
+marksVal <- M[101:124,]
+mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
+mrkEff
+gebvVec1 <- marksVal%*%mrkEff
+(predAb1 <- cor(gebvVec1, phenoVal))
+h2 <- 0.9 #heritability
+y <- g + rnorm(124,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+head(y)
+dim(y)
+str(y)
+phenoEST <- y[1:100]
+phenoVal <- y[101:124]
+g
+str(M)
+marksEst <- M[1:100,]
+marksVal <- M[101:124,]
+mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
+mrkEff
+gebvVec1 <- marksVal%*%mrkEff
+(predAb1 <- cor(gebvVec1, phenoVal))
+mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst, K = A.mat(marksEst))
+mrkEff   <- mixed.solve(y = phenoEST, K = A.mat(marksEst))
+mrkEff
+mrkEff   <- mixed.solve(y = phenoEST, K = A.mat(marksEst))$u
+mrkEff
+gebvVec2 <- marksVal%*%mrkEff
+mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
+mrkEff
+mrkEff   <- mixed.solve(y = phenoEST, K = A.mat(marksEst))
+mrkEff
+?kinship.BLUP
+data <- data.frame(y = phenoEST, gid = 1:100)
+marksEst <- M[1:100,]
+row.names(marksEst) <- 1:100
+head(data)
+A <- A.mat(M)
+A <- A.mat(marksEst)
+A
+ans <- kin.blup(data = data, geno = "gid", pheno = "y", K = A)
+str(ans)
+cor(g[1:100], ans$g)
+cor(g, ans$g)
+rownames(data.pheno.mds) <- data.pheno.mds$Row.names
+library(devtools)
+devtools::install_github("rjcmarkelz/BIS180L")
+data(eurodist)
+plot(hclust(eurodist))
+data()
+data(rivers)
+head(rivers)
+plot(hclust(rivers))
+plot(hclust(dist(rivers)))
+data(npk)
+head(npk)
+plot(hclust(dist(npk)))
+npk
+npk <- npk[,-1]
+plot(hclust(dist(npk)))
+data(Loblolly)
+head(Loblolly)
+Loblolly
+setwd("~/git.repos/BIS180L_web/")
+library(knitr)
+jekyll.knit <- function(input) {#
+    rel.path = substr(input, 6, nchar(input) - 4)#
+    output = paste("_posts/", rel.path, ".md", sep = "")#
+    knit(input = input, output = output)#
+    system(paste("perl -pi -e 's|images/|{{ site.baseurl }}/images/|gi'", output, sep = " ")) # for non-R generated figures#
+    system(paste("perl -pi -e 's|figure/|{{ site.baseurl }}/figure/|gi'", output, sep = " ")) # for R figures generated during knitting#
+}
+jekyll.knit("_rmd/2015-05-19-genetic-networks-1.Rmd")
+setwd("~/git.repos/BIS180L_web/_rmd")
+jekyll.knit <- function(input) {#
+    rel.path = substr(input, 6, nchar(input) - 4)#
+    output = paste("_posts/", rel.path, ".md", sep = "")#
+    knit(input = input, output = output)#
+    system(paste("perl -pi -e 's|images/|{{ site.baseurl }}/images/|gi'", output, sep = " ")) # for non-R generated figures#
+    system(paste("perl -pi -e 's|figure/|{{ site.baseurl }}/figure/|gi'", output, sep = " ")) # for R figures generated during knitting#
+}
+jekyll.knit("_rmd/2015-05-19-genetic-networks-1.Rmd")
+autoplot(pam(GxE_counts, 5), frame = TRUE)
+set.seed(25) #make this repeatable
+library(NbClust)
+set.seed(1234)
+set.seed(1234)
+nc <- NbClust(GxE_counts, min.nc=2, max.nc=15, method="kmeans")
+DE_genes <- read.table("/Users/Cody_2/git.repos/BIS180L_web/data/DEgenes_GxE.csv", sep = ",")
+head(DE_genes) #check out the data
+DE_gene_names <- row.names(DE_genes)
+brass_voom_E <- read.table("/Users/Cody_2/git.repos/BIS180L_web/data/voom_transform_brassica.csv", sep = ",", header = TRUE)
+GxE_counts <- as.data.frame(brass_voom_E[DE_gene_names,])
+GxE_counts <- as.matrix(GxE_counts) # some of the downstream steps require a data matrix
+library(devtools)
+install_github('sinhrks/ggfortify')
+library(ggfortify)
+autoplot(prcomp(GxE_counts)) #take a quick look at the data
+set.seed(25) #make this repeatable as kmeans has random starting positions
+fit <- kmeans(GxE_counts, 9)
+autoplot(fit, data = GxE_counts, label = TRUE)
+library(cluster)
+autoplot(pam(GxE_counts, 5), frame = TRUE)
+library(NbClust)
+set.seed(1234)
+nc <- NbClust(GxE_counts, min.nc=2, max.nc=15, method="kmeans")
+table(nc$Best.n[1,])
+nc <- NbClust(GxE_counts, min.nc=2, max.nc=10, method="kmeans")
+nc <- NbClust(t(GxE_counts), min.nc=2, max.nc=10, method="kmeans")
+t(GxE_counts)
+nc <- NbClust(t(GxE_counts), distance = "euclidean", min.nc=2, max.nc=10, method="kmeans")
+nc <- NbClust(GxE_counts, distance = "euclidean", min.nc=2, max.nc=10, method="kmeans")
+nc <- NbClust(GxE_counts, distance = "euclidean", min.nc=2, max.nc=10, method="ward")
+?NbClust
+nb <- NbClust(GxE_counts, diss="NULL", distance = "euclidean",
+min.nc=2, max.nc=15, method = "kmeans",
+index = "alllong", alphaBeale = 0.1)
+nb <- NbClust(t(GxE_counts), diss="NULL", distance = "euclidean",
+min.nc=2, max.nc=15, method = "kmeans",
+index = "alllong", alphaBeale = 0.1)
+library(fpc)
+library(fpc)
+library(fpc)
+km.boot <- clusterboot(GxE_counts, B=20, bootmethod="boot",
+clustermethod=kmeansCBI,
+krange=3, seed=15555)
+km.boot
+km.boot <- clusterboot(GxE_counts, B=50, bootmethod="boot",
+clustermethod=kmeansCBI,
+krange=3, seed=15555)
+km.boot
+km.boot <- clusterboot(GxE_counts, B=100, bootmethod="boot",
+clustermethod=kmeansCBI,
+krange=3, seed=155)
+km.boot
+?krange
+?clusterboot
+km.boot <- clusterboot(GxE_counts, B=100, bootmethod="boot",
+clustermethod=kmeansCBI,
+krange=10, seed=155)
+km.boot
+km.boot <- clusterboot(GxE_counts, B=100, bootmethod="boot",
+clustermethod=kmeansCBI,
+krange=5, seed=155)
+km.boot
+fit2 <- kmeans(GxE_counts, 2)
+fit5 <- kmeans(GxE_counts, 9)
+cluster.stats(GxE_counts, fit2$cluster, fit5$cluster)
+?cluster.stats
+gap <- clusGap(GxE_counts, FUN = kmeans, iter.max = 30, K.max = 23, B = 500, verbose=interactive())
+plot(gap, main = "Gap statistic")
+with(gap, maxSE(Tab[,"gap"], Tab[,"SE.sim"], method="firstSEmax"))
+mtext("9 clusters")
+mtext("5 clusters")
+plot(gap, main = "Gap statistic")
+with(gap, maxSE(Tab[,"gap"], Tab[,"SE.sim"], method="firstSEmax"))
+mtext("5 clusters")
+with(gap, maxSE(Tab[,"gap"], Tab[,"SE.sim"], method="firstSEmax"))
+?clusGap
