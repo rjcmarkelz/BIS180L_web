@@ -34,6 +34,7 @@ wget https://github.com/rjcmarkelz/BIS180L_web/tree/feature-networks/data/us_cit
 ```
 
 ```{r  warning=FALSE} 
+# make sure to change the path to where you downloaded this using wget
 cities <- read.table("../data/us_cities.txt", sep = "\t", header = TRUE)
 
 rownames(cities) <- cities$X # make the first column the rownames
@@ -64,11 +65,12 @@ wget https://github.com/rjcmarkelz/BIS180L_web/tree/feature-networks/data/voom_t
 ```
 
 ```{r message=FALSE, warning=FALSE} 
-
+# make sure to change the path to where you downloaded this using wget
 DE_genes <- read.table("../data/DEgenes_GxE.csv", sep = ",")
 head(DE_genes) #check out the data
 DE_gene_names <- row.names(DE_genes)
 
+# make sure to change the path to where you downloaded this using wget
 brass_voom_E <- read.table("../data/voom_transform_brassica.csv", sep = ",", header = TRUE)
 
 GxE_counts <- as.data.frame(brass_voom_E[DE_gene_names,])
@@ -172,11 +174,11 @@ K-means tries to fit "centering points" to your data by chopping your data up in
 
 ```
 
-Now that you have a sense for how this k-means works, lets apply what we know to our data.  Lets start with 9 clusters, but please play with the number of clusters and see how it changes the visualization.
+Now that you have a sense for how this k-means works, lets apply what we know to our data.  Lets start with 9 clusters, but please play with the number of clusters and see how it changes the visualization. We will need to run a quick Principle Component Analysis (similar to MDS), on the data in order to visualize how the clusters are changing with different k-values.
 
 ```{r message=FALSE, warning=FALSE} 
 library(ggplot2)
-prcomp_counts <- prcomp(t(GxE_counts))
+prcomp_counts <- prcomp(t(GxE_counts)) #gene wise
 scores <- as.data.frame(prcomp_counts$rotation)[,c(1,2)]
 
 set.seed(25) #make this repeatable as kmeans has random starting positions
@@ -200,10 +202,11 @@ The final thing that we will do today is try to estimate, based on our data, wha
 
 
 ```{r message=FALSE, warning=FALSE} 
-?clusGap
+install.packages("cluster")
+library(cluster)
 set.seed(125)
-gap <- clusGap(GxE_counts, FUN = kmeans, iter.max = 30, K.max = 23, B = 500, verbose=interactive())
-plot(gap, main = "Gap statistic")
+gap <- clusGap(GxE_counts, FUN = kmeans, iter.max = 30, K.max = 20, B = 50, verbose=interactive())
+plot(gap, main = "Gap Statistic")
 ```
 This is also part of the cluster package that you loaded earlier. It will take a few minutes to calculate this statistic. In the mean time, check out some more information about it in the ?clusGap documentation. We could imagine that as we increase the number of k-means to estimate, we are always going to increase the fit of the data. The extreme examples of this would be if we had k = 255 for the total number of genes in the data set or k = 1. We would be able to fit the data perfectly in the k = 255 case, but what has it told us? It has not really told us anything. Just like you played with the number of k-means in Exercise 8, we can also do this computationally! We want optimize the fewest number of clusters that we have that can explain the variance in our dataset.
 
@@ -212,7 +215,7 @@ This is also part of the cluster package that you loaded earlier. It will take a
 Now we can take a look at the plot again and also print to the terminal what clusGap() calculated. 
 
 ```{r message=FALSE, warning=FALSE} 
-with(gap, maxSE(Tab[,"gap"], Tab[,"SE.sim"], method="globalmax"))
+with(gap, maxSE(Tab[,"gap"], Tab[,"SE.sim"], method="firstSEmax"))
 ```
 **Exercise 10:** What did clusGap() calculate? How does this compare to your answer from Exercise 9? Make a plot using the combined autoplot() and kmeans functions as you did before, but choose the number of k-means you chose and the number of k-means that are calculated from the Gap Statistic. Describe the differences in the plots.
 

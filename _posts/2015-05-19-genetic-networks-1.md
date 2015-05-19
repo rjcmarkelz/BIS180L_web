@@ -12,31 +12,30 @@ tags:
      - RNA-seq 
 ---
 
-
-
-
 # Clustering Introduction
-As you learned last week, when we are dealing with genome scale data it is hard to come up with very specific summaries of the data unless you know exactly the question you are trying to ask computationally.  
+As you learned last week, when we are dealing with genome scale data it is hard to come up with very specific summaries of the data unless you know exactly the question you are trying to ask computationally. Today we will be talking about three different ways to cluster data and get visual summaries of the expression of all genes that had a significant GxE interaction. Once we have these clusters, it allows us to ask further, more detailed questions such as what GO categories are enriched in each cluster, or are there specfic metabolic pathways contained in the clusters? While clustering can be used in an exploratory way, the basics you will be learning today have been extended to very sophisticated statistical/machine learning methods used across many disciplines. In fact, there are many different methods used for clustering in R outlined in this **[CRAN VIEW](http://cran.r-project.org/web/views/Cluster.html)**.
 
-Today we will be talking about three different ways to cluster data and get visual summaries of the expression of all genes that had a significant GxE interaction. Once we have these clusters, it allows us to ask further, more detailed questions such as what GO categories are enriched in each cluster, or are there specific metabolic pathways contained in the clusters? While clustering can be used in an exploratory way, the basics you will be learning today have been extended to very sophisticated statistical/machine learning methods used across many disciplines. In fact, there are many different methods used for clustering in R outlined in this **[CRAN VIEW](http://cran.r-project.org/web/views/Cluster.html)**.
-
-The two clustering methods that we will be exploring are __hierarchical clustering__ and __k-means clustering__. These have important similarities and differences that we will discuss in detail throughout today. The basic idea with clustering is to find how similar the rows and/or columns in the dataset are based on the values contained within the data frame. You have already used a similar technique last week when you produced the MDS plot. This visualization showed that samples from similar genotype and treatment combinations were plotted next to one another based on their Biological Coefficient of Variation calculated across all of the counts of genes. 
+The two clustering methods that we will be exploring are hierarchical clustering and k-means. These have important similarities and differences that we will discuss in detail throughout today. The basic idea with clustering is to find how similar the rows and/or columns in the dataset are based on the values contained within the data frame. You have already used a similar technique last week when you produced the MDS plot. This visualization of the the samples in the dataset showed that samples from similar genotype and treatment combinations were plotted next to one another based on their Biological Coefficient of Variation calculated across all of the counts of genes. 
 
 # Hierarchical Clustering
-An intuitive example is clustering the distances between known geographic locations, such as U.S. cities. I took an example from this [website](http://www.analytictech.com/networks/hiclus.htm).
+An intuitive example is clustering the distances between know geographic locations, such as US Cities. I took this example from this [website](http://www.analytictech.com/networks/hiclus.htm).
+ 
+1. Calculate a distance measure between all the row and column combinations in data set (think geographic distances between cities)
+2. Start all the items in the data out as belonging to its own cluster (every city is its own cluster)
+3. In the distance matrix, find the two closest points (find shortest distance between any two cities) 
+4. Merge the two closest points into one cluster (merge BOS and NY in our example dataset)
+5. Repeat steps 3 and 4 until all the items belong to a single large cluster
 
-The conceptual overview of the steps we'll complete is as follows:  
-__1.__ Calculate a distance measure between all the row and column combinations in data set (think geographic distances between cities)  
-__2.__ Start each item in the data as belonging to its own cluster (i.e. every city is its own cluster)  
-__3.__ In the distance matrix, find the two closest points (find shortest distance between any two cities)   
-__4.__ Merge the two closest points into one cluster (merge BOS and NY in our example dataset)  
-__5.__ Repeat steps 3 and 4 until all the items belong to a single large cluster  
+A special note: all the clusters at each merge take on the shortest distance between any one member of the cluster and the remaining clusters. For example, the distance between BOS and DC is 433 miles, but the distance between NY and DC is 233. Because BOS/NY are considered one cluster after our first round, thier cluster distance to DC is 233. All three of these cities are then merged into one cluster DC/NY/BOS.
 
-**A special note:** At each merge, the new cluster takes on the <u>shortest distance</u> between any one member of the cluster and the remaining clusters. For example, the distance between BOS and DC is 429 miles, but the distance between NY and DC is 233. Because BOS/NY are merged into one cluster, their cluster distance to DC is now 233 which is the shorter of the two former distances. All three of these cities are then merged into one cluster DC/NY/BOS.
+
+
+```bash
+wget https://github.com/rjcmarkelz/BIS180L_web/tree/feature-networks/data/us_cities.txt
+```
 
 
 ```r
-# Load the distance matrix for city data
 cities <- read.table("../data/us_cities.txt", sep = "\t", header = TRUE)
 
 rownames(cities) <- cities$X # make the first column the rownames
@@ -58,25 +57,29 @@ head(cities)
 plot(hclust(dist(cities))) 
 ```
 
-![plot of chunk unnamed-chunk-1]({{ site.baseurl }}/figure/unnamed-chunk-1-1.png) 
-**Exercise 1:**  
-Extending the example that I gave for BOS/NY/DC, what are the distances that define each split in the West Coast side of the hclust plot?  
-*Hint 1: Start with the distances between SF and LA. Then look at the difference between that cluster up to SEA*  
+![plot of chunk unnamed-chunk-2]({{ site.baseurl }}/figure/unnamed-chunk-2-1.png) 
+**Exercise 1:**
+Extending the example that I gave for BOS/NY/DC, what are the distances that define each split in the Westcoast side of the hclust plot? 
+*Hint 1: Start with the distances between SF and LA. Then look at the difference between that cluster up to SEA*
 *Hint 2: Print cities, you only need to look at the upper right triangle of data matrix.*
 
-What is the city pair and distance the joins the East Coast and West Coast cities? Fill in the values.  
-*Hint: Think Midwest.*
+What is the city pair and distance the joins the Eastcoast and Westcoast cities? Fill in the values.
+Hint: Think midwest.
 
-# Biological Use of Clustering
-Now that we have that example out of the way, let's start using this technique on biological data. This week will be a review of all the cool data manipulation steps you have learned in past weeks. I would like to emphasize that printing dataframes (or parts of them) is a really fast way to get an idea about the data you are working with. Visual summaries like printed data, or plotting the data are often times the best way to make sure things are working the way they should be and you are more likely to catch errors. I have included visual summaries at all of the points where I would want to check on the data. 
 
-If you remember last week, you found some genes that had significant GxE in the internode tissue. We are going to be taking a look at those same genes again this week. I followed the same tutorial that you did last week. That dataset only had 12 RNA-seq libraries in it. However, that subset of data was part of a much larger study that we are going to explore today. 
+Now that we have that example out of the way, lets start using this technique on biological data. This week will be a review of all the cool data manipulation steps you have learned in past weeks. I would like to emphasize that printing dataframes (or parts of them) is a really fast way to get an idea about the data you are working with. Visual summaries like printed data, or plotting the data are often times the best way to make sure things are working the way they should be and you are more likely to catch errors. I have included visual summaries at all of the points where I would want to check on the data. 
 
-This dataset consists of RNA-seq samples collected from 2 genotypes of *Brassica rapa* (R500 and IMB211) that were grown in either dense (DP) or non-dense planting (NDP) treatments. Upendra also collected tissue from multiple tissue types including: Leaf, Petiole, Internode (you worked with this last week), and silique (the plant seed pod). There were also 3 biological replicates of each combination (Rep 1, 2, 3). If your head is spinning thinking about all of this, do not worry, data visualization will come to the rescue here in a second.
+If you remember last week, you found some genes that had significant GxE in the internode tissue. We are going to be taking a look at those same genes again this week. I followed the same tutorial that you did last week. That dataset only had 12 RNA-seq libraries in it. However, that subset of data was part of a much larger study that we are going to explore today. This dataset consists of RNA-seq samples collected from 2 genotypes of **Brassica rapa** (R500 and IMB211) that were grown in either dense (DP) or non-dense planting (NDP) treatments. Upendra also collected tissue from multiple tissue types including: Leaf, Petiole, Internode (you worked with this last week), and silique (the plant seed pod). There were also 3 biological replicates of each combination (Rep 1, 2, 3). If your head is spinning thinking about all of this, do not worry, data visualization will come to the rescue here in a second.
 
 Remember last week when we were concerned with what distribution the RNA-seq count data was coming from so that we could have a good statistical model of it? Well, if we want to perform good clustering we also need to think about this because most of the simplest clustering assumes data to be from a normal distribution. I have precalculated this for you. First you will load my output from going through the tutorial from last week. Then you will pull in the new large table containing all the samples.
 
-Let's start by loading the two datasets. Then we can subset the larger full dataset to include only the genes that we are interested in from our analysis last week.
+Lets start by loading the two datasets. Then we can subset the larger full dataset to include only the genes that we are interested in from our analysis last week.
+
+
+```bash
+wget https://github.com/rjcmarkelz/BIS180L_web/tree/feature-networks/data/DEgenes_GxE.csv
+wget https://github.com/rjcmarkelz/BIS180L_web/tree/feature-networks/data/voom_transform_brassica.csv
+```
 
 
 ```r
@@ -112,8 +115,8 @@ hr <- hclust(dist(GxE_counts))
 plot(hr)
 ```
 
-![plot of chunk unnamed-chunk-3]({{ site.baseurl }}/figure/unnamed-chunk-3-1.png) 
-What a mess! We are too overplotted in this direction. How about if we cluster by column instead? Notice we have to transpose the data using `t()`. Also, make sure you stretch out the window so you can view it! 
+![plot of chunk unnamed-chunk-5]({{ site.baseurl }}/figure/unnamed-chunk-5-1.png) 
+What a mess! We are too overplotted in this direction. How about if we cluster by column instead? Notice we have to transpose the data using *t()*. Also, make sure you stretch out the window so you can view it! 
 
 
 ```r
@@ -121,10 +124,10 @@ hc <- hclust(dist(t(GxE_counts)))
 plot(hc)
 ```
 
-![plot of chunk unnamed-chunk-4]({{ site.baseurl }}/figure/unnamed-chunk-4-1.png) 
-**Exercise 2:**  
+![plot of chunk unnamed-chunk-6]({{ site.baseurl }}/figure/unnamed-chunk-6-1.png) 
+**Exercise 2:**
 What is the general pattern in the h-clustering data? 
-Using what you learned from the city example, what is the subcluster that looks very different than the rest of the samples?  
+Using what you learned from the city example, what is the subcluster that looks very different than the rest of the samples? 
 *Hint: It is a group of 3 libraries. You will have to plot this yourself and stretch it out. The rendering on the website compresses the output.*
 
 We have obtained a visual summary using h-clustering. Now what? Well we can go a little further and start to define some important sub-clusters within our tree. We can do this using the following function. Once again make sure you plot it so you can stretch the axes. 
@@ -137,12 +140,12 @@ plot(hc) #redraw the tree everytime before adding the rectangles
 rect.hclust(hc, k = 4, border = "red")
 ```
 
-![plot of chunk unnamed-chunk-5]({{ site.baseurl }}/figure/unnamed-chunk-5-1.png) 
-**Exercise 3:**  
-With k = 4 as one of the arguments to the `rect.hclust()` function, what is the largest and smallest group contained within the rectangles? Use characteristics in the sample name to describe the clusters.  
-Play with the k-values. Find a new k-value between 3 and 7 and describe how the samples are falling out. 
+![plot of chunk unnamed-chunk-7]({{ site.baseurl }}/figure/unnamed-chunk-7-1.png) 
+**Exercise 3:**
+With k = 4 as one of the arguments to the rect.hclust() function, what is the largest and smallest group contained within the rectangles? 
+Play with the k-values between 3 and 7. Describe how the size of the clusters change when changing between k-values.
 
-You may have noticed that your results and potential interpretation of the data could change very dramatically based on the how many sub-clusters you choose! This is one of the main drawbacks with this technique. Fortunately there are other packages that can help us determine which sub-clusters have good support. 
+You may have noticed that your results and potential interpretation of the data could change very dramatically based on the how many subclusters you choose! This is one of the main drawbacks with this technique. Fortunately there are other packages that can help us determine what sub-clusters have good support. 
 
 
 ```r
@@ -152,14 +155,14 @@ install.packages("pvclust")
 ```
 ## 
 ## The downloaded binary packages are in
-## 	/var/folders/xr/9cbydt955pj42zfq6mc_y5g40000gn/T//RtmpKcK0FZ/downloaded_packages
+## 	/var/folders/jh/6yqw6n710sj2xr9knz37tt0w0000gn/T//RtmptvNbyv/downloaded_packages
 ```
 
 ```r
 library(pvclust)
 ?pvclust #check out the documentation
 
-set.seed(12456) # sets state of the random number generator in R to help with reproducibility
+set.seed(12456) #important to run this
 fit <- pvclust(GxE_counts, method.hclust = "ward.D", method.dist = "euclidean", nboot = 50)
 ```
 
@@ -177,20 +180,20 @@ fit <- pvclust(GxE_counts, method.hclust = "ward.D", method.dist = "euclidean", 
 ```
 
 ```r
-plot(fit) # dendogram with p-values indicated by AU and BP
+plot(fit) # dendogram with p-values
 ```
 
-![plot of chunk unnamed-chunk-6]({{ site.baseurl }}/figure/unnamed-chunk-6-1.png) 
-Normally we would do 1000+ bootstrap samples, to get our support for each of the branches in the tree, but we do not have lots of time today. `pvclust` calculates the probability values (*p*-values) for each cluster using bootstrap resampling techniques which you can read more about [here](http://en.wikipedia.org/wiki/Bootstrapping_%28statistics%29). Two types of *p*-values are available. Red values are "Approximate Unbiased" (AU) values. Numbers closer to 100 provide more support, and this metric is superior to the ordinary bootstrap resampling indicated in green for "Bootstrap Probability" (BP).
+![plot of chunk unnamed-chunk-8]({{ site.baseurl }}/figure/unnamed-chunk-8-1.png) 
+Normally we would do 1000+ bootstrap samples, to get our support for each of the branches in the tree, but we do not have lots of time today. The red values are the "Approximate Unbiased" (AU) values with numbers closer to 100 providing more support. Bootstrapping is a popular resampling technique that you can read about more *[here](http://en.wikipedia.org/wiki/Bootstrapping_%28statistics%29)*.
 
-**Exercise 4:**  
-After running the 50 bootstrap samples, leave the plot open. Then change `nboot` to 500. In general, what happens to AU comparing the two plots by flipping between them?
+**Exercise 4:**
+After running the 50 bootstrap samples, leave the plot open. Then change nboot up to 500. In general what happens to AU comparing the two plots by flipping between them?
 
 
 We will be discussing more methods for choosing the number of clusters in the k-means section. Until then, we will expand what we learned about h-clustering to do a more sophisticated visualization of the data. 
 
 # Heatmaps
-Heatmaps are another way to visualize h-clustering results. Instead of looking at either the rows (genes) or the columns (samples) like we did with the h-clustering examples we can view the entire data matrix at once. Well how do we do this? We could just print the matrix, but that would just be a bunch of numbers. Heatmaps take all the values within the data matrix and convert them to a color value. The human eye is really good at picking out patterns so let's convert that data matrix to a color value AND do some h-clustering. Although we can do this really easily with the `heatmap()` function that comes preloaded in R, there is a small library that provides some additional functionality to the heatmaps. We will start with the cities example because it is small and easy to see what is going on. 
+Heatmaps are another way to visualize h-clustering results. Instead of looking at either the rows (genes) or the columns (samples) like we did with the h-clustering examples we can view the entire data matrix at once. Well how do we do this? We could just print the matrix, but that would just be a bunch of numbers. Heatmaps take all the values within the data matrix and convert them to a color value. The human eye is really good at picking out patterns so lets convert that data matrix to a color value AND do some h-clustering. Although we can do this really easily with the heatmap() function that comes preloaded in R, there is a small library that provides some additional functionality to the heatmaps. We will start with the cities example because it is small and easy to see what is going on. 
 
 *A general programming tip: always have little test data sets. That allows you to figure out what the functions are doing. If you understand how it works on a small scale then you will be better able to troubleshoot when scaling to large datasets.*
 
@@ -202,7 +205,7 @@ install.packages("gplots") #not to be confused with ggplot2!
 ```
 ## 
 ## The downloaded binary packages are in
-## 	/var/folders/xr/9cbydt955pj42zfq6mc_y5g40000gn/T//RtmpKcK0FZ/downloaded_packages
+## 	/var/folders/jh/6yqw6n710sj2xr9knz37tt0w0000gn/T//RtmptvNbyv/downloaded_packages
 ```
 
 ```r
@@ -227,9 +230,9 @@ cityclust <- hclust(dist(cities_mat))
 heatmap.2(cities_mat, Rowv=as.dendrogram(cityclust), scale="row", density.info="none", trace="none")
 ```
 
-![plot of chunk unnamed-chunk-7]({{ site.baseurl }}/figure/unnamed-chunk-7-1.png) 
+![plot of chunk unnamed-chunk-9]({{ site.baseurl }}/figure/unnamed-chunk-9-1.png) 
 **Exercise 5:**
-We used the scale rows option. This is necessary so that every *row* in the dataset will be on the same scale when visualized in the heatmap. This is to prevent really large values somewhere in the dataset dominating the heatmap signal. Remember if you still have this dataset in memory you can take a look at a printed version to the terminal. Compare the distance matrix that you printed with the colors of the heat map. See the advantage of working with small test sets? Take a look at your plot of the cities heatmap and interpret what a dark red value and a light yellow value in the heatmap would mean in geographic distance. Provide an example of of each in your explanation.
+We used the scale rows option. This is necessary so that every *row* in the dataset will be on the same scale when visualized in the heatmap. This is to prevent really large values somewhere in the dataset dominating the heatmap signal. Remember if you still have this dataset in memory you can take a look at a printed version to the terminal. Compare the distance matrix that you printed with the colors of the heat map. See the advantage of working with small test sets? Take a look at your plot of the cities heatmap and interpret what a dark red value and a light yellow value in the heatmap would mean in geographic distance. Provide an example of of each in your explaination.
 
 
 ##Now for some gene expression data. 
@@ -240,13 +243,13 @@ hr <- hclust(dist(GxE_counts))
 plot(hr)
 ```
 
-![plot of chunk unnamed-chunk-8]({{ site.baseurl }}/figure/unnamed-chunk-8-1.png) 
+![plot of chunk unnamed-chunk-10]({{ site.baseurl }}/figure/unnamed-chunk-10-1.png) 
 
 ```r
 heatmap.2(GxE_counts, Rowv = as.dendrogram(hr), scale = "row", density.info="none", trace="none")
 ```
 
-![plot of chunk unnamed-chunk-8]({{ site.baseurl }}/figure/unnamed-chunk-8-2.png) 
+![plot of chunk unnamed-chunk-10]({{ site.baseurl }}/figure/unnamed-chunk-10-2.png) 
 **Exercise 6:** The genes are definitely overplotted and we cannot tell one from another. However, what is the most obvious pattern that you can pick out from this data? Describe what you see. Make sure you plot this in your own session so you can stretch it out.
 *Hint It will be a similar pattern as you noticed in the h-clustering example.*
 
@@ -270,42 +273,27 @@ K-means tries to fit "centering points" to your data by chopping your data up in
 # hints = c("Move centers!", "Find cluster?"), pch = 1:3, col = 1:3)
 ```
 
-Now that you have a sense for how this k-means works, lets apply what we know to our data. There are a few convenience libraries that we will be loading here so you do not have to mess around with the ggplots, but focus on what the k-means is trying to accomplish with the data. Remember that if you do not have a library installed use *install.packages()*. 
+Now that you have a sense for how this k-means works, lets apply what we know to our data.  Lets start with 9 clusters, but please play with the number of clusters and see how it changes the visualization.
 
 
 ```r
-library(devtools)
-install_github('sinhrks/ggfortify')
-```
+library(ggplot2)
+prcomp_counts <- prcomp(t(GxE_counts))
+scores <- as.data.frame(prcomp_counts$rotation)[,c(1,2)]
 
-```
-## 
-## The downloaded binary packages are in
-## 	/var/folders/xr/9cbydt955pj42zfq6mc_y5g40000gn/T//RtmpKcK0FZ/downloaded_packages
-```
-
-```r
-library(ggfortify)
-autoplot(prcomp(GxE_counts)) #take a quick look at the data 
-```
-
-![plot of chunk unnamed-chunk-10]({{ site.baseurl }}/figure/unnamed-chunk-10-1.png) 
-Now we want to use this package to visualize the k-means clusters. Lets start with 9 clusters, but please play with the number of clusters and see how it changes the visualization.
-
-
-```r
 set.seed(25) #make this repeatable as kmeans has random starting positions
 fit <- kmeans(GxE_counts, 9)
-autoplot(fit, data = GxE_counts, label = TRUE)
-```
+clus <- as.data.frame(fit$cluster)
+names(clus) <- paste("cluster")
 
-![plot of chunk unnamed-chunk-11]({{ site.baseurl }}/figure/unnamed-chunk-11-1.png) 
-Now to load one more library for the day to do some further calculations and visualizations for us. 
+plotting <- merge(clus, scores, by = "row.names")
+plotting$cluster <- as.factor(plotting$cluster)
 
-
-```r
-library(cluster)
-autoplot(pam(GxE_counts, 5), frame = TRUE)
+# plot of observations
+ggplot(data = plotting, aes(x = PC1, y = PC2, label = Row.names, color = cluster)) +
+  geom_hline(yintercept = 0, colour = "gray65") +
+  geom_vline(xintercept = 0, colour = "gray65") +
+  geom_point(alpha = 0.8, size = 4, stat = "identity") 
 ```
 
 ![plot of chunk unnamed-chunk-12]({{ site.baseurl }}/figure/unnamed-chunk-12-1.png) 
@@ -317,30 +305,29 @@ The final thing that we will do today is try to estimate, based on our data, wha
 
 ```r
 ?clusGap
+```
+
+```
+## No documentation for 'clusGap' in specified packages and libraries:
+## you could try '??clusGap'
+```
+
+```r
 set.seed(125)
 gap <- clusGap(GxE_counts, FUN = kmeans, iter.max = 30, K.max = 23, B = 500, verbose=interactive())
 ```
 
 ```
-## Clustering k = 1,2,..., K.max (= 23): .. done
-## Bootstrapping, b = 1,2,..., B (= 500)  [one "." per sample]:
-## .................................................. 50 
-## .................................................. 100 
-## .................................................. 150 
-## .................................................. 200 
-## .................................................. 250 
-## .................................................. 300 
-## .................................................. 350 
-## .................................................. 400 
-## .................................................. 450 
-## .................................................. 500
+## Error in eval(expr, envir, enclos): could not find function "clusGap"
 ```
 
 ```r
 plot(gap, main = "Gap statistic")
 ```
 
-![plot of chunk unnamed-chunk-13]({{ site.baseurl }}/figure/unnamed-chunk-13-1.png) 
+```
+## Error in plot(gap, main = "Gap statistic"): object 'gap' not found
+```
 This is also part of the cluster package that you loaded earlier. It will take a few minutes to calculate this statistic. In the mean time, check out some more information about it in the ?clusGap documentation. We could imagine that as we increase the number of k-means to estimate, we are always going to increase the fit of the data. The extreme examples of this would be if we had k = 255 for the total number of genes in the data set or k = 1. We would be able to fit the data perfectly in the k = 255 case, but what has it told us? It has not really told us anything. Just like you played with the number of k-means in Exercise 8, we can also do this computationally! We want optimize the fewest number of clusters that we have that can explain the variance in our dataset.
 
 **Exercise 9:** Based on this Gap statistic plot at what number of k clusters (x-axis) do you start to see diminishing returns? To put this another way, at what value of k does k-1 and k+1 start to look the same for the first time? Or yet another way, when are you getting diminishing returns for adding more k-means? See if you can make the tradeoff of trying to capture a lot of variation in the data as the Gap statistic increases, but you do not want to add too many k-means because your returns diminish as you add more. Explain your answer using the plot as a guide to help you interpret the data.
@@ -353,11 +340,11 @@ with(gap, maxSE(Tab[,"gap"], Tab[,"SE.sim"], method="globalmax"))
 ```
 
 ```
-## [1] 20
+## Error in with(gap, maxSE(Tab[, "gap"], Tab[, "SE.sim"], method = "globalmax")): object 'gap' not found
 ```
 **Exercise 10:** What did clusGap() calculate? How does this compare to your answer from Exercise 9? Make a plot using the combined autoplot() and kmeans functions as you did before, but choose the number of k-means you chose and the number of k-means that are calculated from the Gap Statistic. Describe the differences in the plots.
 
-Good Job Today! There was a lot of technical stuff to get through. We are going to build on all of this Thursday to construct co-expression networks and study their properties using a few of the techniques that you learned today. 
+Good Job Today! There was a lot of technical stuff to get through. We are going to build on all of this Thursday to construct co-expression networks and study thier properties using a few of the techniques that you learned today. 
 
 
 
