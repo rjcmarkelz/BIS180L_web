@@ -36,6 +36,7 @@ wget https://github.com/rjcmarkelz/BIS180L_web/tree/feature-networks/data/us_cit
 
 
 ```r
+# make sure to change the path to where you downloaded this using wget
 cities <- read.table("../data/us_cities.txt", sep = "\t", header = TRUE)
 
 rownames(cities) <- cities$X # make the first column the rownames
@@ -83,6 +84,7 @@ wget https://github.com/rjcmarkelz/BIS180L_web/tree/feature-networks/data/voom_t
 
 
 ```r
+# make sure to change the path to where you downloaded this using wget
 DE_genes <- read.table("../data/DEgenes_GxE.csv", sep = ",")
 head(DE_genes) #check out the data
 ```
@@ -100,6 +102,7 @@ head(DE_genes) #check out the data
 ```r
 DE_gene_names <- row.names(DE_genes)
 
+# make sure to change the path to where you downloaded this using wget
 brass_voom_E <- read.table("../data/voom_transform_brassica.csv", sep = ",", header = TRUE)
 
 GxE_counts <- as.data.frame(brass_voom_E[DE_gene_names,])
@@ -155,7 +158,7 @@ install.packages("pvclust")
 ```
 ## 
 ## The downloaded binary packages are in
-## 	/var/folders/jh/6yqw6n710sj2xr9knz37tt0w0000gn/T//RtmptvNbyv/downloaded_packages
+## 	/var/folders/jh/6yqw6n710sj2xr9knz37tt0w0000gn/T//RtmpnDEcEE/downloaded_packages
 ```
 
 ```r
@@ -205,7 +208,7 @@ install.packages("gplots") #not to be confused with ggplot2!
 ```
 ## 
 ## The downloaded binary packages are in
-## 	/var/folders/jh/6yqw6n710sj2xr9knz37tt0w0000gn/T//RtmptvNbyv/downloaded_packages
+## 	/var/folders/jh/6yqw6n710sj2xr9knz37tt0w0000gn/T//RtmpnDEcEE/downloaded_packages
 ```
 
 ```r
@@ -273,12 +276,12 @@ K-means tries to fit "centering points" to your data by chopping your data up in
 # hints = c("Move centers!", "Find cluster?"), pch = 1:3, col = 1:3)
 ```
 
-Now that you have a sense for how this k-means works, lets apply what we know to our data.  Lets start with 9 clusters, but please play with the number of clusters and see how it changes the visualization.
+Now that you have a sense for how this k-means works, lets apply what we know to our data.  Lets start with 9 clusters, but please play with the number of clusters and see how it changes the visualization. We will need to run a quick Principle Component Analysis (similar to MDS), on the data in order to visualize how the clusters are changing with different k-values.
 
 
 ```r
 library(ggplot2)
-prcomp_counts <- prcomp(t(GxE_counts))
+prcomp_counts <- prcomp(t(GxE_counts)) #gene wise
 scores <- as.data.frame(prcomp_counts$rotation)[,c(1,2)]
 
 set.seed(25) #make this repeatable as kmeans has random starting positions
@@ -304,30 +307,32 @@ The final thing that we will do today is try to estimate, based on our data, wha
 
 
 ```r
-?clusGap
+install.packages("cluster")
 ```
 
 ```
-## No documentation for 'clusGap' in specified packages and libraries:
-## you could try '??clusGap'
+## 
+## The downloaded binary packages are in
+## 	/var/folders/jh/6yqw6n710sj2xr9knz37tt0w0000gn/T//RtmpnDEcEE/downloaded_packages
 ```
 
 ```r
+library(cluster)
 set.seed(125)
-gap <- clusGap(GxE_counts, FUN = kmeans, iter.max = 30, K.max = 23, B = 500, verbose=interactive())
+gap <- clusGap(GxE_counts, FUN = kmeans, iter.max = 30, K.max = 20, B = 50, verbose=interactive())
 ```
 
 ```
-## Error in eval(expr, envir, enclos): could not find function "clusGap"
+## Clustering k = 1,2,..., K.max (= 20): .. done
+## Bootstrapping, b = 1,2,..., B (= 50)  [one "." per sample]:
+## .................................................. 50
 ```
 
 ```r
-plot(gap, main = "Gap statistic")
+plot(gap, main = "Gap Statistic")
 ```
 
-```
-## Error in plot(gap, main = "Gap statistic"): object 'gap' not found
-```
+![plot of chunk unnamed-chunk-13]({{ site.baseurl }}/figure/unnamed-chunk-13-1.png) 
 This is also part of the cluster package that you loaded earlier. It will take a few minutes to calculate this statistic. In the mean time, check out some more information about it in the ?clusGap documentation. We could imagine that as we increase the number of k-means to estimate, we are always going to increase the fit of the data. The extreme examples of this would be if we had k = 255 for the total number of genes in the data set or k = 1. We would be able to fit the data perfectly in the k = 255 case, but what has it told us? It has not really told us anything. Just like you played with the number of k-means in Exercise 8, we can also do this computationally! We want optimize the fewest number of clusters that we have that can explain the variance in our dataset.
 
 **Exercise 9:** Based on this Gap statistic plot at what number of k clusters (x-axis) do you start to see diminishing returns? To put this another way, at what value of k does k-1 and k+1 start to look the same for the first time? Or yet another way, when are you getting diminishing returns for adding more k-means? See if you can make the tradeoff of trying to capture a lot of variation in the data as the Gap statistic increases, but you do not want to add too many k-means because your returns diminish as you add more. Explain your answer using the plot as a guide to help you interpret the data.
@@ -336,11 +341,11 @@ Now we can take a look at the plot again and also print to the terminal what clu
 
 
 ```r
-with(gap, maxSE(Tab[,"gap"], Tab[,"SE.sim"], method="globalmax"))
+with(gap, maxSE(Tab[,"gap"], Tab[,"SE.sim"], method="firstSEmax"))
 ```
 
 ```
-## Error in with(gap, maxSE(Tab[, "gap"], Tab[, "SE.sim"], method = "globalmax")): object 'gap' not found
+## [1] 4
 ```
 **Exercise 10:** What did clusGap() calculate? How does this compare to your answer from Exercise 9? Make a plot using the combined autoplot() and kmeans functions as you did before, but choose the number of k-means you chose and the number of k-means that are calculated from the Gap Statistic. Describe the differences in the plots.
 
