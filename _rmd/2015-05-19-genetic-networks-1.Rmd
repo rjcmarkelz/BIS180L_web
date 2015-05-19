@@ -28,6 +28,11 @@ An intuitive example is clustering the distances between know geographic locatio
 
 A special note: all the clusters at each merge take on the shortest distance between any one member of the cluster and the remaining clusters. For example, the distance between BOS and DC is 433 miles, but the distance between NY and DC is 233. Because BOS/NY are considered one cluster after our first round, thier cluster distance to DC is 233. All three of these cities are then merged into one cluster DC/NY/BOS.
 
+
+```{r, engine = 'bash', eval = FALSE}
+wget https://github.com/rjcmarkelz/BIS180L_web/tree/feature-networks/data/us_cities.txt
+```
+
 ```{r  warning=FALSE} 
 cities <- read.table("../data/us_cities.txt", sep = "\t", header = TRUE)
 
@@ -52,6 +57,11 @@ If you remember last week, you found some genes that had significant GxE in the 
 Remember last week when we were concerned with what distribution the RNA-seq count data was coming from so that we could have a good statistical model of it? Well, if we want to perform good clustering we also need to think about this because most of the simplest clustering assumes data to be from a normal distribution. I have precalculated this for you. First you will load my output from going through the tutorial from last week. Then you will pull in the new large table containing all the samples.
 
 Lets start by loading the two datasets. Then we can subset the larger full dataset to include only the genes that we are interested in from our analysis last week.
+
+```{r, engine = 'bash', eval = FALSE}
+wget https://github.com/rjcmarkelz/BIS180L_web/tree/feature-networks/data/DEgenes_GxE.csv
+wget https://github.com/rjcmarkelz/BIS180L_web/tree/feature-networks/data/voom_transform_brassica.csv
+```
 
 ```{r message=FALSE, warning=FALSE} 
 
@@ -93,7 +103,7 @@ rect.hclust(hc, k = 4, border = "red")
 ```
 **Exercise 3:**
 With k = 4 as one of the arguments to the rect.hclust() function, what is the largest and smallest group contained within the rectangles? 
-Play with the k-values. Find a new k-value between 3 and 7 and describe how the samples are falling out. 
+Play with the k-values between 3 and 7. Describe how the size of the clusters change when changing between k-values.
 
 You may have noticed that your results and potential interpretation of the data could change very dramatically based on the how many subclusters you choose! This is one of the main drawbacks with this technique. Fortunately there are other packages that can help us determine what sub-clusters have good support. 
 
