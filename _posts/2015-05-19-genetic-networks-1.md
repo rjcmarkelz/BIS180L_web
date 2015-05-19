@@ -13,7 +13,7 @@ tags:
 ---
 
 # Clustering Introduction
-As you learned last week, when we are dealing with genome scale data it is hard to come up with very specific summaries of the data unless you know exactly the question you are trying to ask computationally. Today we will be talking about three different ways to cluster data and get visual summaries of the expression of all genes that had a significant GxE interaction. Once we have these clusters, it allows us to ask further, more detailed questions such as what GO categories are enriched in each cluster, or are there specfic metabolic pathways contained in the clusters? While clustering can be used in an exploratory way, the basics you will be learning today have been extended to very sophisticated statistical/machine learning methods used across many disciplines. In fact, there are many different methods used for clustering in R outlined in this **[CRAN VIEW](http://cran.r-project.org/web/views/Cluster.html)**.
+As you learned last week, when we are dealing with genome scale data it is hard to come up with very specific summaries of the data unless you know exactly the question you are trying to ask computationally. Today we will be talking about three different ways to cluster data and get visual summaries of the expression of all genes that had a significant GxE interaction. Once we have these clusters, it allows us to ask further, more detailed questions such as what GO categories are enriched in each cluster, or are there specific metabolic pathways contained in the clusters? While clustering can be used in an exploratory way, the basics you will be learning today have been extended to very sophisticated statistical/machine learning methods used across many disciplines. In fact, there are many different methods used for clustering in R outlined in this **[CRAN VIEW](http://cran.r-project.org/web/views/Cluster.html)**.
 
 The two clustering methods that we will be exploring are hierarchical clustering and k-means. These have important similarities and differences that we will discuss in detail throughout today. The basic idea with clustering is to find how similar the rows and/or columns in the dataset are based on the values contained within the data frame. You have already used a similar technique last week when you produced the MDS plot. This visualization of the the samples in the dataset showed that samples from similar genotype and treatment combinations were plotted next to one another based on their Biological Coefficient of Variation calculated across all of the counts of genes. 
 
@@ -26,7 +26,7 @@ An intuitive example is clustering the distances between know geographic locatio
 4. Merge the two closest points into one cluster (merge BOS and NY in our example dataset)
 5. Repeat steps 3 and 4 until all the items belong to a single large cluster
 
-A special note: all the clusters at each merge take on the shortest distance between any one member of the cluster and the remaining clusters. For example, the distance between BOS and DC is 433 miles, but the distance between NY and DC is 233. Because BOS/NY are considered one cluster after our first round, thier cluster distance to DC is 233. All three of these cities are then merged into one cluster DC/NY/BOS.
+A special note: all the clusters at each merge take on the shortest distance between any one member of the cluster and the remaining clusters. For example, the distance between BOS and DC is 433 miles, but the distance between NY and DC is 233. Because BOS/NY are considered one cluster after our first round, their cluster distance to DC is 233. All three of these cities are then merged into one cluster DC/NY/BOS.
 
 
 
@@ -60,12 +60,12 @@ plot(hclust(dist(cities)))
 
 ![plot of chunk unnamed-chunk-2]({{ site.baseurl }}/figure/unnamed-chunk-2-1.png) 
 **Exercise 1:**
-Extending the example that I gave for BOS/NY/DC, what are the distances that define each split in the Westcoast side of the hclust plot? 
+Extending the example that I gave for BOS/NY/DC, what are the distances that define each split in the West Coast side of the hclust plot? 
 *Hint 1: Start with the distances between SF and LA. Then look at the difference between that cluster up to SEA*
 *Hint 2: Print cities, you only need to look at the upper right triangle of data matrix.*
 
-What is the city pair and distance the joins the Eastcoast and Westcoast cities? Fill in the values.
-Hint: Think midwest.
+What is the city pair and distance the joins the East Coast and West Coast cities? Fill in the values.
+Hint: Think Midwest.
 
 
 Now that we have that example out of the way, lets start using this technique on biological data. This week will be a review of all the cool data manipulation steps you have learned in past weeks. I would like to emphasize that printing dataframes (or parts of them) is a really fast way to get an idea about the data you are working with. Visual summaries like printed data, or plotting the data are often times the best way to make sure things are working the way they should be and you are more likely to catch errors. I have included visual summaries at all of the points where I would want to check on the data. 
@@ -158,7 +158,7 @@ install.packages("pvclust")
 ```
 ## 
 ## The downloaded binary packages are in
-## 	/var/folders/jh/6yqw6n710sj2xr9knz37tt0w0000gn/T//RtmpnDEcEE/downloaded_packages
+## 	/var/folders/xr/9cbydt955pj42zfq6mc_y5g40000gn/T//RtmpBqlyWL/downloaded_packages
 ```
 
 ```r
@@ -208,11 +208,18 @@ install.packages("gplots") #not to be confused with ggplot2!
 ```
 ## 
 ## The downloaded binary packages are in
-## 	/var/folders/jh/6yqw6n710sj2xr9knz37tt0w0000gn/T//RtmpnDEcEE/downloaded_packages
+## 	/var/folders/xr/9cbydt955pj42zfq6mc_y5g40000gn/T//RtmpBqlyWL/downloaded_packages
 ```
 
 ```r
 library(gplots)
+```
+
+```
+## Error: package or namespace load failed for 'gplots'
+```
+
+```r
 head(cities) # city example
 ```
 
@@ -230,12 +237,22 @@ head(cities) # city example
 cities_mat <- as.matrix(cities)
 cityclust <- hclust(dist(cities_mat))
 ?heatmap.2 #take a look at the arguments
+```
+
+```
+## No documentation for 'heatmap.2' in specified packages and libraries:
+## you could try '??heatmap.2'
+```
+
+```r
 heatmap.2(cities_mat, Rowv=as.dendrogram(cityclust), scale="row", density.info="none", trace="none")
 ```
 
-![plot of chunk unnamed-chunk-9]({{ site.baseurl }}/figure/unnamed-chunk-9-1.png) 
+```
+## Error in eval(expr, envir, enclos): could not find function "heatmap.2"
+```
 **Exercise 5:**
-We used the scale rows option. This is necessary so that every *row* in the dataset will be on the same scale when visualized in the heatmap. This is to prevent really large values somewhere in the dataset dominating the heatmap signal. Remember if you still have this dataset in memory you can take a look at a printed version to the terminal. Compare the distance matrix that you printed with the colors of the heat map. See the advantage of working with small test sets? Take a look at your plot of the cities heatmap and interpret what a dark red value and a light yellow value in the heatmap would mean in geographic distance. Provide an example of of each in your explaination.
+We used the scale rows option. This is necessary so that every *row* in the dataset will be on the same scale when visualized in the heatmap. This is to prevent really large values somewhere in the dataset dominating the heatmap signal. Remember if you still have this dataset in memory you can take a look at a printed version to the terminal. Compare the distance matrix that you printed with the colors of the heat map. See the advantage of working with small test sets? Take a look at your plot of the cities heatmap and interpret what a dark red value and a light yellow value in the heatmap would mean in geographic distance. Provide an example of of each in your explanation.
 
 
 ##Now for some gene expression data. 
@@ -252,7 +269,9 @@ plot(hr)
 heatmap.2(GxE_counts, Rowv = as.dendrogram(hr), scale = "row", density.info="none", trace="none")
 ```
 
-![plot of chunk unnamed-chunk-10]({{ site.baseurl }}/figure/unnamed-chunk-10-2.png) 
+```
+## Error in eval(expr, envir, enclos): could not find function "heatmap.2"
+```
 **Exercise 6:** The genes are definitely overplotted and we cannot tell one from another. However, what is the most obvious pattern that you can pick out from this data? Describe what you see. Make sure you plot this in your own session so you can stretch it out.
 *Hint It will be a similar pattern as you noticed in the h-clustering example.*
 
@@ -313,7 +332,7 @@ install.packages("cluster")
 ```
 ## 
 ## The downloaded binary packages are in
-## 	/var/folders/jh/6yqw6n710sj2xr9knz37tt0w0000gn/T//RtmpnDEcEE/downloaded_packages
+## 	/var/folders/xr/9cbydt955pj42zfq6mc_y5g40000gn/T//RtmpBqlyWL/downloaded_packages
 ```
 
 ```r
@@ -349,7 +368,7 @@ with(gap, maxSE(Tab[,"gap"], Tab[,"SE.sim"], method="firstSEmax"))
 ```
 **Exercise 10:** What did clusGap() calculate? How does this compare to your answer from Exercise 9? Make a plot using the combined autoplot() and kmeans functions as you did before, but choose the number of k-means you chose and the number of k-means that are calculated from the Gap Statistic. Describe the differences in the plots.
 
-Good Job Today! There was a lot of technical stuff to get through. We are going to build on all of this Thursday to construct co-expression networks and study thier properties using a few of the techniques that you learned today. 
+Good Job Today! There was a lot of technical stuff to get through. We are going to build on all of this Thursday to construct co-expression networks and study their properties using a few of the techniques that you learned today. 
 
 
 
