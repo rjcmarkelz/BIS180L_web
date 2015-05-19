@@ -12,6 +12,9 @@ tags:
      - RNA-seq 
 ---
 
+# Assignment template
+Please download the [assignment template](http://jnmaloof.github.io/BIS180L_web/Assignments/Assignment_6_template.Rmd).  Place you answers to the exercises in this template.  When you are done push the .Rmd and a knitted .html file.  Start and issue indicating that the assignment is ready to grade.
+
 # Clustering Introduction
 As you learned last week, when we are dealing with genome scale data it is hard to come up with very specific summaries of the data unless you know exactly the question you are trying to ask computationally. Today we will be talking about three different ways to cluster data and get visual summaries of the expression of all genes that had a significant GxE interaction. Once we have these clusters, it allows us to ask further, more detailed questions such as what GO categories are enriched in each cluster, or are there specific metabolic pathways contained in the clusters? While clustering can be used in an exploratory way, the basics you will be learning today have been extended to very sophisticated statistical/machine learning methods used across many disciplines. In fact, there are many different methods used for clustering in R outlined in this **[CRAN VIEW](http://cran.r-project.org/web/views/Cluster.html)**.
 

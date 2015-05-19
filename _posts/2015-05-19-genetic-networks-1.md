@@ -12,6 +12,9 @@ tags:
      - RNA-seq 
 ---
 
+# Assignment template
+Please download the [assignment template](http://jnmaloof.github.io/BIS180L_web/Assignments/Assignment_6_template.Rmd).  Place you answers to the exercises in this template.  When you are done push the .Rmd and a knitted .html file.  Start and issue indicating that the assignment is ready to grade.
+
 # Clustering Introduction
 As you learned last week, when we are dealing with genome scale data it is hard to come up with very specific summaries of the data unless you know exactly the question you are trying to ask computationally. Today we will be talking about three different ways to cluster data and get visual summaries of the expression of all genes that had a significant GxE interaction. Once we have these clusters, it allows us to ask further, more detailed questions such as what GO categories are enriched in each cluster, or are there specific metabolic pathways contained in the clusters? While clustering can be used in an exploratory way, the basics you will be learning today have been extended to very sophisticated statistical/machine learning methods used across many disciplines. In fact, there are many different methods used for clustering in R outlined in this **[CRAN VIEW](http://cran.r-project.org/web/views/Cluster.html)**.
 
@@ -158,7 +161,7 @@ install.packages("pvclust")
 ```
 ## 
 ## The downloaded binary packages are in
-## 	/var/folders/xr/9cbydt955pj42zfq6mc_y5g40000gn/T//RtmpBqlyWL/downloaded_packages
+## 	/var/folders/xr/9cbydt955pj42zfq6mc_y5g40000gn/T//RtmpvKELGb/downloaded_packages
 ```
 
 ```r
@@ -208,18 +211,11 @@ install.packages("gplots") #not to be confused with ggplot2!
 ```
 ## 
 ## The downloaded binary packages are in
-## 	/var/folders/xr/9cbydt955pj42zfq6mc_y5g40000gn/T//RtmpBqlyWL/downloaded_packages
+## 	/var/folders/xr/9cbydt955pj42zfq6mc_y5g40000gn/T//RtmpvKELGb/downloaded_packages
 ```
 
 ```r
 library(gplots)
-```
-
-```
-## Error: package or namespace load failed for 'gplots'
-```
-
-```r
 head(cities) # city example
 ```
 
@@ -237,20 +233,10 @@ head(cities) # city example
 cities_mat <- as.matrix(cities)
 cityclust <- hclust(dist(cities_mat))
 ?heatmap.2 #take a look at the arguments
-```
-
-```
-## No documentation for 'heatmap.2' in specified packages and libraries:
-## you could try '??heatmap.2'
-```
-
-```r
 heatmap.2(cities_mat, Rowv=as.dendrogram(cityclust), scale="row", density.info="none", trace="none")
 ```
 
-```
-## Error in eval(expr, envir, enclos): could not find function "heatmap.2"
-```
+![plot of chunk unnamed-chunk-9]({{ site.baseurl }}/figure/unnamed-chunk-9-1.png) 
 **Exercise 5:**
 We used the scale rows option. This is necessary so that every *row* in the dataset will be on the same scale when visualized in the heatmap. This is to prevent really large values somewhere in the dataset dominating the heatmap signal. Remember if you still have this dataset in memory you can take a look at a printed version to the terminal. Compare the distance matrix that you printed with the colors of the heat map. See the advantage of working with small test sets? Take a look at your plot of the cities heatmap and interpret what a dark red value and a light yellow value in the heatmap would mean in geographic distance. Provide an example of of each in your explanation.
 
@@ -269,9 +255,7 @@ plot(hr)
 heatmap.2(GxE_counts, Rowv = as.dendrogram(hr), scale = "row", density.info="none", trace="none")
 ```
 
-```
-## Error in eval(expr, envir, enclos): could not find function "heatmap.2"
-```
+![plot of chunk unnamed-chunk-10]({{ site.baseurl }}/figure/unnamed-chunk-10-2.png) 
 **Exercise 6:** The genes are definitely overplotted and we cannot tell one from another. However, what is the most obvious pattern that you can pick out from this data? Describe what you see. Make sure you plot this in your own session so you can stretch it out.
 *Hint It will be a similar pattern as you noticed in the h-clustering example.*
 
@@ -332,7 +316,7 @@ install.packages("cluster")
 ```
 ## 
 ## The downloaded binary packages are in
-## 	/var/folders/xr/9cbydt955pj42zfq6mc_y5g40000gn/T//RtmpBqlyWL/downloaded_packages
+## 	/var/folders/xr/9cbydt955pj42zfq6mc_y5g40000gn/T//RtmpvKELGb/downloaded_packages
 ```
 
 ```r
