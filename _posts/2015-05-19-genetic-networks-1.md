@@ -23,18 +23,20 @@ Today we will be talking about three different ways to cluster data and get visu
 The two clustering methods that we will be exploring are __hierarchical clustering__ and __k-means clustering__. These have important similarities and differences that we will discuss in detail throughout today. The basic idea with clustering is to find how similar the rows and/or columns in the dataset are based on the values contained within the data frame. You have already used a similar technique last week when you produced the MDS plot. This visualization showed that samples from similar genotype and treatment combinations were plotted next to one another based on their Biological Coefficient of Variation calculated across all of the counts of genes. 
 
 # Hierarchical Clustering
-An intuitive example is clustering the distances between know geographic locations, such as US Cities. I took this example from this [website](http://www.analytictech.com/networks/hiclus.htm).
- 
-1. Calculate a distance measure between all the row and column combinations in data set (think geographic distances between cities)
-2. Start all the items in the data out as belonging to its own cluster (every city is its own cluster)
-3. In the distance matrix, find the two closest points (find shortest distance between any two cities) 
-4. Merge the two closest points into one cluster (merge BOS and NY in our example dataset)
-5. Repeat steps 3 and 4 until all the items belong to a single large cluster
+An intuitive example is clustering the distances between known geographic locations, such as U.S. cities. I took an example from this [website](http://www.analytictech.com/networks/hiclus.htm).
 
-A special note: all the clusters at each merge take on the shortest distance between any one member of the cluster and the remaining clusters. For example, the distance between BOS and DC is 433 miles, but the distance between NY and DC is 233. Because BOS/NY are considered one cluster after our first round, their cluster distance to DC is 233. All three of these cities are then merged into one cluster DC/NY/BOS.
+The conceptual overview of the steps we'll complete is as follows:  
+__1.__ Calculate a distance measure between all the row and column combinations in data set (think geographic distances between cities)  
+__2.__ Start each item in the data as belonging to its own cluster (i.e. every city is its own cluster)  
+__3.__ In the distance matrix, find the two closest points (find shortest distance between any two cities)   
+__4.__ Merge the two closest points into one cluster (merge BOS and NY in our example dataset)  
+__5.__ Repeat steps 3 and 4 until all the items belong to a single large cluster  
+
+**A special note:** At each merge, the new cluster takes on the <u>shortest distance</u> between any one member of the cluster and the remaining clusters. For example, the distance between BOS and DC is 429 miles, but the distance between NY and DC is 233. Because BOS/NY are merged into one cluster, their cluster distance to DC is now 233 which is the shorter of the two former distances. All three of these cities are then merged into one cluster DC/NY/BOS.
 
 
 ```r
+# Load the distance matrix for city data
 cities <- read.table("../data/us_cities.txt", sep = "\t", header = TRUE)
 
 rownames(cities) <- cities$X # make the first column the rownames
@@ -58,21 +60,23 @@ plot(hclust(dist(cities)))
 
 ![plot of chunk unnamed-chunk-1]({{ site.baseurl }}/figure/unnamed-chunk-1-1.png) 
 **Exercise 1:**
-Extending the example that I gave for BOS/NY/DC, what are the distances that define each split in the West Coast side of the hclust plot? 
-*Hint 1: Start with the distances between SF and LA. Then look at the difference between that cluster up to SEA*
+Extending the example that I gave for BOS/NY/DC, what are the distances that define each split in the West Coast side of the hclust plot?  
+*Hint 1: Start with the distances between SF and LA. Then look at the difference between that cluster up to SEA*  
 *Hint 2: Print cities, you only need to look at the upper right triangle of data matrix.*
 
-What is the city pair and distance the joins the East Coast and West Coast cities? Fill in the values.
-Hint: Think Midwest.
+What is the city pair and distance the joins the East Coast and West Coast cities? Fill in the values.  
+*Hint: Think Midwest.*
 
+# Biological Use of Clustering
+Now that we have that example out of the way, let's start using this technique on biological data. This week will be a review of all the cool data manipulation steps you have learned in past weeks. I would like to emphasize that printing dataframes (or parts of them) is a really fast way to get an idea about the data you are working with. Visual summaries like printed data, or plotting the data are often times the best way to make sure things are working the way they should be and you are more likely to catch errors. I have included visual summaries at all of the points where I would want to check on the data. 
 
-Now that we have that example out of the way, lets start using this technique on biological data. This week will be a review of all the cool data manipulation steps you have learned in past weeks. I would like to emphasize that printing dataframes (or parts of them) is a really fast way to get an idea about the data you are working with. Visual summaries like printed data, or plotting the data are often times the best way to make sure things are working the way they should be and you are more likely to catch errors. I have included visual summaries at all of the points where I would want to check on the data. 
+If you remember last week, you found some genes that had significant GxE in the internode tissue. We are going to be taking a look at those same genes again this week. I followed the same tutorial that you did last week. That dataset only had 12 RNA-seq libraries in it. However, that subset of data was part of a much larger study that we are going to explore today. 
 
-If you remember last week, you found some genes that had significant GxE in the internode tissue. We are going to be taking a look at those same genes again this week. I followed the same tutorial that you did last week. That dataset only had 12 RNA-seq libraries in it. However, that subset of data was part of a much larger study that we are going to explore today. This dataset consists of RNA-seq samples collected from 2 genotypes of **Brassica rapa** (R500 and IMB211) that were grown in either dense (DP) or non-dense planting (NDP) treatments. Upendra also collected tissue from multiple tissue types including: Leaf, Petiole, Internode (you worked with this last week), and silique (the plant seed pod). There were also 3 biological replicates of each combination (Rep 1, 2, 3). If your head is spinning thinking about all of this, do not worry, data visualization will come to the rescue here in a second.
+This dataset consists of RNA-seq samples collected from 2 genotypes of *Brassica rapa* (R500 and IMB211) that were grown in either dense (DP) or non-dense planting (NDP) treatments. Upendra also collected tissue from multiple tissue types including: Leaf, Petiole, Internode (you worked with this last week), and silique (the plant seed pod). There were also 3 biological replicates of each combination (Rep 1, 2, 3). If your head is spinning thinking about all of this, do not worry, data visualization will come to the rescue here in a second.
 
 Remember last week when we were concerned with what distribution the RNA-seq count data was coming from so that we could have a good statistical model of it? Well, if we want to perform good clustering we also need to think about this because most of the simplest clustering assumes data to be from a normal distribution. I have precalculated this for you. First you will load my output from going through the tutorial from last week. Then you will pull in the new large table containing all the samples.
 
-Lets start by loading the two datasets. Then we can subset the larger full dataset to include only the genes that we are interested in from our analysis last week.
+Let's start by loading the two datasets. Then we can subset the larger full dataset to include only the genes that we are interested in from our analysis last week.
 
 
 ```r
@@ -109,7 +113,7 @@ plot(hr)
 ```
 
 ![plot of chunk unnamed-chunk-3]({{ site.baseurl }}/figure/unnamed-chunk-3-1.png) 
-What a mess! We are too overplotted in this direction. How about if we cluster by column instead? Notice we have to transpose the data using *t()*. Also, make sure you stretch out the window so you can view it! 
+What a mess! We are too overplotted in this direction. How about if we cluster by column instead? Notice we have to transpose the data using `t()`. Also, make sure you stretch out the window so you can view it! 
 
 
 ```r
@@ -120,7 +124,7 @@ plot(hc)
 ![plot of chunk unnamed-chunk-4]({{ site.baseurl }}/figure/unnamed-chunk-4-1.png) 
 **Exercise 2:**
 What is the general pattern in the h-clustering data? 
-Using what you learned from the city example, what is the subcluster that looks very different than the rest of the samples? 
+Using what you learned from the city example, what is the subcluster that looks very different than the rest of the samples?  
 *Hint: It is a group of 3 libraries. You will have to plot this yourself and stretch it out. The rendering on the website compresses the output.*
 
 We have obtained a visual summary using h-clustering. Now what? Well we can go a little further and start to define some important sub-clusters within our tree. We can do this using the following function. Once again make sure you plot it so you can stretch the axes. 
@@ -138,7 +142,7 @@ rect.hclust(hc, k = 4, border = "red")
 With k = 4 as one of the arguments to the rect.hclust() function, what is the largest and smallest group contained within the rectangles? 
 Play with the k-values. Find a new k-value between 3 and 7 and describe how the samples are falling out. 
 
-You may have noticed that your results and potential interpretation of the data could change very dramatically based on the how many subclusters you choose! This is one of the main drawbacks with this technique. Fortunately there are other packages that can help us determine what sub-clusters have good support. 
+You may have noticed that your results and potential interpretation of the data could change very dramatically based on the how many subclusters you choose! This is one of the main drawbacks with this technique. Fortunately there are other packages that can help us determine which sub-clusters have good support. 
 
 
 ```r
