@@ -1,44 +1,3 @@
-phenoEST <- y[1:100]
-phenoVal <- y[101:124]
-g
-str(M)
-marksEst <- M[1:100,]
-marksVal <- M[101:124,]
-mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
-mrkEff
-gebvVec1 <- mrksVal%*%mrkEff
-gebvVec1 <- marksVal%*%mrkEff
-(predAb1 <- cor(gebvVec1, phenoVal))
-u <- rnorm(1400)
-head(u)
-g <- as.vector(crossprod(t(M),u))
-head(g)
-plot(g)
-h2 <- 0.9 #heritability
-y <- g + rnorm(124,mean=0,sd=sqrt((1-h2)/h2*var(g)))
-phenoEST <- y[1:100]
-phenoVal <- y[101:124]
-marksEst <- M[1:100,]
-marksVal <- M[101:124,]
-mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
-mrkEff
-gebvVec1 <- marksVal%*%mrkEff
-(predAb1 <- cor(gebvVec1, phenoVal))
-y <- g + rnorm(124,mean=0,sd=sqrt((1-h2)/h2*var(g)))
-head(y)
-dim(y)
-str(y)
-phenoEST <- y[1:100]
-phenoVal <- y[101:124]
-g
-str(M)
-marksEst <- M[1:100,]
-marksVal <- M[101:124,]
-mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
-mrkEff
-gebvVec1 <- marksVal%*%mrkEff
-(predAb1 <- cor(gebvVec1, phenoVal))
-h2 <- 0.9 #heritability
 y <- g + rnorm(124,mean=0,sd=sqrt((1-h2)/h2*var(g)))
 head(y)
 dim(y)
@@ -184,8 +143,64 @@ plot(hclust(dist(npk)))
 data(Loblolly)
 head(Loblolly)
 Loblolly
-setwd("~/git.repos/BIS180L_web/") #Julin
-library(knitr)
+genes <- read.table("/Users/Cody_2/git.repos/BIS180L_web/data/voom_transform_brassica.csv", sep = ",", header = TRUE)
+genes <- genes[,-c(38,42,46)] # remove questionable library columns
+DE_genes <- read.table("/Users/Cody_2/git.repos/BIS180L_web/data/DEgenes_GxE.csv", sep = ",")
+DE_gene_names <- rownames(DE_genes)
+genes_cor <- cor(t(genes))
+GxE_counts <- as.data.frame(genes[DE_gene_names,])
+genes_cor <- cor(t(GxE_counts))
+hist(genes_cor[upper.tri(genes_cor)]) # slightly right skewed
+genes_adj <- abs(genes_cor) > 0.85
+diag(genes_adj) <- 0
+genes_adj95 <- abs(genes_cor) > 0.95
+diag(genes_adj95) <- 0
+cities <- read.table("/Users/Cody_2/git.repos/BIS180L_web/data/us_cities.txt", sep = "\t", header = TRUE)
+rownames(cities) <- cities$X #make first column the rownames
+cities <- cities[,-1] #remove first column
+cities <- as.matrix(cities) #convert to matrix
+cities # print matrix
+cities_mat <- cities # leave original matrix intact
+cities_mat[cities <= 1500] <- 1
+cities_mat[cities >= 1500] <- 0
+diag(cities_mat) <- 0 # we do not have to fly within each of cities :)
+cities_mat # check out the adjacency matrix
+install.packages("igraph") # Download and install the package
+library(igraph) # load package
+# make sure to use the 2000 mile distance cutoff
+cities_graph2 <- graph.adjacency(cities_mat, "undirected")
+plot.igraph(cities_graph2)
+sum(cities_mat)/2 # divide by 2 because the matrix has 2 values for each edge
+genes <- read.table("/Users/Cody_2/git.repos/BIS180L_web/data/voom_transform_brassica.csv", sep = ",", header = TRUE)
+genes <- genes[,-c(38,42,46)] # remove questionable library columns
+DE_genes <- read.table("/Users/Cody_2/git.repos/BIS180L_web/data/DEgenes_GxE.csv", sep = ",")
+GxE_counts <- as.data.frame(genes[DE_gene_names,])
+DE_gene_names <- rownames(DE_genes)
+genes_cor <- cor(t(GxE_counts))
+diag(genes_adj) <- 0
+# take a look at the distibution of gene gene correlations
+genes_adj <- abs(genes_cor) > 0.85
+hist(genes_cor[upper.tri(genes_cor)]) # slightly right skewed
+genes_adj95 <- abs(genes_cor) > 0.95
+diag(genes_adj95) <- 0
+gene_graph95 <- graph.adjacency(genes_adj95, mode = "undirected")
+plot(gene_graph95, layout=layout.fruchterman.reingold, vertex.size=6)
+comps <- clusters(gene_graph95)$membership
+colbar <- rainbow(max(comps)+1)
+V(gene_graph95)$color <- colbar[comps+1]
+plot(gene_graph95, layout=layout.fruchterman.reingold, vertex.size=6, vertex.label=NA)
+genes_adj85 <- abs(genes_cor) > 0.85
+diag(genes_adj85) <- 0
+gene_graph85 <- graph.adjacency(genes_adj85, mode = "undirected")
+comps <- clusters(gene_graph85)$membership
+colbar <- rainbow(max(comps)+1)
+V(gene_graph85)$color <- colbar[comps+1]
+plot(gene_graph85, layout=layout.fruchterman.reingold, vertex.size=6, vertex.label=NA)
+graph.density(gene_graph85)
+length(E(gene_graph85))
+length(V(gene_graph85))
+clusters(gene_graph85)$no
+head(shortest.paths(gene_graph85))
 jekyll.knit <- function(input) {#
     rel.path = substr(input, 6, nchar(input) - 4)#
     output = paste("_posts/", rel.path, ".md", sep = "")#
@@ -193,65 +208,49 @@ jekyll.knit <- function(input) {#
     system(paste("perl -pi -e 's|images/|{{ site.baseurl }}/images/|gi'", output, sep = " ")) # for non-R generated figures#
     system(paste("perl -pi -e 's|figure/|{{ site.baseurl }}/figure/|gi'", output, sep = " ")) # for R figures generated during knitting#
 }
-jekyll.knit("_rmd/2015-05-19-genetic-networks-1.Rmd")
-prcomp_counts <- prcomp(t(GxE_counts)) #gene wise
-cities <- read.table("/Users/Cody_2/git.repos/BIS180L_web/data/us_cities.txt", sep = "\t", header = TRUE)
-rownames(cities) <- cities$X # make the first column the rownames
-cities <- cities[,-1] #remove first column
-head(cities)
-plot(hclust(dist(cities)))
+library(knitr)
+setwd("~/git.repos/BIS180L_web/") #Julin
+jekyll.knit("_rmd/2015-05-21-genetic-networks-2.Rmd")
+edge.connectivity(gene_graph85, 16, 10)
+install.packages("igraph") # Download and install the package
+library(igraph) # load package
+genes <- read.table("/Users/Cody_2/git.repos/BIS180L_web/data/voom_transform_brassica.csv", sep = ",", header = TRUE)
+genes <- genes[,-c(38,42,46)] # remove questionable library columns
 DE_genes <- read.table("/Users/Cody_2/git.repos/BIS180L_web/data/DEgenes_GxE.csv", sep = ",")
-head(DE_genes) #check out the data
-DE_gene_names <- row.names(DE_genes)
-# make sure to change the path to where you downloaded this using wget
-brass_voom_E <- read.table("/Users/Cody_2/git.repos/BIS180L_web/data/voom_transform_brassica.csv", sep = ",", header = TRUE)
-GxE_counts <- as.data.frame(brass_voom_E[DE_gene_names,])
-GxE_counts <- as.matrix(GxE_counts) # some of the downstream steps require a data matrix
-hr <- hclust(dist(GxE_counts))
-plot(hr)
-hc <- hclust(dist(t(GxE_counts)))
-plot(hc)
-hc <- hclust(dist(t(GxE_counts)))
-plot(hc) #redraw the tree everytime before adding the rectangles
-rect.hclust(hc, k = 4, border = "red")
-install.packages("pvclust")
-library(pvclust)
-?pvclust #check out the documentation
-set.seed(12456) #important to run this
-fit <- pvclust(GxE_counts, method.hclust = "ward.D", method.dist = "euclidean", nboot = 50)
-plot(fit) # dendogram with p-values
-install.packages("gplots") #not to be confused with ggplot2!
-library(gplots)
-head(cities) # city example
-cities_mat <- as.matrix(cities)
-?heatmap.2 #take a look at the arguments
-cityclust <- hclust(dist(cities_mat))
-heatmap.2(cities_mat, Rowv=as.dendrogram(cityclust), scale="row", density.info="none", trace="none")
-hr <- hclust(dist(GxE_counts))
-plot(hr)
-heatmap.2(GxE_counts, Rowv = as.dendrogram(hr), scale = "row", density.info="none", trace="none")
-library(animation)
-kmeans.ani(x = cbind(X1 = runif(50), X2 = runif(50)), centers = 3,
-hints = c("Move centers!", "Find cluster?"), pch = 1:3, col = 1:3)
-library(ggplot2)
-prcomp_counts <- prcomp(t(GxE_counts)) #gene wise
-scores <- as.data.frame(prcomp_counts$rotation)[,c(1,2)]
-set.seed(25) #make this repeatable as kmeans has random starting positions
-fit <- kmeans(GxE_counts, 9)
-clus <- as.data.frame(fit$cluster)
-names(clus) <- paste("cluster")
-plotting <- merge(clus, scores, by = "row.names")
-plotting$cluster <- as.factor(plotting$cluster)
-# plot of observations
-ggplot(data = plotting, aes(x = PC1, y = PC2, label = Row.names, color = cluster)) +
-geom_hline(yintercept = 0, colour = "gray65") +
-geom_vline(xintercept = 0, colour = "gray65") +
-geom_point(alpha = 0.8, size = 4, stat = "identity")
-install.packages("cluster")
-library(cluster)
-set.seed(125)
-gap <- clusGap(GxE_counts, FUN = kmeans, iter.max = 30, K.max = 20, B = 50, verbose=interactive())
-plot(gap, main = "Gap Statistic")
-with(gap, maxSE(Tab[,"gap"], Tab[,"SE.sim"], method="firstSEmax"))
-kmeans.ani(x = cbind(X1 = runif(50), X2 = runif(50)), centers = 3,#
-hints = c("Move centers!", "Find cluster?"), pch = 1:3, col = 1:3)
+DE_gene_names <- rownames(DE_genes)
+GxE_counts <- as.data.frame(genes[DE_gene_names,])
+genes_cor <- cor(t(GxE_counts))
+hist(genes_cor[upper.tri(genes_cor)]) # slightly right skewed
+genes_adj <- abs(genes_cor) > 0.85
+diag(genes_adj) <- 0
+genes_adj95 <- abs(genes_cor) > 0.95
+diag(genes_adj95) <- 0
+gene_graph95 <- graph.adjacency(genes_adj95, mode = "undirected")
+comps <- clusters(gene_graph95)$membership
+colbar <- rainbow(max(comps)+1)
+V(gene_graph95)$color <- colbar[comps+1]
+plot(gene_graph95, layout=layout.fruchterman.reingold, vertex.size=6, vertex.label=NA)
+#this one will take a little while to render
+genes_adj85 <- abs(genes_cor) > 0.85
+diag(genes_adj85) <- 0
+gene_graph85 <- graph.adjacency(genes_adj85, mode = "undirected")
+graph.density(gene_graph85)
+gene_graph85 <- graph.adjacency(genes_adj85, mode = "undirected")
+distMatrix <- shortest.paths(gene_graph85, v=V(gene_graph85), to=V(gene_graph85))
+head(distMatrix, 20)[,1:10]
+pl <- get.shortest.paths(gene_graph85, 2, 6)$vpath[[1]] # pull paths between node 2 and 6
+pl
+V(gene_graph85)[pl]$color <- paste("green")          # define node color
+E(gene_graph85)$color <- paste("grey")               # define default edge color
+E(gene_graph85, path = pl)$color <- paste("blue")    # define edge color
+E(gene_graph85, path = pl)$width <- 10               # define edge width
+plot(gene_graph85, layout = layout.fruchterman.reingold, vertex.size = 6, vertex.label = NA)
+gene_graph85 <- graph.adjacency(genes_adj85, mode = "undirected")
+distMatrix <- shortest.paths(gene_graph85, v=V(gene_graph85), to=V(gene_graph85))
+pl <- get.shortest.paths(gene_graph85, 2, 6)$vpath[[1]] # pull paths between node 2 and 6
+pl
+V(gene_graph85)[pl]$color <- paste("green")          # define node color
+E(gene_graph85)$color <- paste("grey")               # define default edge color
+E(gene_graph85, path = pl)$color <- paste("blue")    # define edge color
+E(gene_graph85, path = pl)$width <- 10               # define edge width
+edge.connectivity(gene_graph85, 16, 10)

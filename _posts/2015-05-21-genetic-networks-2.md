@@ -30,11 +30,13 @@ The relationships, or **edges**, between the city nodes were defined by measurem
 
 Okay, lets load up our city data again and get started by playing with some examples!
 
-```{r, engine = 'bash', eval = TRUE}
+
+```bash
 #wget https://github.com/rjcmarkelz/BIS180L_web/tree/feature-networks/data/us_cities.txt
 ```
 
-```{r, eval = TRUE}
+
+```r
 # setwd("/Users/Cody_2/git.repos/BIS180L_web/data/")
 cities <- read.table("/Users/Cody_2/git.repos/BIS180L_web/data/us_cities.txt", sep = "\t", header = TRUE)
 rownames(cities) <- cities$X #make first column the rownames
@@ -42,16 +44,43 @@ cities <- cities[,-1] #remove first column
 cities <- as.matrix(cities) #convert to matrix
 cities # print matrix
 ```
+
+```
+##       BOS   NY   DC  MIA  CHI  SEA   SF   LA  DEN
+## BOS     0  206  429 1504  963 2976 3095 2979 1949
+## NY    206    0  233 1308  802 2815 2934 2786 1771
+## DC    429  233    0 1075  671 2684 2799 2631 1616
+## MIA  1504 1308 1075    0 1329 3273 3053 2687 2037
+## CHI   963  802  671 1329    0 2013 2142 2054  996
+## SEA  2976 2815 2684 3273 2013    0  808 1131 1307
+## SF   3095 2934 2799 3053 2142  808    0  379 1235
+## LA   2979 2786 2631 2687 2054 1131  379    0 1059
+## DEN  1949 1771 1616 2037  996 1307 1235 1059    0
+```
 What if we were an airline and we wanted to calculate what the best route from city to city was, but the planes that we have in our fleet have a maximum fuel range of only 1500 miles. This would put a constraint on our city network. Cities with distances between them greater than 1500 miles would no longer be reachable directly. Rather than representing our network as miles, we can simplify it by having a connection (or edge) value be a 1 if distance between cities is <1500 miles or a 0 if the distance is >1500. This 1 or 0 representation of the network is called the network **adjacency** matrix. 
 
 Lets create an adjacency matrix for our test dataset.
 
-```{r, eval = TRUE}
+
+```r
 cities_mat <- cities # leave original matrix intact
 cities_mat[cities <= 1500] <- 1
 cities_mat[cities >= 1500] <- 0
 diag(cities_mat) <- 0 # we do not have to fly within each of cities :)
 cities_mat # check out the adjacency matrix
+```
+
+```
+##      BOS NY DC MIA CHI SEA SF LA DEN
+## BOS    0  1  1   0   1   0  0  0   0
+## NY     1  0  1   1   1   0  0  0   0
+## DC     1  1  0   1   1   0  0  0   0
+## MIA    0  1  1   0   1   0  0  0   0
+## CHI    1  1  1   1   0   0  0  0   1
+## SEA    0  0  0   0   0   0  1  1   1
+## SF     0  0  0   0   0   1  0  1   1
+## LA     0  0  0   0   0   1  1  0   1
+## DEN    0  0  0   0   1   1  1  1   0
 ```
 **Exercise 1:**
 Based on this 0 or 1 representation of our network given a maximum distance cutoff between cities of 1500 miles, what city is the most highly connected? *Hint: sum the column values down a column OR across a row*
@@ -60,13 +89,30 @@ What if you were to extend the range to 2000 miles in the above code. Does the h
 
 Now plot this example to see the connections based on the 2000 mile distance cutoff. It should show the same connections as in your adjacency matrix. 
 
-```{r, eval = TRUE}
+
+```r
 install.packages("igraph") # Download and install the package
+```
+
+```
+## Installing package into '/Users/Cody_2/Library/R/3.1/library'
+## (as 'lib' is unspecified)
+```
+
+```
+## 
+## The downloaded binary packages are in
+## 	/var/folders/jh/6yqw6n710sj2xr9knz37tt0w0000gn/T//RtmprFIuZ5/downloaded_packages
+```
+
+```r
 library(igraph) # load package
 # make sure to use the 2000 mile distance cutoff 
 cities_graph2 <- graph.adjacency(cities_mat, "undirected")
 plot.igraph(cities_graph2)
 ```
+
+![plot of chunk unnamed-chunk-4]({{ site.baseurl }}/figure/unnamed-chunk-4-1.png) 
 **Exercise 2:**
 What is the total number of nodes you can see in your plot? 
 What is the total number of edges you can see in your plot?
@@ -74,7 +120,8 @@ What is the total number of edges you can see in your plot?
 **Exercise 3:**
 Re-calculate the adjacency matrix with the cutoff value at 2300. Calculate the number of edges rapidly using the following code. What do you get?
 
-```{r, eval = FALSE}
+
+```r
 sum(cities_mat)/2 # divide by 2 because the matrix has 2 values for each edge
 ```
 How can we extend this analogy to biology? Well one of the simplest ways to do this would be to define each gene as a node and the relationships/edges between the nodes as some value that we can calculate with data on hand to make an adjacency matrix. 
@@ -109,7 +156,8 @@ Fill in the following 0 or 1 values for our gene network.
 
 Okay, I think now that we have the basic concepts, lets work with the larger gene expression data set. In following up on the pattern that we observed in our clustering analysis on Tuesday I found out that the libraries that appeared to be part of thier own cluster (especially in the heat map) were bad libraries. **The value of plotting data and being thoughtful about what it is telling you!** We will remove these libraries from our analysis today.
 
-```{r, eval = TRUE}
+
+```r
 # setwd("/Users/Cody_2/git.repos/BIS180L_web/data/")
 genes <- read.table("/Users/Cody_2/git.repos/BIS180L_web/data/voom_transform_brassica.csv", sep = ",", header = TRUE)
 genes <- genes[,-c(38,42,46)] # remove questionable library columns
@@ -120,6 +168,11 @@ genes_cor <- cor(t(GxE_counts))
 
 # take a look at the distibution of gene gene correlations
 hist(genes_cor[upper.tri(genes_cor)]) # slightly right skewed
+```
+
+![plot of chunk unnamed-chunk-6]({{ site.baseurl }}/figure/unnamed-chunk-6-1.png) 
+
+```r
 genes_adj <- abs(genes_cor) > 0.85
 diag(genes_adj) <- 0 
 ```
@@ -130,7 +183,8 @@ Now we can do some calculations. If our cutoff is abs(0.80), how many edges do w
 **Exercise 6:**
 Use the following code to plot our networks using different thresholds for connectivity. What patterns do you see in the visualization of this data? *Note: the second plot will take a while to render*
 
-```{r, eval = TRUE}
+
+```r
 genes_adj95 <- abs(genes_cor) > 0.95
 diag(genes_adj95) <- 0 
 
@@ -139,7 +193,11 @@ comps <- clusters(gene_graph95)$membership
 colbar <- rainbow(max(comps)+1)
 V(gene_graph95)$color <- colbar[comps+1]
 plot(gene_graph95, layout=layout.fruchterman.reingold, vertex.size=6, vertex.label=NA)
+```
 
+![plot of chunk unnamed-chunk-7]({{ site.baseurl }}/figure/unnamed-chunk-7-1.png) 
+
+```r
 #this one will take a little while to render
 genes_adj85 <- abs(genes_cor) > 0.85
 diag(genes_adj85) <- 0 
@@ -150,15 +208,19 @@ V(gene_graph85)$color <- colbar[comps+1]
 plot(gene_graph85, layout=layout.fruchterman.reingold, vertex.size=6, vertex.label=NA)
 ```
 
+![plot of chunk unnamed-chunk-7]({{ site.baseurl }}/figure/unnamed-chunk-7-2.png) 
+
 **Exercise 7:**
 In the gene_graph85, what is the total graph density? This is a measure of the total number of connections between nodes out of the total possible number of connections between nodes. 
 
-```{r, eval = FALSE}
+
+```r
 graph.density(gene_graph85)
 ```
 We can follow a path connecting genes in our network. Use the following code to do a partial path analysis for the two genes specified.
 
-```{r, eval = TRUE}
+
+```r
 gene_graph85 <- graph.adjacency(genes_adj85, mode = "undirected")
 distMatrix <- shortest.paths(gene_graph85, v=V(gene_graph85), to=V(gene_graph85))
 
@@ -171,7 +233,10 @@ E(gene_graph85, path = pl)$width <- 10               # define edge width
 plot(gene_graph85, layout = layout.fruchterman.reingold, vertex.size = 6, vertex.label = NA)
 ```
 
-```{r, eval = FALSE}
+![plot of chunk unnamed-chunk-9]({{ site.baseurl }}/figure/unnamed-chunk-9-1.png) 
+
+
+```r
 edge.connectivity(gene_graph85, 16, 10)
 ```
 
