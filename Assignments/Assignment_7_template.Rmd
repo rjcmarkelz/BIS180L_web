@@ -16,8 +16,8 @@ Based on this 0 or 1 representation of our network, what city is the most highly
 What if you were to extend the range to 2000 miles in the above code. Does the highest connected city change? If so explain. 
 
 **Exercise 2:**
-What is the total number of nodes you can see in your plot? 
-What is the total number of edges you can see in your plot?
+What is the total number of nodes in the plot? 
+What is the total number of edges in the plot?
 
 **Exercise 3:**
 Re-calculate the adjacency matrix with the cutoff value at 2300. Calculate the number of edges using the following code. What do you get?

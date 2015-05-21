@@ -42,7 +42,7 @@ Infile the data into R.
 
 ```{r, eval = TRUE}
 # make sure to change the path
-cities <- read.table("/Users/Cody_2/git.repos/BIS180L_web/data/us_cities.txt", sep = "\t", header = TRUE)
+cities <- read.table("../data/us_cities.txt", sep = "\t", header = TRUE)
 rownames(cities) <- cities$X #make first column the rownames
 cities <- cities[,-1] #remove first column
 cities <- as.matrix(cities) #convert to matrix
@@ -133,9 +133,9 @@ wget https://raw.githubusercontent.com/rjcmarkelz/BIS180L_web/feature-networks/d
 Infile the data and calculate an adjacency matrix using a 0.85 correlation cutoff this time.
 
 ```{r, eval = TRUE}
-genes <- read.table("/Users/Cody_2/git.repos/BIS180L_web/data/voom_transform_brassica.csv", sep = ",", header = TRUE)
+genes <- read.table("../data/voom_transform_brassica.csv", sep = ",", header = TRUE)
 genes <- genes[,-c(38,42,46)] # remove questionable library columns
-DE_genes <- read.table("/Users/Cody_2/git.repos/BIS180L_web/data/DEgenes_GxE.csv", sep = ",")
+DE_genes <- read.table("../BIS180L_web/data/DEgenes_GxE.csv", sep = ",")
 DE_gene_names <- rownames(DE_genes)
 GxE_counts <- as.data.frame(genes[DE_gene_names,])
 genes_cor <- cor(t(GxE_counts)) # calculate the correlation between all gene pairs
