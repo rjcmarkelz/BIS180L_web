@@ -1,3 +1,43 @@
+phenoVal <- y[101:124]
+g
+str(M)
+marksEst <- M[1:100,]
+marksVal <- M[101:124,]
+mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
+mrkEff
+gebvVec1 <- mrksVal%*%mrkEff
+gebvVec1 <- marksVal%*%mrkEff
+(predAb1 <- cor(gebvVec1, phenoVal))
+u <- rnorm(1400)
+head(u)
+g <- as.vector(crossprod(t(M),u))
+head(g)
+plot(g)
+h2 <- 0.9 #heritability
+y <- g + rnorm(124,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+phenoEST <- y[1:100]
+phenoVal <- y[101:124]
+marksEst <- M[1:100,]
+marksVal <- M[101:124,]
+mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
+mrkEff
+gebvVec1 <- marksVal%*%mrkEff
+(predAb1 <- cor(gebvVec1, phenoVal))
+y <- g + rnorm(124,mean=0,sd=sqrt((1-h2)/h2*var(g)))
+head(y)
+dim(y)
+str(y)
+phenoEST <- y[1:100]
+phenoVal <- y[101:124]
+g
+str(M)
+marksEst <- M[1:100,]
+marksVal <- M[101:124,]
+mrkEff   <- mixed.solve(y = phenoEST, Z = marksEst)$u
+mrkEff
+gebvVec1 <- marksVal%*%mrkEff
+(predAb1 <- cor(gebvVec1, phenoVal))
+h2 <- 0.9 #heritability
 y <- g + rnorm(124,mean=0,sd=sqrt((1-h2)/h2*var(g)))
 head(y)
 dim(y)
@@ -201,6 +241,8 @@ length(E(gene_graph85))
 length(V(gene_graph85))
 clusters(gene_graph85)$no
 head(shortest.paths(gene_graph85))
+setwd("~/git.repos/BIS180L_web/") #Julin
+library(knitr)
 jekyll.knit <- function(input) {#
     rel.path = substr(input, 6, nchar(input) - 4)#
     output = paste("_posts/", rel.path, ".md", sep = "")#
@@ -208,49 +250,7 @@ jekyll.knit <- function(input) {#
     system(paste("perl -pi -e 's|images/|{{ site.baseurl }}/images/|gi'", output, sep = " ")) # for non-R generated figures#
     system(paste("perl -pi -e 's|figure/|{{ site.baseurl }}/figure/|gi'", output, sep = " ")) # for R figures generated during knitting#
 }
-library(knitr)
-setwd("~/git.repos/BIS180L_web/") #Julin
+# .Rmd files in _rmd directory
+# Usage example:
+# jekyll.knit("_rmd/2013-XX-XX-post-name.Rmd")
 jekyll.knit("_rmd/2015-05-21-genetic-networks-2.Rmd")
-edge.connectivity(gene_graph85, 16, 10)
-install.packages("igraph") # Download and install the package
-library(igraph) # load package
-genes <- read.table("/Users/Cody_2/git.repos/BIS180L_web/data/voom_transform_brassica.csv", sep = ",", header = TRUE)
-genes <- genes[,-c(38,42,46)] # remove questionable library columns
-DE_genes <- read.table("/Users/Cody_2/git.repos/BIS180L_web/data/DEgenes_GxE.csv", sep = ",")
-DE_gene_names <- rownames(DE_genes)
-GxE_counts <- as.data.frame(genes[DE_gene_names,])
-genes_cor <- cor(t(GxE_counts))
-hist(genes_cor[upper.tri(genes_cor)]) # slightly right skewed
-genes_adj <- abs(genes_cor) > 0.85
-diag(genes_adj) <- 0
-genes_adj95 <- abs(genes_cor) > 0.95
-diag(genes_adj95) <- 0
-gene_graph95 <- graph.adjacency(genes_adj95, mode = "undirected")
-comps <- clusters(gene_graph95)$membership
-colbar <- rainbow(max(comps)+1)
-V(gene_graph95)$color <- colbar[comps+1]
-plot(gene_graph95, layout=layout.fruchterman.reingold, vertex.size=6, vertex.label=NA)
-#this one will take a little while to render
-genes_adj85 <- abs(genes_cor) > 0.85
-diag(genes_adj85) <- 0
-gene_graph85 <- graph.adjacency(genes_adj85, mode = "undirected")
-graph.density(gene_graph85)
-gene_graph85 <- graph.adjacency(genes_adj85, mode = "undirected")
-distMatrix <- shortest.paths(gene_graph85, v=V(gene_graph85), to=V(gene_graph85))
-head(distMatrix, 20)[,1:10]
-pl <- get.shortest.paths(gene_graph85, 2, 6)$vpath[[1]] # pull paths between node 2 and 6
-pl
-V(gene_graph85)[pl]$color <- paste("green")          # define node color
-E(gene_graph85)$color <- paste("grey")               # define default edge color
-E(gene_graph85, path = pl)$color <- paste("blue")    # define edge color
-E(gene_graph85, path = pl)$width <- 10               # define edge width
-plot(gene_graph85, layout = layout.fruchterman.reingold, vertex.size = 6, vertex.label = NA)
-gene_graph85 <- graph.adjacency(genes_adj85, mode = "undirected")
-distMatrix <- shortest.paths(gene_graph85, v=V(gene_graph85), to=V(gene_graph85))
-pl <- get.shortest.paths(gene_graph85, 2, 6)$vpath[[1]] # pull paths between node 2 and 6
-pl
-V(gene_graph85)[pl]$color <- paste("green")          # define node color
-E(gene_graph85)$color <- paste("grey")               # define default edge color
-E(gene_graph85, path = pl)$color <- paste("blue")    # define edge color
-E(gene_graph85, path = pl)$width <- 10               # define edge width
-edge.connectivity(gene_graph85, 16, 10)
