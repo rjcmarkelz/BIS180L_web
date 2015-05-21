@@ -82,7 +82,7 @@ What is the total number of edges you can see in your plot?
 Re-calculate the adjacency matrix with the cutoff value at 2300. Calculate the number of edges rapidly using the following code. What do you get?
 
 ```{r, eval = FALSE}
-sum(cities_mat)/2 # divide by 2 because the matrix is has 2 values for each edge
+sum(cities_mat)/2 # divide by 2 because the matrix has 2 values for each edge
 ```
 
 How can we extend this analogy to biology? Well one of the simplest ways to do this would be to define each gene as a node and the relationships/edges between the nodes as some value that we can calculate with data on hand to make an adjacency matrix. 
@@ -126,50 +126,93 @@ genes_cor <- cor(t(GxE_counts))
 
 # take a look at the distibution of gene gene correlations
 hist(genes_cor[upper.tri(genes_cor)]) # slightly right skewed
-genes_adj <- abs(genes_cor) > 0.90 
+genes_adj <- abs(genes_cor) > 0.85
 diag(genes_adj) <- 0 
-sum(genes_adj)/2
-
-gene_graph1 <- graph.adjacency(genes_adj, "undirected")
-plot.igraph(gene_graph1)
 ```
 
 **Exercise 5:**
 Now we can do some calculations. If our cutoff is abs(0.80), how many edges do we have in our 255 node gene network? What if we increase our cutoff to 0.90?
 
 **Exercise 6:**
-
-
-
-
-
+Use the following code to plot our networks using different thresholds for connectivity. What patterns do you see in the visualization of this data? *Note: the second plot will take a while to render*
 
 ```{r, eval = FALSE}
-E(cities_graph2)$weight
-plot.igraph(cities_graph2,vertex.label=V(cities_graph2)$name,layout=
-	layout.fruchterman.reingold, edge.color="black",edge.width= (1/E(cities_graph2)$weight))
+genes_adj95 <- abs(genes_cor) > 0.95
+diag(genes_adj95) <- 0 
 
-plot.igraph(cities_graph2, layout = layout.fruchterman.reingold, edge.color="black",
-	edge.width= (1000/E(cities_graph2)$weight))
+gene_graph95 <- graph.adjacency(genes_adj95, mode = "undirected")
+plot(gene_graph95, layout=layout.fruchterman.reingold, vertex.size=6)
+comps <- clusters(gene_graph95)$membership
+colbar <- rainbow(max(comps)+1)
+V(gene_graph95)$color <- colbar[comps+1]
+plot(gene_graph95, layout=layout.fruchterman.reingold, vertex.size=6, vertex.label=NA)
+
+genes_adj85 <- abs(genes_cor) > 0.85
+diag(genes_adj85) <- 0 
+gene_graph85 <- graph.adjacency(genes_adj85, mode = "undirected")
+comps <- clusters(gene_graph85)$membership
+colbar <- rainbow(max(comps)+1)
+V(gene_graph85)$color <- colbar[comps+1]
+plot(gene_graph85, layout=layout.fruchterman.reingold, vertex.size=6, vertex.label=NA)
+plot(degree.distribution(gene_graph85), xlab="node degree")
+
+graph.density(gene_graph85)
+length(E(gene_graph85))
+length(V(gene_graph85))
+clusters(gene_graph85)$no
+head(shortest.paths(gene_graph85))
+```
+**Exercise 7:**
+In the gene_graph85, what 
+
+```{r, eval = FALSE}
+
+graph.density(gene_graph85)
+length(E(gene_graph85))
+length(V(gene_graph85))
+clusters(gene_graph85)$no
+head(shortest.paths(gene_graph85))
+degree(gene_graph85)
+E <- get.edgelist(gene_graph85)
+E
+distMatrix <- shortest.paths(gene_graph85, v=V(gene_graph85), to=V(gene_graph85))
+head(distMatrix)
+```
+
+Bra027717 - high
+Bra021171 - medium
+Bra028893 - low
+
+```{r, eval = FALSE}
+g <- barabasi.game(25, m=1)
+g2 <- barabasi.game(25, m=5)
+edge.connectivity(g, 25, 1)
+edge.connectivity(g2, 25, 1)
+?edge.disjoint.paths
+edge.disjoint.paths(g2, 25, 1)
+
+?get.shortest.paths
+pa <- get.shortest.paths(gene_graph85, 2, 6)[[1]]
+pa
+
+V(gene_graph85)[pa]$color <- 'green'
+E(gene_graph85)$color <- 'grey'
+E(gene_graph85, path=ShortPth[[1]])$color <- "blue" 
+E(gene_graph85, path=pa)$width <- 3
+plot(gene_graph85, layout=layout.fruchterman.reingold, vertex.size=6,)
+plot(g2)
+
+names(gene_graph85)
+str(gene_graph85)
 ```
 
 
 
-# Hub Genes
-# Subgraphs
 
 
 
 
 
-
-```{r  warning=FALSE} 
-# make sure to change the path to where you downloaded this using wge
-```
-**Exercise 1:**
-Extending the example that I gave for BOS/NY/DC, what are the distances that define each split in the Westcoast side of the hclust plot? 
-*Hint 1: Start with the distances between SF and LA. Then look at the difference between that cluster up to SEA*
-*Hint 2: Print cities, you only need to look at the upper right triangle of data matrix.*
 
 
 
